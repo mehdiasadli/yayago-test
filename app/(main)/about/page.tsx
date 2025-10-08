@@ -16,8 +16,8 @@ export default function AboutPage() {
       <section className='relative py-24 md:py-32 px-6 lg:px-8 overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900'>
         {/* Animated Background Pattern */}
         <div className='absolute inset-0 opacity-10'>
-          <div className='absolute top-0 left-1/4 w-96 h-96 bg-primary rounded-full blur-3xl animate-pulse' />
-          <div className='absolute bottom-0 right-1/4 w-96 h-96 bg-primary rounded-full blur-3xl animate-pulse delay-1000' />
+          <div className='absolute top-0 left-1/4 w-96 h-96 bg-primary blur-3xl animate-pulse' />
+          <div className='absolute bottom-0 right-1/4 w-96 h-96 bg-primary blur-3xl animate-pulse delay-1000' />
         </div>
 
         {/* Grid Pattern */}
@@ -32,7 +32,7 @@ export default function AboutPage() {
 
         <div className='relative max-w-7xl mx-auto text-center'>
           <div className='inline-block mb-6'>
-            <span className='px-4 py-2 bg-primary/20 text-primary-foreground rounded-full text-sm font-semibold tracking-wide uppercase backdrop-blur-sm border border-primary/30'>
+            <span className='px-4 py-2 bg-primary/20 text-primary-foreground text-sm font-semibold tracking-wide uppercase backdrop-blur-sm border border-primary/30'>
               About YayaGo
             </span>
           </div>
@@ -95,7 +95,7 @@ export default function AboutPage() {
           <div className='grid md:grid-cols-2 gap-12 items-center'>
             <div>
               <div className='inline-block mb-4'>
-                <span className='px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-semibold uppercase tracking-wide'>
+                <span className='px-3 py-1 bg-primary/10 text-primary text-sm font-semibold uppercase tracking-wide'>
                   Our Story
                 </span>
               </div>
@@ -119,7 +119,7 @@ export default function AboutPage() {
                 </p>
               </div>
             </div>
-            <div className='relative h-[500px] rounded-2xl overflow-hidden shadow-2xl'>
+            <div className='relative h-[500px] overflow-hidden shadow-2xl'>
               <Image
                 src='https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&q=80'
                 alt='Dubai Skyline'
@@ -136,7 +136,7 @@ export default function AboutPage() {
       <section className='py-20 md:py-24 px-6 lg:px-8 bg-white'>
         <div className='max-w-7xl mx-auto'>
           <div className='grid md:grid-cols-2 gap-12 items-center'>
-            <div className='order-2 md:order-1 relative h-[500px] rounded-2xl overflow-hidden shadow-2xl'>
+            <div className='order-2 md:order-1 relative h-[500px] overflow-hidden shadow-2xl'>
               <Image
                 src='https://images.unsplash.com/photo-1542282088-fe8426682b8f?w=1200&q=80'
                 alt='Future of car sharing'
@@ -147,7 +147,7 @@ export default function AboutPage() {
             </div>
             <div className='order-1 md:order-2'>
               <div className='inline-block mb-4'>
-                <span className='px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-semibold uppercase tracking-wide'>
+                <span className='px-3 py-1 bg-primary/10 text-primary text-sm font-semibold uppercase tracking-wide'>
                   Our Vision
                 </span>
               </div>
@@ -181,7 +181,7 @@ export default function AboutPage() {
         <div className='max-w-7xl mx-auto'>
           <div className='text-center mb-16'>
             <div className='inline-block mb-4'>
-              <span className='px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-semibold uppercase tracking-wide'>
+              <span className='px-3 py-1 bg-primary/10 text-primary text-sm font-semibold uppercase tracking-wide'>
                 Our Values
               </span>
             </div>
@@ -193,8 +193,8 @@ export default function AboutPage() {
 
           <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-8'>
             {/* Trust */}
-            <div className='bg-white p-8 rounded-2xl border border-gray-100 hover:border-primary/20 hover:shadow-xl transition-all duration-300'>
-              <div className='w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6'>
+            <div className='bg-white p-8 border border-gray-100 hover:border-primary/20 hover:shadow-xl transition-all duration-300'>
+              <div className='w-14 h-14 bg-primary/10 flex items-center justify-center mb-6'>
                 <Shield className='w-7 h-7 text-primary' strokeWidth={2} />
               </div>
               <h3 className='text-2xl font-bold text-gray-900 mb-4'>Trust & Safety</h3>
@@ -205,8 +205,8 @@ export default function AboutPage() {
             </div>
 
             {/* Community */}
-            <div className='bg-white p-8 rounded-2xl border border-gray-100 hover:border-primary/20 hover:shadow-xl transition-all duration-300'>
-              <div className='w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6'>
+            <div className='bg-white p-8 border border-gray-100 hover:border-primary/20 hover:shadow-xl transition-all duration-300'>
+              <div className='w-14 h-14 bg-primary/10 flex items-center justify-center mb-6'>
                 <Users className='w-7 h-7 text-primary' strokeWidth={2} />
               </div>
               <h3 className='text-2xl font-bold text-gray-900 mb-4'>Community First</h3>
@@ -217,8 +217,8 @@ export default function AboutPage() {
             </div>
 
             {/* Innovation */}
-            <div className='bg-white p-8 rounded-2xl border border-gray-100 hover:border-primary/20 hover:shadow-xl transition-all duration-300'>
-              <div className='w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6'>
+            <div className='bg-white p-8 border border-gray-100 hover:border-primary/20 hover:shadow-xl transition-all duration-300'>
+              <div className='w-14 h-14 bg-primary/10 flex items-center justify-center mb-6'>
                 <Sparkles className='w-7 h-7 text-primary' strokeWidth={2} />
               </div>
               <h3 className='text-2xl font-bold text-gray-900 mb-4'>Innovation</h3>
@@ -229,8 +229,8 @@ export default function AboutPage() {
             </div>
 
             {/* Transparency */}
-            <div className='bg-white p-8 rounded-2xl border border-gray-100 hover:border-primary/20 hover:shadow-xl transition-all duration-300'>
-              <div className='w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6'>
+            <div className='bg-white p-8 border border-gray-100 hover:border-primary/20 hover:shadow-xl transition-all duration-300'>
+              <div className='w-14 h-14 bg-primary/10 flex items-center justify-center mb-6'>
                 <Target className='w-7 h-7 text-primary' strokeWidth={2} />
               </div>
               <h3 className='text-2xl font-bold text-gray-900 mb-4'>Transparency</h3>
@@ -241,8 +241,8 @@ export default function AboutPage() {
             </div>
 
             {/* Sustainability */}
-            <div className='bg-white p-8 rounded-2xl border border-gray-100 hover:border-primary/20 hover:shadow-xl transition-all duration-300'>
-              <div className='w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6'>
+            <div className='bg-white p-8 border border-gray-100 hover:border-primary/20 hover:shadow-xl transition-all duration-300'>
+              <div className='w-14 h-14 bg-primary/10 flex items-center justify-center mb-6'>
                 <TrendingUp className='w-7 h-7 text-primary' strokeWidth={2} />
               </div>
               <h3 className='text-2xl font-bold text-gray-900 mb-4'>Sustainability</h3>
@@ -253,8 +253,8 @@ export default function AboutPage() {
             </div>
 
             {/* Customer Success */}
-            <div className='bg-white p-8 rounded-2xl border border-gray-100 hover:border-primary/20 hover:shadow-xl transition-all duration-300'>
-              <div className='w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6'>
+            <div className='bg-white p-8 border border-gray-100 hover:border-primary/20 hover:shadow-xl transition-all duration-300'>
+              <div className='w-14 h-14 bg-primary/10 flex items-center justify-center mb-6'>
                 <Heart className='w-7 h-7 text-primary' strokeWidth={2} />
               </div>
               <h3 className='text-2xl font-bold text-gray-900 mb-4'>Customer Success</h3>
