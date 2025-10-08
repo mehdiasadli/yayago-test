@@ -1,16 +1,13 @@
+import { TLocation } from '@/data/locations';
 import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 interface LocationsGridProps {
   setHoveredLocation: (location: number | null) => void;
-  locations: {
-    id: number;
-    name: string;
-    slug: string;
-    image: string;
+  locations: (Pick<TLocation, 'id' | 'key' | 'name' | 'image'> & {
     carsCount: number;
-  }[];
+  })[];
 }
 
 export default function LocationsGrid({ setHoveredLocation, locations }: LocationsGridProps) {
@@ -19,7 +16,7 @@ export default function LocationsGrid({ setHoveredLocation, locations }: Locatio
       {locations.map((location, index) => (
         <Link
           key={location.id}
-          href={`/locations/${location.slug}`}
+          href={`/cars/location/${location.key}`}
           className='group relative h-80 md:h-96 overflow-hidden transition-all duration-500'
           onMouseEnter={() => setHoveredLocation(index)}
           onMouseLeave={() => setHoveredLocation(null)}

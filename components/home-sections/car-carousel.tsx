@@ -1,14 +1,14 @@
 'use client';
 
-import { Car } from '@/data/cars/car.schema';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { useCallback, useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import CarCard from '../car-card/car-card';
+import { TCar } from '@/data/cars';
 
 interface CarCarouselProps {
-  cars: Car[];
+  cars: TCar[];
 }
 
 export default function CarCarousel({ cars }: CarCarouselProps) {

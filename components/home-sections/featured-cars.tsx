@@ -1,15 +1,19 @@
-import { getCars } from '@/data/cars/cars.access';
 import CarCarousel from './car-carousel';
-import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
-import { Button } from '../ui/button';
-import { AnimateIcon } from '../animate-ui/icons/icon';
-import { ChevronRight } from '../animate-ui/icons/chevron-right';
 import ViewAllButton from './view-all-button';
+import { brands, cars } from '@/data/cars';
+
+const featuredCars = cars
+  .filter((c) => c.featured)
+  .slice(0, 12)
+  .map((c) => {
+    const brand = brands.find((b) => b.key === c.brand);
+    return {
+      ...c,
+      brand: brand?.name || c.brand,
+    };
+  });
 
 export default async function FeaturedCars() {
-  const cars = await getCars(12);
-
   return (
     <section
       id='featured-cars'
@@ -50,11 +54,11 @@ export default async function FeaturedCars() {
           </div>
 
           {/* View All Button */}
-          <ViewAllButton href='/cars' text='View All Cars' />
+          <ViewAllButton href='/cars/rent' text='View All Cars' />
         </div>
 
         {/* Carousel */}
-        <CarCarousel cars={cars} />
+        <CarCarousel cars={featuredCars} />
       </div>
     </section>
   );

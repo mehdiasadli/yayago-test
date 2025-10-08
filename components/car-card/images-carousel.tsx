@@ -1,13 +1,13 @@
 'use client';
 
-import { Car } from '@/data/cars/car.schema';
+import { TCar } from '@/data/cars';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useState } from 'react';
 
 interface ImagesCarouselProps {
-  car: Car;
+  car: TCar;
 }
 
 export default function ImagesCarousel({ car }: ImagesCarouselProps) {
@@ -42,7 +42,7 @@ export default function ImagesCarousel({ car }: ImagesCarouselProps) {
   };
 
   return (
-    <Link href={`/cars/${car.id}`} className='relative h-56 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50'>
+    <Link href={`/cars/${car.id}`} className='relative h-64 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50'>
       {featuredImages.length > 0 ? (
         <>
           <div

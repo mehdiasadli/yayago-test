@@ -1,48 +1,27 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { Button } from '../ui/button';
 import { AnimateIcon } from '../animate-ui/icons/icon';
 import { ChevronRight } from '../animate-ui/icons/chevron-right';
 import { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
 import LocationsGrid from './locations-grid';
 import LocationsBackground from './locations-background';
+import { dubaiLocations } from '@/data/locations';
 
 // Default background when no location is hovered
 const defaultBackgroundImage = 'https://images.unsplash.com/photo-1512632578888-169bbbc64f33?w=1200&q=80'; // Dubai skyline panorama
 
-const locations = [
-  {
-    id: 1,
-    name: 'Downtown Dubai',
-    slug: 'downtown-dubai',
-    image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200&q=80',
-    carsCount: 150,
-  },
-  {
-    id: 2,
-    name: 'Dubai Marina',
-    slug: 'dubai-marina',
-    image: 'https://images.unsplash.com/photo-1582672060674-bc2bd808a8b5?w=1200&q=80',
-    carsCount: 120,
-  },
-  {
-    id: 3,
-    name: 'Palm Jumeirah',
-    slug: 'palm-jumeirah',
-    image: 'https://images.unsplash.com/photo-1518684079-3c830dcef090?w=1200&q=80',
-    carsCount: 95,
-  },
-  {
-    id: 4,
-    name: 'Business Bay',
-    slug: 'business-bay',
-    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80',
-    carsCount: 110,
-  },
-];
+const locations = dubaiLocations
+  .filter((d) => d.featured)
+  .slice(0, 4)
+  .map((l) => ({
+    id: l.id,
+    key: l.key,
+    name: l.name,
+    image: l.image,
+    carsCount: Math.floor(Math.random() * 100),
+  }));
 
 export default function TopLocations() {
   const [hoveredLocation, setHoveredLocation] = useState<number | null>(null);
