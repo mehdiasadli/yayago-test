@@ -7,17 +7,19 @@ import { UserRound } from '../animate-ui/icons/user-round';
 import { useSession } from 'next-auth/react';
 
 export default function NavUser() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
-  const label = session?.user ? session.user.name : 'Sign In';
+  const label = session?.user?.name || 'Sign In';
   const href = session?.user ? '/profile' : '/auth';
 
   return (
-    <AnimateIcon animateOnHover className='h-full'>
+    <AnimateIcon animateOnHover className='h-full' suppressHydrationWarning>
       <Button asChild variant='ghost' className='h-full hover:text-primary hover:bg-primary/20'>
         <Link href={href} className='h-full'>
           <UserRound />
-          <span className='hidden md:block'>{label}</span>
+          <span className='hidden md:block' suppressHydrationWarning>
+            {label}
+          </span>
         </Link>
       </Button>
     </AnimateIcon>

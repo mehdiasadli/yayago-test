@@ -1,16 +1,29 @@
 import Link from 'next/link';
-import { User, Car, Heart, Settings, LayoutDashboard, Bell, Shield } from 'lucide-react';
+import { User, Car, Heart, Settings, LayoutDashboard, Bell, Shield, ShieldAlert } from 'lucide-react';
+import { auth } from '@/lib/auth';
+import ProfileNavigation, { type NavigationItem } from '@/components/profile-navigation';
 
-const navigation = [
-  { name: 'Profile', href: '/profile', icon: User },
-  { name: 'Dashboard', href: '/profile/dashboard', icon: LayoutDashboard },
-  { name: 'My Listings', href: '/profile/listings', icon: Car },
-  { name: 'Favorites', href: '/profile/favorites', icon: Heart },
-  { name: 'Notifications', href: '/profile/notifications', icon: Bell },
-  { name: 'Settings', href: '/profile/settings', icon: Settings },
-];
+const getNavigation = (isAdmin: boolean): NavigationItem[] => {
+  const baseNavigation: NavigationItem[] = [
+    { name: 'Profile', href: '/profile', icon: 'User', exact: true },
+    { name: 'Dashboard', href: '/profile/dashboard', icon: 'LayoutDashboard' },
+    { name: 'My Listings', href: '/profile/listings', icon: 'Car' },
+    { name: 'Favorites', href: '/profile/favorites', icon: 'Heart' },
+    { name: 'Notifications', href: '/profile/notifications', icon: 'Bell' },
+    { name: 'Settings', href: '/profile/settings', icon: 'Settings' },
+  ];
 
-export default function ProfileLayout({ children }: { children: React.ReactNode }) {
+  if (isAdmin) {
+    baseNavigation.push({ name: 'Admin', href: '/admin', icon: 'ShieldAlert' });
+  }
+
+  return baseNavigation;
+};
+
+export default async function ProfileLayout({ children }: { children: React.ReactNode }) {
+  const session = await auth();
+  const isAdmin = session?.user?.isAdmin || false;
+  const navigation = getNavigation(isAdmin);
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-50 to-white'>
       {/* Profile Header */}
@@ -87,21 +100,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
           </div>
 
           {/* Navigation Tabs */}
-          <nav className='flex gap-1 overflow-x-auto pb-1 scrollbar-hide -mb-px'>
-            {navigation.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className='flex items-center gap-2 px-4 md:px-6 py-3 text-sm font-semibold text-gray-300 hover:text-white hover:bg-white/10 transition-colors whitespace-nowrap border-b-2 border-transparent hover:border-primary'
-                >
-                  <Icon className='w-4 h-4' strokeWidth={2} />
-                  <span className='hidden sm:inline'>{item.name}</span>
-                </Link>
-              );
-            })}
-          </nav>
+          <ProfileNavigation navigation={navigation} />
         </div>
       </div>
 
