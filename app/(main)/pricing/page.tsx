@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
-import { Check, X, Star, Zap, Crown, Infinity } from 'lucide-react';
 import Link from 'next/link';
+import { PricingCards } from '@/components/pricing-cards';
 
 export const metadata = {
   title: 'Pricing Plans',
@@ -8,10 +8,27 @@ export const metadata = {
     'Choose the perfect plan for your car rental business. Flexible pricing plans with powerful features to help you grow.',
 };
 
-const plans = [
+type IconName = 'Zap' | 'Star' | 'Crown' | 'Infinity';
+
+interface PlanConfig {
+  name: string;
+  icon: IconName;
+  price: number;
+  currency: string;
+  period: string;
+  description: string;
+  cars: number | string;
+  extraCarPrice: number;
+  features: string[];
+  unavailable: string[];
+  popular: boolean;
+  color: string;
+}
+
+const plans: PlanConfig[] = [
   {
     name: 'Basic',
-    icon: Zap,
+    icon: 'Zap',
     price: 249,
     currency: 'AED',
     period: 'month',
@@ -34,7 +51,7 @@ const plans = [
   },
   {
     name: 'Premium',
-    icon: Star,
+    icon: 'Star',
     price: 499,
     currency: 'AED',
     period: 'month',
@@ -59,7 +76,7 @@ const plans = [
   },
   {
     name: 'Elegant',
-    icon: Crown,
+    icon: 'Crown',
     price: 999,
     currency: 'AED',
     period: 'month',
@@ -86,7 +103,7 @@ const plans = [
   },
   {
     name: 'Lord of Cars',
-    icon: Infinity,
+    icon: 'Infinity',
     price: 2999,
     currency: 'AED',
     period: 'month',
@@ -206,105 +223,7 @@ export default function PricingPage() {
       {/* Pricing Plans */}
       <section className='py-20 md:py-24 px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-white'>
         <div className='max-w-7xl mx-auto'>
-          <div className='grid lg:grid-cols-4 gap-8'>
-            {plans.map((plan, index) => {
-              const Icon = plan.icon;
-              return (
-                <div
-                  key={plan.name}
-                  className={`relative bg-white border-2 ${
-                    plan.popular ? 'border-primary shadow-2xl scale-105' : 'border-gray-200 shadow-lg'
-                  } overflow-hidden transition-all duration-300 hover:shadow-2xl ${
-                    plan.popular ? '' : 'hover:border-primary/50'
-                  }`}
-                >
-                  {/* Popular Badge */}
-                  {plan.popular && (
-                    <div className='absolute top-0 right-0 bg-primary text-primary-foreground px-4 py-1 text-xs font-bold uppercase tracking-wider'>
-                      Most Popular
-                    </div>
-                  )}
-
-                  {/* Header */}
-                  <div className={`bg-gradient-to-br ${plan.color} text-white p-8`}>
-                    <div className='flex items-center gap-3 mb-4'>
-                      <div className='w-12 h-12 bg-white/20 backdrop-blur-sm flex items-center justify-center'>
-                        <Icon className='w-6 h-6' strokeWidth={2} />
-                      </div>
-                      <h3 className='text-2xl font-bold'>{plan.name}</h3>
-                    </div>
-                    <p className='text-white/90 text-sm mb-6 leading-relaxed'>{plan.description}</p>
-                    <div className='flex items-baseline gap-2'>
-                      <span className='text-5xl font-bold'>{plan.price}</span>
-                      <div className='flex flex-col'>
-                        <span className='text-lg font-semibold'>{plan.currency}</span>
-                        <span className='text-sm text-white/80'>/{plan.period}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Body */}
-                  <div className='p-8'>
-                    {/* Cars Info */}
-                    <div className='mb-6 pb-6 border-b border-gray-200'>
-                      <div className='text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2'>
-                        Vehicle Capacity
-                      </div>
-                      <div className='text-2xl font-bold text-gray-900 mb-1'>
-                        {typeof plan.cars === 'number' ? `Up to ${plan.cars} cars` : `${plan.cars} cars`}
-                      </div>
-                      {typeof plan.cars === 'number' && (
-                        <div className='text-sm text-gray-600'>+{plan.extraCarPrice} AED per additional car</div>
-                      )}
-                    </div>
-
-                    {/* Features */}
-                    <div className='space-y-4 mb-8'>
-                      {plan.features.map((feature) => (
-                        <div key={feature} className='flex items-start gap-3'>
-                          <div className='w-5 h-5 bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5'>
-                            <Check className='w-3.5 h-3.5 text-primary' strokeWidth={3} />
-                          </div>
-                          <span className='text-sm text-gray-700'>{feature}</span>
-                        </div>
-                      ))}
-                      {plan.unavailable.map((feature) => (
-                        <div key={feature} className='flex items-start gap-3 opacity-40'>
-                          <div className='w-5 h-5 bg-gray-100 flex items-center justify-center flex-shrink-0 mt-0.5'>
-                            <X className='w-3.5 h-3.5 text-gray-400' strokeWidth={3} />
-                          </div>
-                          <span className='text-sm text-gray-500 line-through'>{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* CTA Button */}
-                    <Link href='/list-your-car'>
-                      <Button
-                        className={`w-full h-12 text-base font-semibold ${
-                          plan.popular
-                            ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl'
-                            : 'bg-gray-900 hover:bg-gray-800 text-white'
-                        } transition-all duration-300`}
-                      >
-                        Get Started
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Additional Info */}
-          <div className='mt-12 text-center'>
-            <p className='text-gray-600 text-sm'>
-              All plans include a 14-day free trial. No credit card required.{' '}
-              <Link href='/support/contact' className='text-primary hover:underline font-semibold'>
-                Need a custom plan?
-              </Link>
-            </p>
-          </div>
+          <PricingCards plans={plans} />
         </div>
       </section>
 
