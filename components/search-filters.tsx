@@ -4,44 +4,35 @@ import { Label } from './ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
-import { X } from 'lucide-react';
+import { FilterState } from './filters-dialog';
 
 interface SearchFiltersProps {
-  onClose?: () => void;
+  filters: FilterState;
+  setFilters: React.Dispatch<React.SetStateAction<FilterState>>;
+  onReset: () => void;
 }
 
 // Filter options
-const BODY_TYPES = ['Sedan', 'SUV', 'Coupe', 'Hatchback', 'Convertible', 'Van', 'Truck', 'Wagon'];
-const CLASSES = ['Economy', 'Luxury', 'Sport', 'Premium', 'Compact', 'Mid-size', 'Full-size'];
-const TRANSMISSIONS = ['Automatic', 'Manual', 'CVT', 'Semi-Automatic'];
-const INSURANCE_OPTIONS = ['Basic', 'Standard', 'Comprehensive', 'Premium'];
+const BODY_TYPES = ['Sedan', 'SUV', 'Coupe', 'Hatchback', 'Convertible', 'Van', 'Truck', 'Wagon', 'Off-road', 'Pickup'];
+const CLASSES = ['Economy', 'Luxury', 'Sport', 'Premium', 'Standard', 'Hypercar', 'Other'];
+const TRANSMISSIONS = ['Automatic', 'Manual', 'Other'];
 const FUEL_TYPES = ['Petrol', 'Diesel', 'Electric', 'Hybrid', 'Plug-in Hybrid'];
-const DRIVE_TYPES = ['FWD', 'RWD', 'AWD', '4WD'];
 const BRANDS = [
-  'BMW',
   'Mercedes-Benz',
-  'Audi',
+  'BMW',
   'Toyota',
-  'Honda',
   'Nissan',
-  'Ford',
-  'Chevrolet',
+  'Range Rover',
   'Porsche',
   'Tesla',
-  'Lexus',
-  'Range Rover',
-  'Jaguar',
-  'Volkswagen',
+  'Chevrolet',
   'Hyundai',
-  'Kia',
-  'Mazda',
-  'Volvo',
+  'Ford',
 ];
 
-export default function SearchFilters({ onClose }: SearchFiltersProps) {
-  const handleReset = () => {
-    // Reset all filters logic here
-    console.log('Reset filters');
+export default function SearchFilters({ filters, setFilters, onReset }: SearchFiltersProps) {
+  const updateFilter = (key: keyof FilterState, value: string) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
   return (
@@ -55,7 +46,7 @@ export default function SearchFilters({ onClose }: SearchFiltersProps) {
         <Button
           variant='ghost'
           size='sm'
-          onClick={handleReset}
+          onClick={onReset}
           className='text-white/70 hover:text-white hover:bg-white/10'
         >
           Reset All
@@ -73,6 +64,8 @@ export default function SearchFilters({ onClose }: SearchFiltersProps) {
             id='min-price'
             type='number'
             placeholder='0'
+            value={filters.minPrice}
+            onChange={(e) => updateFilter('minPrice', e.target.value)}
             className='w-full h-12 bg-white/10 backdrop-blur-md border-white/20 text-white placeholder:text-white/40 hover:bg-white/15 focus:bg-white/15 focus:border-primary'
           />
         </div>
@@ -85,7 +78,9 @@ export default function SearchFilters({ onClose }: SearchFiltersProps) {
           <Input
             id='max-price'
             type='number'
-            placeholder='10000'
+            placeholder='2000'
+            value={filters.maxPrice}
+            onChange={(e) => updateFilter('maxPrice', e.target.value)}
             className='w-full h-12 bg-white/10 backdrop-blur-md border-white/20 text-white placeholder:text-white/40 hover:bg-white/15 focus:bg-white/15 focus:border-primary'
           />
         </div>
@@ -95,7 +90,7 @@ export default function SearchFilters({ onClose }: SearchFiltersProps) {
           <Label htmlFor='brand' className='text-sm font-semibold text-white/80 tracking-wider uppercase'>
             Brand
           </Label>
-          <Select>
+          <Select value={filters.brand} onValueChange={(value) => updateFilter('brand', value)}>
             <SelectTrigger
               id='brand'
               className='w-full h-12 bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 focus:bg-white/15 focus:border-primary [&>span]:text-white'
@@ -104,7 +99,7 @@ export default function SearchFilters({ onClose }: SearchFiltersProps) {
             </SelectTrigger>
             <SelectContent>
               {BRANDS.map((brand) => (
-                <SelectItem key={brand} value={brand.toLowerCase()}>
+                <SelectItem key={brand} value={brand.toLowerCase().replace(/\s+/g, '-')}>
                   {brand}
                 </SelectItem>
               ))}
@@ -117,7 +112,7 @@ export default function SearchFilters({ onClose }: SearchFiltersProps) {
           <Label htmlFor='body-type' className='text-sm font-semibold text-white/80 tracking-wider uppercase'>
             Body Type
           </Label>
-          <Select>
+          <Select value={filters.bodyType} onValueChange={(value) => updateFilter('bodyType', value)}>
             <SelectTrigger
               id='body-type'
               className='w-full h-12 bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 focus:bg-white/15 focus:border-primary [&>span]:text-white'
@@ -126,7 +121,7 @@ export default function SearchFilters({ onClose }: SearchFiltersProps) {
             </SelectTrigger>
             <SelectContent>
               {BODY_TYPES.map((type) => (
-                <SelectItem key={type} value={type.toLowerCase()}>
+                <SelectItem key={type} value={type.toLowerCase().replace(/\s+/g, '-')}>
                   {type}
                 </SelectItem>
               ))}
@@ -139,7 +134,7 @@ export default function SearchFilters({ onClose }: SearchFiltersProps) {
           <Label htmlFor='class' className='text-sm font-semibold text-white/80 tracking-wider uppercase'>
             Class
           </Label>
-          <Select>
+          <Select value={filters.classType} onValueChange={(value) => updateFilter('classType', value)}>
             <SelectTrigger
               id='class'
               className='w-full h-12 bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 focus:bg-white/15 focus:border-primary [&>span]:text-white'
@@ -161,7 +156,7 @@ export default function SearchFilters({ onClose }: SearchFiltersProps) {
           <Label htmlFor='transmission' className='text-sm font-semibold text-white/80 tracking-wider uppercase'>
             Transmission
           </Label>
-          <Select>
+          <Select value={filters.transmission} onValueChange={(value) => updateFilter('transmission', value)}>
             <SelectTrigger
               id='transmission'
               className='w-full h-12 bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 focus:bg-white/15 focus:border-primary [&>span]:text-white'
@@ -183,7 +178,7 @@ export default function SearchFilters({ onClose }: SearchFiltersProps) {
           <Label htmlFor='fuel' className='text-sm font-semibold text-white/80 tracking-wider uppercase'>
             Fuel Type
           </Label>
-          <Select>
+          <Select value={filters.fuelType} onValueChange={(value) => updateFilter('fuelType', value)}>
             <SelectTrigger
               id='fuel'
               className='w-full h-12 bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 focus:bg-white/15 focus:border-primary [&>span]:text-white'
@@ -192,30 +187,8 @@ export default function SearchFilters({ onClose }: SearchFiltersProps) {
             </SelectTrigger>
             <SelectContent>
               {FUEL_TYPES.map((fuel) => (
-                <SelectItem key={fuel} value={fuel.toLowerCase()}>
+                <SelectItem key={fuel} value={fuel.toLowerCase().replace(/\s+/g, '-')}>
                   {fuel}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Drive Type */}
-        <div className='space-y-2'>
-          <Label htmlFor='drive' className='text-sm font-semibold text-white/80 tracking-wider uppercase'>
-            Drive Type
-          </Label>
-          <Select>
-            <SelectTrigger
-              id='drive'
-              className='w-full h-12 bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 focus:bg-white/15 focus:border-primary [&>span]:text-white'
-            >
-              <SelectValue placeholder='Select drive type' />
-            </SelectTrigger>
-            <SelectContent>
-              {DRIVE_TYPES.map((drive) => (
-                <SelectItem key={drive} value={drive.toLowerCase()}>
-                  {drive}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -230,7 +203,9 @@ export default function SearchFilters({ onClose }: SearchFiltersProps) {
           <Input
             id='min-year'
             type='number'
-            placeholder='2018'
+            placeholder='2020'
+            value={filters.minYear}
+            onChange={(e) => updateFilter('minYear', e.target.value)}
             className='w-full h-12 bg-white/10 backdrop-blur-md border-white/20 text-white placeholder:text-white/40 hover:bg-white/15 focus:bg-white/15 focus:border-primary'
           />
         </div>
@@ -244,6 +219,8 @@ export default function SearchFilters({ onClose }: SearchFiltersProps) {
             id='max-year'
             type='number'
             placeholder='2024'
+            value={filters.maxYear}
+            onChange={(e) => updateFilter('maxYear', e.target.value)}
             className='w-full h-12 bg-white/10 backdrop-blur-md border-white/20 text-white placeholder:text-white/40 hover:bg-white/15 focus:bg-white/15 focus:border-primary'
           />
         </div>

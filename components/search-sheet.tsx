@@ -3,16 +3,61 @@
 import { InputGroup, InputGroupAddon, InputGroupInput } from './ui/input-group';
 import { MapPin, Car } from 'lucide-react';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import SearchFilters from './search-filters';
+import { FilterState } from './filters-dialog';
 
 export default function SearchSheet() {
+  const router = useRouter();
   const [location, setLocation] = useState('');
   const [carQuery, setCarQuery] = useState('');
+  const [filters, setFilters] = useState<FilterState>({
+    minPrice: '',
+    maxPrice: '',
+    brand: '',
+    bodyType: '',
+    classType: '',
+    transmission: '',
+    fuelType: '',
+    driveType: '',
+    minYear: '',
+    maxYear: '',
+  });
+
+  const handleReset = () => {
+    setFilters({
+      minPrice: '',
+      maxPrice: '',
+      brand: '',
+      bodyType: '',
+      classType: '',
+      transmission: '',
+      fuelType: '',
+      driveType: '',
+      minYear: '',
+      maxYear: '',
+    });
+  };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle search logic here
-    console.log('Search:', { location, carQuery });
+
+    const params = new URLSearchParams();
+
+    if (carQuery) params.set('q', carQuery);
+    if (location) params.set('location', location.toLowerCase().replace(/\s+/g, '-'));
+    if (filters.minPrice) params.set('minPrice', filters.minPrice);
+    if (filters.maxPrice) params.set('maxPrice', filters.maxPrice);
+    if (filters.brand) params.set('brand', filters.brand);
+    if (filters.transmission) params.set('transmission', filters.transmission);
+    if (filters.fuelType) params.set('fuel', filters.fuelType);
+    if (filters.minYear) params.set('minYear', filters.minYear);
+    if (filters.maxYear) params.set('maxYear', filters.maxYear);
+
+    const queryString = params.toString();
+    const url = queryString ? `/cars/rent?${queryString}` : '/cars/rent';
+
+    router.push(url);
   };
 
   return (
@@ -62,7 +107,7 @@ export default function SearchSheet() {
 
         {/* Advanced Filters */}
         <div className='pt-2'>
-          <SearchFilters />
+          <SearchFilters filters={filters} setFilters={setFilters} onReset={handleReset} />
         </div>
       </form>
     </div>

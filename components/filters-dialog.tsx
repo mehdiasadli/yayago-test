@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   Dialog,
   DialogClose,
@@ -18,14 +20,70 @@ interface FiltersDialogProps {
   children?: React.ReactNode;
 }
 
+export interface FilterState {
+  minPrice: string;
+  maxPrice: string;
+  brand: string;
+  bodyType: string;
+  classType: string;
+  transmission: string;
+  fuelType: string;
+  driveType: string;
+  minYear: string;
+  maxYear: string;
+}
+
 export default function FiltersDialog({ children }: FiltersDialogProps) {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [filters, setFilters] = useState<FilterState>({
+    minPrice: '',
+    maxPrice: '',
+    brand: '',
+    bodyType: '',
+    classType: '',
+    transmission: '',
+    fuelType: '',
+    driveType: '',
+    minYear: '',
+    maxYear: '',
+  });
+
   const handleApplyFilters = () => {
-    // Handle filter application logic here
-    console.log('Applying filters');
+    const params = new URLSearchParams();
+
+    if (filters.minPrice) params.set('minPrice', filters.minPrice);
+    if (filters.maxPrice) params.set('maxPrice', filters.maxPrice);
+    if (filters.brand) params.set('brand', filters.brand);
+    if (filters.transmission) params.set('transmission', filters.transmission);
+    if (filters.fuelType) params.set('fuel', filters.fuelType);
+    if (filters.minYear) params.set('minYear', filters.minYear);
+    if (filters.maxYear) params.set('maxYear', filters.maxYear);
+
+    const queryString = params.toString();
+    const url = queryString ? `/cars/rent?${queryString}` : '/cars/rent';
+
+    setOpen(false);
+    router.push(url);
+  };
+
+  const handleReset = () => {
+    setFilters({
+      minPrice: '',
+      maxPrice: '',
+      brand: '',
+      bodyType: '',
+      classType: '',
+      transmission: '',
+      fuelType: '',
+      driveType: '',
+      minYear: '',
+      maxYear: '',
+    });
   };
 
   return (
-    <Dialog modal={true}>
+    <Dialog modal={true} open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {children || (
           <Button variant='outline'>
@@ -56,7 +114,7 @@ export default function FiltersDialog({ children }: FiltersDialogProps) {
             </DialogTitle>
             <DialogDescription asChild>
               <div className='px-6 pb-8'>
-                <SearchFilters />
+                <SearchFilters filters={filters} setFilters={setFilters} onReset={handleReset} />
               </div>
             </DialogDescription>
           </DialogHeader>
@@ -73,16 +131,14 @@ export default function FiltersDialog({ children }: FiltersDialogProps) {
               Close
             </Button>
           </DialogClose>
-          <DialogClose asChild>
-            <Button
-              onClick={handleApplyFilters}
-              size='lg'
-              className='w-full h-12 md:h-14 text-base md:text-lg font-semibold bg-primary hover:bg-primary/90 text-white hover:shadow-[0_10px_40px_rgba(101,99,204,0.5)] transition-all duration-300'
-            >
-              <Check className='w-5 h-5 mr-2' />
-              Apply Filters
-            </Button>
-          </DialogClose>
+          <Button
+            onClick={handleApplyFilters}
+            size='lg'
+            className='w-full h-12 md:h-14 text-base md:text-lg font-semibold bg-primary hover:bg-primary/90 text-white hover:shadow-[0_10px_40px_rgba(101,99,204,0.5)] transition-all duration-300'
+          >
+            <Check className='w-5 h-5 mr-2' />
+            Apply Filters
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Button } from '../ui/button';
 import HeroCarousel from './hero-carousel';
 import HeroSearch from './hero-search';
@@ -20,7 +21,9 @@ export default function Hero() {
 
         <HeroSearch />
 
-        <Button className='h-14 sm:h-16 w-52 sm:w-60 mt-6 sm:mt-10'>List Your Car</Button>
+        <Button asChild className='h-14 sm:h-16 w-52 sm:w-60 mt-6 sm:mt-10'>
+          <Link href='/support/list-your-car'>List Your Car</Link>
+        </Button>
       </div>
     </section>
   );
