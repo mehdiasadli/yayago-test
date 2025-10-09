@@ -40,7 +40,7 @@ export default function NavigationActions() {
           showListCarButton ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4 pointer-events-none'
         }`}
       >
-        <Link href='/list-car' className='h-full'>
+        <Link href='/support/list-your-car' className='h-full'>
           List Your Car
         </Link>
       </Button>
