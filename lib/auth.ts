@@ -50,17 +50,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
 
         // Regular user
-        if (data.data.email === 'test@test.com' && data.data.password === 'password') {
+        if (data.data.email === 'user@yayago.com' && data.data.password === 'user1234') {
           return {
             id: '1',
-            email: 'test@test.com',
+            email: 'user@yayago.com',
             name: 'Test User',
             isAdmin: false,
           };
         }
 
         // Admin user
-        if (data.data.email === 'admin@yayago.com' && data.data.password === 'admin123') {
+        if (data.data.email === 'admin@yayago.com' && data.data.password === 'admin1234') {
           return {
             id: '999',
             email: 'admin@yayago.com',

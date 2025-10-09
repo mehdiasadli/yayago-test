@@ -10,7 +10,6 @@ import {
   Settings,
   BarChart3,
   MessageSquare,
-  Shield,
   ArrowLeft,
   Bell,
   LogOut,
@@ -31,8 +30,12 @@ const adminNavigation = [
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
 
+  if (!session?.user) {
+    redirect('/');
+  }
+
   // Redirect if not authenticated or not admin
-  if (!session?.user || !session.user.isAdmin) {
+  if (!session.user.isAdmin) {
     redirect('/profile');
   }
 
@@ -90,7 +93,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
                 action={async () => {
                   'use server';
                   const { signOut } = await import('@/lib/auth');
-                  await signOut();
+                  await signOut({ redirectTo: '/' });
                 }}
               >
                 <button

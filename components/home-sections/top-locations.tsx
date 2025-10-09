@@ -12,6 +12,12 @@ import { dubaiLocations } from '@/data/locations';
 // Default background when no location is hovered
 const defaultBackgroundImage = 'https://images.unsplash.com/photo-1512632578888-169bbbc64f33?w=1200&q=80'; // Dubai skyline panorama
 
+// Generate consistent car counts based on location ID (to avoid hydration mismatch)
+const generateConsistentCarCount = (id: number) => {
+  // Simple hash function to generate consistent numbers from location ID
+  return 15 + ((id * 17 + 31) % 85); // Returns 15-99
+};
+
 const locations = dubaiLocations
   .filter((d) => d.featured)
   .slice(0, 4)
@@ -20,7 +26,7 @@ const locations = dubaiLocations
     key: l.key,
     name: l.name,
     image: l.image,
-    carsCount: Math.floor(Math.random() * 100),
+    carsCount: generateConsistentCarCount(l.id),
   }));
 
 export default function TopLocations() {

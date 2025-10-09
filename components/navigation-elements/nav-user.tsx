@@ -9,6 +9,10 @@ import { useSession } from 'next-auth/react';
 export default function NavUser() {
   const { data: session, status } = useSession();
 
+  if (status === 'loading') {
+    return null;
+  }
+
   const label = session?.user?.name || 'Sign In';
   const href = session?.user ? '/profile' : '/auth';
 
