@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { TCar, brands } from '@/data/cars';
 import CarCard from './car-card/car-card';
 import { Input } from './ui/input';
@@ -16,9 +17,13 @@ interface CarsRentContentProps {
   locations: Array<{ id: number; key: string; name: string }>;
 }
 
-type SortOption = 'price-asc' | 'price-desc' | 'year-desc' | 'year-asc' | 'popular';
+type SortOption = 'popular' | 'newest' | 'oldest' | 'expensive' | 'cheap' | 'closest';
 
 export default function CarsRentContent({ cars, locations }: CarsRentContentProps) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const [isInitialized, setIsInitialized] = useState(false);
+
   // Search
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -39,6 +44,75 @@ export default function CarsRentContent({ cars, locations }: CarsRentContentProp
   // UI State
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [expandedSections, setExpandedSections] = useState<string[]>(['brands', 'price', 'bodyType', 'year']);
+
+  // Parse query parameters on mount
+  useEffect(() => {
+    const q = searchParams.get('q');
+    const featured = searchParams.get('featured');
+    const brand = searchParams.get('brand');
+    const minPrice = searchParams.get('minPrice');
+    const maxPrice = searchParams.get('maxPrice');
+    const minYear = searchParams.get('minYear');
+    const maxYear = searchParams.get('maxYear');
+    const transmission = searchParams.get('transmission');
+    const fuel = searchParams.get('fuel');
+    const location = searchParams.get('location');
+    const sort = searchParams.get('sort');
+
+    if (q) setSearchQuery(q);
+    if (featured) setFeaturedOnly(featured === 'true');
+    if (brand) setSelectedBrands(brand.split(','));
+    if (minPrice || maxPrice) {
+      setPriceRange([minPrice ? Number(minPrice) : 0, maxPrice ? Number(maxPrice) : 2000]);
+    }
+    if (minYear || maxYear) {
+      setYearRange([minYear ? Number(minYear) : 2020, maxYear ? Number(maxYear) : 2024]);
+    }
+    if (transmission) setSelectedTransmissions(transmission.split(','));
+    if (fuel) setSelectedFuelTypes(fuel.split(','));
+    if (location) setSelectedLocations(location.split(','));
+    if (sort && ['popular', 'newest', 'oldest', 'expensive', 'cheap', 'closest'].includes(sort)) {
+      setSortBy(sort as SortOption);
+    }
+
+    setIsInitialized(true);
+  }, [searchParams]);
+
+  // Update URL when filters change
+  useEffect(() => {
+    if (!isInitialized) return;
+
+    const params = new URLSearchParams();
+
+    if (searchQuery) params.set('q', searchQuery);
+    if (featuredOnly) params.set('featured', 'true');
+    if (selectedBrands.length > 0) params.set('brand', selectedBrands.join(','));
+    if (priceRange[0] > 0) params.set('minPrice', priceRange[0].toString());
+    if (priceRange[1] < 2000) params.set('maxPrice', priceRange[1].toString());
+    if (yearRange[0] > 2020) params.set('minYear', yearRange[0].toString());
+    if (yearRange[1] < 2024) params.set('maxYear', yearRange[1].toString());
+    if (selectedTransmissions.length > 0) params.set('transmission', selectedTransmissions.join(','));
+    if (selectedFuelTypes.length > 0) params.set('fuel', selectedFuelTypes.join(','));
+    if (selectedLocations.length > 0) params.set('location', selectedLocations.join(','));
+    if (sortBy !== 'popular') params.set('sort', sortBy);
+
+    const queryString = params.toString();
+    const newUrl = queryString ? `/cars/rent?${queryString}` : '/cars/rent';
+
+    router.replace(newUrl, { scroll: false });
+  }, [
+    searchQuery,
+    featuredOnly,
+    selectedBrands,
+    priceRange,
+    yearRange,
+    selectedTransmissions,
+    selectedFuelTypes,
+    selectedLocations,
+    sortBy,
+    isInitialized,
+    router,
+  ]);
 
   // Extract unique values for filters
   const bodyTypes = useMemo(() => {
@@ -131,14 +205,17 @@ export default function CarsRentContent({ cars, locations }: CarsRentContentProp
     // Sort
     filtered.sort((a, b) => {
       switch (sortBy) {
-        case 'price-asc':
+        case 'cheap':
           return a.pricePerDay - b.pricePerDay;
-        case 'price-desc':
+        case 'expensive':
           return b.pricePerDay - a.pricePerDay;
-        case 'year-desc':
+        case 'newest':
           return b.year - a.year;
-        case 'year-asc':
+        case 'oldest':
           return a.year - b.year;
+        case 'closest':
+          // This would require user location - for now, just return 0 (no sorting)
+          return 0;
         case 'popular':
         default:
           return b.viewCount - a.viewCount;
@@ -490,10 +567,11 @@ export default function CarsRentContent({ cars, locations }: CarsRentContentProp
                   className='px-4 h-12 border-2 border-gray-300 bg-white text-gray-900 font-medium focus:border-primary focus:outline-none cursor-pointer'
                 >
                   <option value='popular'>Most Popular</option>
-                  <option value='price-asc'>Price: Low to High</option>
-                  <option value='price-desc'>Price: High to Low</option>
-                  <option value='year-desc'>Year: Newest First</option>
-                  <option value='year-asc'>Year: Oldest First</option>
+                  <option value='newest'>Newest First</option>
+                  <option value='oldest'>Oldest First</option>
+                  <option value='cheap'>Price: Low to High</option>
+                  <option value='expensive'>Price: High to Low</option>
+                  <option value='closest'>Closest to Me</option>
                 </select>
 
                 {/* Mobile Filter Button */}
