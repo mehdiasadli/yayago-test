@@ -13,8 +13,8 @@ const footerLinks = {
   company: [
     { label: 'About Us', href: '/about' },
     { label: 'How It Works', href: '/support/how-it-works' },
+    { label: 'Blog', href: '/community/blog' },
     { label: 'Careers', href: '/company/careers' },
-    { label: 'Blog', href: '/company/blog' },
   ],
   forRenters: [
     { label: 'Browse Cars', href: '/cars/rent' },

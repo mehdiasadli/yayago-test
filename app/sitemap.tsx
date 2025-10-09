@@ -46,8 +46,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.7,
     },
+
+    // Community Pages
     {
-      url: `${base}/company/blog`,
+      url: `${base}/community/blog`,
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.8,
@@ -135,9 +137,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   // Dynamic Blog Posts
-  mockBlogIds.forEach((blogId) => {
+  blogs.forEach((blog) => {
     sitemap.push({
-      url: `${base}/company/blog/${blogId}`,
+      url: `${base}/community/blog/${blog.slug}`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.7,

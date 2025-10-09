@@ -9,7 +9,7 @@ export const primaryNavigationLinks = [
 ];
 
 export const secondaryNavigationLinks = [
-  { href: '/company/blog', label: 'Blog' },
+  { href: '/community/blog', label: 'Blog' },
   { href: '/support/faq', label: 'FAQs' },
   { href: '/support/contact', label: 'Contact' },
   { href: '/support/help', label: 'Help' },
