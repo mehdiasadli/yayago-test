@@ -12,27 +12,25 @@ import CurrencySelector from './navigation-elements/currency-selector';
 const footerLinks = {
   company: [
     { label: 'About Us', href: '/about' },
-    { label: 'How It Works', href: '/support/how-it-works' },
-    { label: 'Blog', href: '/community/blog' },
     { label: 'Careers', href: '/company/careers' },
+    { label: 'Community Blog', href: '/community/blog' },
+    { label: 'Leasing', href: '/leasing' },
   ],
-  forRenters: [
+  explore: [
     { label: 'Browse Cars', href: '/cars/rent' },
-    { label: 'Pricing', href: '/pricing' },
-    { label: 'Insurance', href: '/legal/insurance' },
-    { label: 'FAQs', href: '/support/faq' },
-  ],
-  forOwners: [
-    { label: 'List Your Car', href: '/support/list-your-car' },
     { label: 'How It Works', href: '/support/how-it-works' },
-    { label: 'Pricing Plans', href: '/pricing' },
+    { label: 'List Your Car', href: '/support/list-your-car' },
+    { label: 'Pricing', href: '/pricing' },
   ],
   support: [
     { label: 'Help Center', href: '/support/help' },
-    { label: 'Contact Us', href: '/support/contact' },
     { label: 'FAQs', href: '/support/faq' },
+    { label: 'Contact Us', href: '/support/contact' },
+  ],
+  legal: [
     { label: 'Terms of Service', href: '/legal/terms' },
     { label: 'Privacy Policy', href: '/legal/privacy' },
+    { label: 'Insurance Policy', href: '/legal/insurance' },
   ],
 };
 
@@ -57,9 +55,9 @@ export default function Footer() {
     <footer className='bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-300'>
       {/* Main Footer Content */}
       <div className='max-w-7xl mx-auto px-6 lg:px-8 py-16 md:py-20'>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8'>
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 lg:gap-8'>
           {/* Logo & Newsletter Column */}
-          <div className='lg:col-span-4'>
+          <div className='lg:col-span-2'>
             {/* Logo */}
             <Link href='/' className='inline-block mb-6'>
               <Image
@@ -116,7 +114,7 @@ export default function Footer() {
           </div>
 
           {/* Company Links */}
-          <div className='lg:col-span-2'>
+          <div>
             <h3 className='text-white font-semibold text-lg mb-4'>Company</h3>
             <ul className='space-y-3'>
               {footerLinks.company.map((link) => (
@@ -132,11 +130,11 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* For Renters Links */}
-          <div className='lg:col-span-2'>
-            <h3 className='text-white font-semibold text-lg mb-4'>For Renters</h3>
+          {/* Explore Links */}
+          <div>
+            <h3 className='text-white font-semibold text-lg mb-4'>Explore</h3>
             <ul className='space-y-3'>
-              {footerLinks.forRenters.map((link) => (
+              {footerLinks.explore.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
@@ -149,27 +147,10 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* For Owners Links */}
-          <div className='lg:col-span-2'>
-            <h3 className='text-white font-semibold text-lg mb-4'>For Owners</h3>
-            <ul className='space-y-3'>
-              {footerLinks.forOwners.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className='text-gray-400 hover:text-primary transition-colors duration-200 text-sm'
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Support & Contact */}
-          <div className='lg:col-span-2'>
+          {/* Support Links */}
+          <div>
             <h3 className='text-white font-semibold text-lg mb-4'>Support</h3>
-            <ul className='space-y-3 mb-6'>
+            <ul className='space-y-3'>
               {footerLinks.support.map((link) => (
                 <li key={link.href}>
                   <Link
@@ -183,7 +164,8 @@ export default function Footer() {
             </ul>
 
             {/* Contact Info */}
-            <div className='space-y-3'>
+            <div className='space-y-3 mt-6'>
+              <h3 className='text-white font-semibold text-sm mb-3'>Contact</h3>
               <a
                 href='tel:+97145551234'
                 className='flex items-center gap-2 text-gray-400 hover:text-primary transition-colors text-sm group'
@@ -198,6 +180,27 @@ export default function Footer() {
                 <Mail className='w-4 h-4 group-hover:scale-110 transition-transform' />
                 <span>support@yayago.com</span>
               </a>
+            </div>
+          </div>
+
+          {/* Legal Links & Address */}
+          <div>
+            <h3 className='text-white font-semibold text-lg mb-4'>Legal</h3>
+            <ul className='space-y-3 mb-6'>
+              {footerLinks.legal.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className='text-gray-400 hover:text-primary transition-colors duration-200 text-sm'
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            <div className='mt-6'>
+              <h3 className='text-white font-semibold text-sm mb-3'>Location</h3>
               <div className='flex items-start gap-2 text-gray-400 text-sm'>
                 <MapPin className='w-4 h-4 mt-0.5 shrink-0' />
                 <span>Downtown Dubai, Sheikh Mohammed bin Rashid Blvd, Dubai, UAE</span>
