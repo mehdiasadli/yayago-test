@@ -64,21 +64,15 @@ export default function EarningsCalculator() {
             <TrendingUp className='w-8 h-8' strokeWidth={2} />
             <h3 className='text-2xl md:text-3xl font-bold'>Your Monthly Net Profit</h3>
           </div>
-          <div className='text-6xl md:text-7xl font-bold mb-2'>
-            ₼{monthlyNetProfit.toLocaleString()}
-          </div>
-          <p className='text-white/80 text-lg'>
-            Based on {rentalDays} rental days per month
-          </p>
+          <div className='text-6xl md:text-7xl font-bold mb-2'>₼{monthlyNetProfit.toLocaleString()}</div>
+          <p className='text-white/80 text-lg'>Based on {rentalDays} rental days per month</p>
         </div>
 
         {/* Calculator Inputs */}
         <div className='p-8 md:p-12 space-y-8'>
           {/* Car Type Selection */}
           <div>
-            <label className='block text-lg font-bold text-gray-900 mb-3'>
-              Select Car Type (Reference)
-            </label>
+            <label className='block text-lg font-bold text-gray-900 mb-3'>Select Car Type (Reference)</label>
             <select
               value={selectedCar.id}
               onChange={(e) => handleCarTypeChange(Number(e.target.value))}
@@ -170,9 +164,7 @@ export default function EarningsCalculator() {
             </div>
             <div className='mt-2 p-3 bg-yellow-50 border border-yellow-200 text-yellow-800 text-sm flex items-start gap-2'>
               <Info className='w-4 h-4 flex-shrink-0 mt-0.5' strokeWidth={2} />
-              <span>
-                Include insurance, maintenance, cleaning, fuel (if included), and other operational costs.
-              </span>
+              <span>Include insurance, maintenance, cleaning, fuel (if included), and other operational costs.</span>
             </div>
           </div>
         </div>
@@ -236,9 +228,7 @@ export default function EarningsCalculator() {
           <div className='mt-8 p-6 bg-white border-2 border-primary/30'>
             <div className='text-center'>
               <div className='text-sm font-semibold text-gray-600 mb-2'>Projected Yearly Earnings</div>
-              <div className='text-4xl font-bold text-primary mb-2'>
-                ₼{(monthlyNetProfit * 12).toLocaleString()}
-              </div>
+              <div className='text-4xl font-bold text-primary mb-2'>₼{(monthlyNetProfit * 12).toLocaleString()}</div>
               <div className='text-sm text-gray-600'>
                 That's <span className='font-bold text-primary'>₼{monthlyNetProfit.toLocaleString()}</span> per month
                 for 12 months
@@ -262,4 +252,3 @@ export default function EarningsCalculator() {
     </div>
   );
 }
-
