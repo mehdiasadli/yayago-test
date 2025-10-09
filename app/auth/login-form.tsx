@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { login } from '@/data/auth/auth.actions';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
@@ -14,6 +15,7 @@ export default function LoginForm() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { update } = useSession();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,6 +28,8 @@ export default function LoginForm() {
       if (result.error) {
         setError(result.error);
       } else {
+        // Update the session on the client side
+        await update();
         router.push('/');
         router.refresh();
       }

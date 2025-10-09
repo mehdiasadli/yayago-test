@@ -1,7 +1,8 @@
-import { User, Car, Bell, Shield, LogOut } from 'lucide-react';
-import { auth, signOut } from '@/lib/auth';
+import { User, Car, Bell, Shield } from 'lucide-react';
+import { auth } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import ProfileNavigation, { type NavigationItem } from '@/components/profile-navigation';
+import LogoutButton from '@/components/logout-button';
 
 const getNavigation = (isAdmin: boolean): NavigationItem[] => {
   const baseNavigation: NavigationItem[] = [
@@ -106,20 +107,7 @@ export default async function ProfileLayout({ children }: { children: React.Reac
             </div>
 
             {/* Logout Button */}
-            <form
-              action={async () => {
-                'use server';
-                await signOut({ redirectTo: '/' });
-              }}
-            >
-              <button
-                type='submit'
-                className='flex items-center gap-2 px-4 py-3 bg-red-600/20 hover:bg-red-600/30 border border-red-500/50 text-red-300 hover:text-red-200 transition-colors font-semibold'
-              >
-                <LogOut className='w-4 h-4' strokeWidth={2} />
-                <span className='hidden sm:inline'>Logout</span>
-              </button>
-            </form>
+            <LogoutButton variant='profile' />
           </div>
 
           {/* Navigation Tabs */}

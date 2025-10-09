@@ -12,9 +12,9 @@ import {
   MessageSquare,
   ArrowLeft,
   Bell,
-  LogOut,
 } from 'lucide-react';
 import Image from 'next/image';
+import LogoutButton from '@/components/logout-button';
 
 const adminNavigation = [
   { name: 'Overview', href: '/admin', icon: LayoutDashboard, exact: true },
@@ -89,20 +89,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
                 </div>
               </div>
 
-              <form
-                action={async () => {
-                  'use server';
-                  const { signOut } = await import('@/lib/auth');
-                  await signOut({ redirectTo: '/' });
-                }}
-              >
-                <button
-                  type='submit'
-                  className='w-10 h-10 flex items-center justify-center text-gray-400 hover:text-red-400 transition-colors'
-                >
-                  <LogOut className='w-5 h-5' strokeWidth={2} />
-                </button>
-              </form>
+              <LogoutButton variant='admin' />
             </div>
           </div>
         </div>
