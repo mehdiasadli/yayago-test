@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import CarsRentContent from '@/components/cars-rent-content';
 import { cars } from '@/data/cars';
 import { dubaiLocations } from '@/data/locations';
@@ -7,6 +8,19 @@ export const metadata = {
   description:
     'Browse our extensive collection of rental cars in Dubai. From economy to luxury, find the perfect vehicle for your needs. Compare prices, features, and book instantly.',
 };
+
+function LoadingFallback() {
+  return (
+    <div className='max-w-[1920px] mx-auto px-6 lg:px-8 py-8'>
+      <div className='flex items-center justify-center min-h-[400px]'>
+        <div className='text-center'>
+          <div className='w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4'></div>
+          <p className='text-gray-600'>Loading cars...</p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function CarsRentPage() {
   return (
@@ -39,7 +53,9 @@ export default function CarsRentPage() {
       </section>
 
       {/* Main Content */}
-      <CarsRentContent cars={cars} locations={dubaiLocations} />
+      <Suspense fallback={<LoadingFallback />}>
+        <CarsRentContent cars={cars} locations={dubaiLocations} />
+      </Suspense>
     </div>
   );
 }
