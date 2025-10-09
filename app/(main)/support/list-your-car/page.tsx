@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { ListCarSteps } from '@/components/list-car-steps';
+import EarningsCalculator from '@/components/earnings-calculator';
 import {
   DollarSign,
   Shield,
@@ -141,8 +142,13 @@ export default function ListYourCarPage() {
         </div>
       </section>
 
-      {/* Earnings Potential */}
+      {/* Earnings Calculator */}
       <section className='py-20 md:py-24 px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-white border-t border-gray-100'>
+        <EarningsCalculator />
+      </section>
+
+      {/* OLD STATIC CONTENT - KEPT FOR BACKUP - DELETE THIS COMMENT AFTER TESTING */}
+      {/* <section className='py-20 md:py-24 px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-white border-t border-gray-100'>
         <div className='max-w-6xl mx-auto'>
           <div className='text-center mb-12'>
             <h2 className='text-4xl md:text-5xl font-bold text-gray-900 mb-6 tracking-tight'>How Much Can You Earn?</h2>
@@ -284,7 +290,7 @@ export default function ListYourCarPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Step-by-Step Guide */}
       <section className='py-20 md:py-24 px-6 lg:px-8 bg-white border-t border-gray-100'>
