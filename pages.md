@@ -1,5 +1,15 @@
 # Current Pages of the Website:
 
+## PUBLIC PAGES (USER MUST BE LOGGED OUT)
+
+`/auth/login` - Login page,
+`/auth/signup` - Signup page,
+`/auth/recover-password` - Recover password page,
+`/auth/verify-email` - Verify email page,
+`/auth/reset-password` - Reset password page,
+
+## PUBLIC PAGES
+
 `/` - Home page, showcase of the website, contains the hero section with search and filter feature, featured cars carousel, top locations grid, why yayago and stats sections, browse cars by categories, list your car CTA section, blog section and FAQs.
 `/about` - About page,
 `/support/how-it-works` - How It Works page,
@@ -18,6 +28,9 @@
 `/leasing` - Info about leasing page,
 `/company/careers` - Careers page, explaining life at yayago, and vacancies,
 `/company/careers/vacancies/[id]` - Vacancy detail page,
+
+## PROTECTED PAGES (USER MUST BE LOGGED IN)
+
 `/profile` - User profile page,
 `/profile/dashboard` - User dashboard page (specificly for hosts) page,
 `/profile/favorites` - User favorites page,
@@ -29,11 +42,9 @@
 `/profile/settings/billing` - User billing settings page,
 `/profile/settings/privacy` - User privacy settings page,
 `/profile/settings/preferences` - User preferences settings page,
-`/auth/login` - Login page,
-`/auth/signup` - Signup page,
-`/auth/recover-password` - Recover password page,
-`/auth/verify-email` - Verify email page,
-`/auth/reset-password` - Reset password page,
+
+## ADMIN PAGES (USER MUST BE LOGGED IN AND HAVE ADMIN PRIVILEGES)
+
 `/admin` - Admin dashboard page,
 `/admin/analytics` - Admin analytics page,
 `/admin/vehicles` - Admin vehicles page,
