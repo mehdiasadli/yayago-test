@@ -9,14 +9,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from './ui
 import { Slider } from './ui/slider';
 import { Checkbox } from './ui/checkbox';
 import { Label } from './ui/label';
-import {
-  Search,
-  SlidersHorizontal,
-  X,
-  ChevronDown,
-  ChevronUp,
-  ArrowUpDown,
-} from 'lucide-react';
+import { Search, SlidersHorizontal, X, ChevronDown, ChevronUp, ArrowUpDown } from 'lucide-react';
 
 interface CarsRentContentProps {
   cars: TCar[];
@@ -45,12 +38,7 @@ export default function CarsRentContent({ cars, locations }: CarsRentContentProp
 
   // UI State
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const [expandedSections, setExpandedSections] = useState<string[]>([
-    'brands',
-    'price',
-    'bodyType',
-    'year',
-  ]);
+  const [expandedSections, setExpandedSections] = useState<string[]>(['brands', 'price', 'bodyType', 'year']);
 
   // Extract unique values for filters
   const bodyTypes = useMemo(() => {
@@ -212,9 +200,7 @@ export default function CarsRentContent({ cars, locations }: CarsRentContentProp
   };
 
   const toggleSection = (section: string) => {
-    setExpandedSections((prev) =>
-      prev.includes(section) ? prev.filter((s) => s !== section) : [...prev, section]
-    );
+    setExpandedSections((prev) => (prev.includes(section) ? prev.filter((s) => s !== section) : [...prev, section]));
   };
 
   const toggleArrayFilter = (array: string[], setArray: (val: string[]) => void, value: string) => {
@@ -226,22 +212,11 @@ export default function CarsRentContent({ cars, locations }: CarsRentContentProp
   };
 
   // Filter Section Component
-  const FilterSection = ({
-    title,
-    id,
-    children,
-  }: {
-    title: string;
-    id: string;
-    children: React.ReactNode;
-  }) => {
+  const FilterSection = ({ title, id, children }: { title: string; id: string; children: React.ReactNode }) => {
     const isExpanded = expandedSections.includes(id);
     return (
       <div className='border-b-2 border-gray-200 pb-6'>
-        <button
-          onClick={() => toggleSection(id)}
-          className='flex items-center justify-between w-full mb-4 text-left'
-        >
+        <button onClick={() => toggleSection(id)} className='flex items-center justify-between w-full mb-4 text-left'>
           <h3 className='text-lg font-bold text-gray-900'>{title}</h3>
           {isExpanded ? (
             <ChevronUp className='w-5 h-5 text-gray-500' strokeWidth={2} />
@@ -365,9 +340,7 @@ export default function CarsRentContent({ cars, locations }: CarsRentContentProp
                 <Checkbox
                   id={`trans-${trans}`}
                   checked={selectedTransmissions.includes(trans)}
-                  onCheckedChange={() =>
-                    toggleArrayFilter(selectedTransmissions, setSelectedTransmissions, trans)
-                  }
+                  onCheckedChange={() => toggleArrayFilter(selectedTransmissions, setSelectedTransmissions, trans)}
                 />
                 <Label
                   htmlFor={`trans-${trans}`}
@@ -443,9 +416,7 @@ export default function CarsRentContent({ cars, locations }: CarsRentContentProp
                 <Checkbox
                   id={`location-${location.key}`}
                   checked={selectedLocations.includes(location.key)}
-                  onCheckedChange={() =>
-                    toggleArrayFilter(selectedLocations, setSelectedLocations, location.key)
-                  }
+                  onCheckedChange={() => toggleArrayFilter(selectedLocations, setSelectedLocations, location.key)}
                 />
                 <Label
                   htmlFor={`location-${location.key}`}
@@ -501,10 +472,7 @@ export default function CarsRentContent({ cars, locations }: CarsRentContentProp
             <div className='flex flex-col sm:flex-row gap-4'>
               {/* Search */}
               <div className='relative flex-1'>
-                <Search
-                  className='absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400'
-                  strokeWidth={2}
-                />
+                <Search className='absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400' strokeWidth={2} />
                 <Input
                   type='text'
                   placeholder='Search by brand, model, or year...'
@@ -646,4 +614,3 @@ export default function CarsRentContent({ cars, locations }: CarsRentContentProp
     </div>
   );
 }
-
