@@ -42,7 +42,10 @@ export default function ImagesCarousel({ car }: ImagesCarouselProps) {
   };
 
   return (
-    <Link href={`/cars/${car.id}`} className='relative h-64 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50'>
+    <Link
+      href={`/cars/rent/${car.id}`}
+      className='relative h-64 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50'
+    >
       {featuredImages.length > 0 ? (
         <>
           <div

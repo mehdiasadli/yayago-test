@@ -33,7 +33,7 @@ export default function CarCard({ car }: CarCardProps) {
           )}
 
           {/* Title with Year */}
-          <Link href={`/cars/${car.id}`} className='group/link block mb-2'>
+          <Link href={`/cars/rent/${car.id}`} className='group/link block mb-2'>
             <CardTitle className='text-xl font-bold line-clamp-1 tracking-tight text-gray-900 group-hover/link:text-primary transition-colors duration-200'>
               {car.year} {brandName} {car.model}
             </CardTitle>
