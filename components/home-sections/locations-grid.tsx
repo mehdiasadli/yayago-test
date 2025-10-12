@@ -4,22 +4,26 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 interface LocationsGridProps {
-  setHoveredLocation: (location: number | null) => void;
+  setHoveredLocation?: (location: number | null) => void;
   locations: (Pick<TLocation, 'id' | 'key' | 'name' | 'image'> & {
     carsCount: number;
   })[];
+  columns?: number;
 }
 
-export default function LocationsGrid({ setHoveredLocation, locations }: LocationsGridProps) {
+export default function LocationsGrid({ setHoveredLocation, locations, columns = 2 }: LocationsGridProps) {
+  const gridColsClass =
+    columns === 3 ? 'md:grid-cols-3' : columns === 4 ? 'md:grid-cols-2 lg:grid-cols-4' : 'md:grid-cols-2';
+
   return (
-    <div className='grid grid-cols-1 md:grid-cols-2'>
+    <div className={`grid grid-cols-1 ${gridColsClass}`}>
       {locations.map((location, index) => (
         <Link
           key={location.id}
-          href={`/cars/location/${location.key}`}
+          href={`/cars/rent?location=${location.key}`}
           className='group relative h-80 md:h-96 overflow-hidden transition-all duration-500'
-          onMouseEnter={() => setHoveredLocation(index)}
-          onMouseLeave={() => setHoveredLocation(null)}
+          onMouseEnter={() => setHoveredLocation?.(index)}
+          onMouseLeave={() => setHoveredLocation?.(null)}
         >
           {/* Image */}
           <Image

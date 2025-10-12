@@ -12,56 +12,56 @@ const categories = [
     id: 1,
     title: 'Economy',
     description: 'Budget-friendly cars perfect for daily commutes and city driving',
-    link: '/cars?category=economy',
+    link: '/cars/rent?category=economy',
     image: 'https://images.unsplash.com/photo-1590362891991-f776e747a588?w=800&q=80', // Compact economy car
   },
   {
     id: 2,
     title: 'Sport',
     description: 'High-performance vehicles designed for speed enthusiasts and thrill-seekers',
-    link: '/cars?category=sport',
+    link: '/cars/rent?category=sport',
     image: 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?w=800&q=80', // Sports car
   },
   {
     id: 3,
     title: 'Luxury',
     description: 'Premium vehicles offering unmatched comfort, elegance, and sophistication',
-    link: '/cars?category=luxury',
+    link: '/cars/rent?category=luxury',
     image: 'https://images.unsplash.com/photo-1563720360172-67b8f3dce741?w=800&q=80', // Luxury sedan
   },
   {
     id: 4,
     title: 'SUV',
     description: 'Spacious and versatile vehicles ideal for families and long road trips',
-    link: '/cars?category=suv',
+    link: '/cars/rent?category=suv',
     image: 'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=800&q=80', // SUV
   },
   {
     id: 5,
     title: 'Off-road',
     description: 'Rugged 4x4 vehicles built for adventure and desert exploration',
-    link: '/cars?category=off-road',
+    link: '/cars/rent?category=off-road',
     image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800&q=80', // Off-road vehicle
   },
   {
     id: 6,
     title: 'Van',
     description: 'Large capacity vehicles perfect for group travel and cargo transport',
-    link: '/cars?category=van',
+    link: '/cars/rent?category=van',
     image: 'https://images.unsplash.com/photo-1527786356703-4b100091cd2c?w=800&q=80', // Van
   },
   {
     id: 7,
     title: 'Eco Friend',
     description: 'Electric and hybrid vehicles for environmentally conscious drivers',
-    link: '/cars?category=eco-friend',
+    link: '/cars/rent?category=eco-friend',
     image: 'https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=800&q=80', // Electric car
   },
   {
     id: 8,
     title: 'Affordable',
     description: 'Great value cars offering reliability without breaking the bank',
-    link: '/cars?category=affordable',
+    link: '/cars/rent?category=affordable',
     image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&q=80', // Affordable sedan
   },
 ];
@@ -109,7 +109,7 @@ export default function BrowseCategories() {
           {/* View All Button */}
           <AnimateIcon animateOnHover>
             <Button asChild className='h-12 w-50 text-white' variant='link'>
-              <Link href='/cars'>
+              <Link href='/cars/rent'>
                 <span>View All Categories</span>
                 <ChevronRight
                   className='w-5 h-5 transition-transform duration-300 group-hover:translate-x-1'
