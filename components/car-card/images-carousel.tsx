@@ -7,7 +7,12 @@ import Link from 'next/link';
 import { useCallback, useState } from 'react';
 
 interface ImagesCarouselProps {
-  car: TCar;
+  car: {
+    id: number;
+    images: string[];
+    brand: string;
+    model: string;
+  };
 }
 
 export default function ImagesCarousel({ car }: ImagesCarouselProps) {

@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import CarsRentContent from '@/components/cars-rent-content';
-import { cars } from '@/data/cars';
 import { dubaiLocations } from '@/data/locations';
+import { carsService } from '@/lib/api/services';
 
 export const metadata = {
   title: 'Rent a Car in Dubai | YayaGo',
@@ -22,7 +22,9 @@ function LoadingFallback() {
   );
 }
 
-export default function CarsRentPage() {
+export default async function CarsRentPage() {
+  const cars = await carsService.getAllCars();
+
   return (
     <div className='min-h-screen bg-gray-50'>
       {/* Header */}

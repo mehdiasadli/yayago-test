@@ -1,8 +1,10 @@
 'use server';
 
 import { signIn } from '@/lib/auth';
-import { LoginSchema } from './auth.schema';
+import { LoginSchema, RegisterSchema, type RegisterSchemaType } from './auth.schema';
 import { AuthError } from 'next-auth';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 
 export async function login(email: string, password: string) {
   const validated = LoginSchema.safeParse({ email, password });
@@ -29,5 +31,57 @@ export async function login(email: string, password: string) {
       }
     }
     throw error;
+  }
+}
+
+/**
+ * Register action - calls backend API directly
+ */
+export async function register(data: RegisterSchemaType) {
+  // Validate data
+  const validated = RegisterSchema.safeParse(data);
+
+  if (!validated.success) {
+    return {
+      success: false,
+      error: validated.error.errors[0]?.message || 'Validation failed',
+    };
+  }
+
+  try {
+    // Call backend API
+    const response = await fetch(`${API_BASE_URL}/api/user/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(validated.data),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => null);
+      return {
+        success: false,
+        error: errorData?.message || 'Registration failed',
+      };
+    }
+
+    const result = await response.json();
+
+    return {
+      success: true,
+      data: result,
+    };
+  } catch (error) {
+    if (error instanceof Error) {
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+    return {
+      success: false,
+      error: 'An unexpected error occurred',
+    };
   }
 }

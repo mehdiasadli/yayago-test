@@ -11,9 +11,10 @@ import { Slider } from './ui/slider';
 import { Checkbox } from './ui/checkbox';
 import { Label } from './ui/label';
 import { Search, SlidersHorizontal, X, ChevronDown, ChevronUp, ArrowUpDown } from 'lucide-react';
+import { CarDetailsResponseDto } from '@/data/cars/car.schema';
 
 interface CarsRentContentProps {
-  cars: TCar[];
+  cars: CarDetailsResponseDto[];
   locations: Array<{ id: number; key: string; name: string }>;
 }
 
@@ -116,22 +117,22 @@ export default function CarsRentContent({ cars, locations }: CarsRentContentProp
 
   // Extract unique values for filters
   const bodyTypes = useMemo(() => {
-    const types = new Set(cars.map((car) => car.bodyType));
+    const types = new Set(cars.map((car) => 'Sedan')); // TODO: add body types
     return Array.from(types).sort();
   }, [cars]);
 
   const transmissions = useMemo(() => {
-    const trans = new Set(cars.map((car) => car.transmission));
+    const trans = new Set(cars.map((car) => 'Manual')); // TODO: add transmissions
     return Array.from(trans).sort();
   }, [cars]);
 
   const fuelTypes = useMemo(() => {
-    const fuels = new Set(cars.map((car) => car.engine));
+    const fuels = new Set(cars.map((car) => 'Petrol')); // TODO: add fuel types
     return Array.from(fuels).sort();
   }, [cars]);
 
   const seatOptions = useMemo(() => {
-    const seats = new Set(cars.map((car) => car.seats));
+    const seats = new Set(cars.map((car) => 5)); // TODO: add seats
     return Array.from(seats).sort((a, b) => a - b);
   }, [cars]);
 
@@ -144,12 +145,7 @@ export default function CarsRentContent({ cars, locations }: CarsRentContentProp
         const brandName = brands.find((b) => b.key === car.brand)?.name.toLowerCase() || '';
         const modelName = car.model.toLowerCase();
         const year = car.year.toString();
-        if (
-          !brandName.includes(query) &&
-          !modelName.includes(query) &&
-          !year.includes(query) &&
-          !car.key.includes(query)
-        ) {
+        if (!brandName.includes(query) && !modelName.includes(query) && !year.includes(query)) {
           return false;
         }
       }
@@ -160,27 +156,27 @@ export default function CarsRentContent({ cars, locations }: CarsRentContentProp
       }
 
       // Body Type
-      if (selectedBodyTypes.length > 0 && !selectedBodyTypes.includes(car.bodyType)) {
+      if (selectedBodyTypes.length > 0 && !selectedBodyTypes.includes('Sedan')) {
         return false;
       }
 
       // Transmission
-      if (selectedTransmissions.length > 0 && !selectedTransmissions.includes(car.transmission)) {
+      if (selectedTransmissions.length > 0 && !selectedTransmissions.includes('Manual')) {
         return false;
       }
 
       // Fuel Type
-      if (selectedFuelTypes.length > 0 && !selectedFuelTypes.includes(car.engine)) {
+      if (selectedFuelTypes.length > 0 && !selectedFuelTypes.includes('Petrol')) {
         return false;
       }
 
       // Location
-      if (selectedLocations.length > 0 && !selectedLocations.includes(car.location)) {
+      if (selectedLocations.length > 0 && !selectedLocations.includes('Dubai')) {
         return false;
       }
 
       // Seats
-      if (selectedSeats.length > 0 && !selectedSeats.includes(car.seats)) {
+      if (selectedSeats.length > 0 && !selectedSeats.includes(5)) {
         return false;
       }
 
@@ -195,7 +191,8 @@ export default function CarsRentContent({ cars, locations }: CarsRentContentProp
       }
 
       // Featured Only
-      if (featuredOnly && !car.featured) {
+      if (featuredOnly && !false) {
+        // TODO: add featured cars
         return false;
       }
 
@@ -218,7 +215,7 @@ export default function CarsRentContent({ cars, locations }: CarsRentContentProp
           return 0;
         case 'popular':
         default:
-          return b.viewCount - a.viewCount;
+          return 0; // TODO: add view count sorting
       }
     });
 
@@ -386,7 +383,7 @@ export default function CarsRentContent({ cars, locations }: CarsRentContentProp
       <FilterSection title='Body Type' id='bodyType'>
         <div className='space-y-2'>
           {bodyTypes.map((type) => {
-            const count = cars.filter((car) => car.bodyType === type).length;
+            const count = cars.filter((car) => 'Sedan' === type).length; // TODO: add body types
             return (
               <div key={type} className='flex items-center space-x-2'>
                 <Checkbox
@@ -411,7 +408,7 @@ export default function CarsRentContent({ cars, locations }: CarsRentContentProp
       <FilterSection title='Transmission' id='transmission'>
         <div className='space-y-2'>
           {transmissions.map((trans) => {
-            const count = cars.filter((car) => car.transmission === trans).length;
+            const count = cars.filter((car) => 'Manual' === trans).length; // TODO: add transmissions
             return (
               <div key={trans} className='flex items-center space-x-2'>
                 <Checkbox
@@ -436,7 +433,7 @@ export default function CarsRentContent({ cars, locations }: CarsRentContentProp
       <FilterSection title='Fuel Type' id='fuelType'>
         <div className='space-y-2'>
           {fuelTypes.map((fuel) => {
-            const count = cars.filter((car) => car.engine === fuel).length;
+            const count = cars.filter((car) => 'Petrol' === fuel).length; // TODO: add fuel types
             return (
               <div key={fuel} className='flex items-center space-x-2'>
                 <Checkbox
@@ -461,7 +458,7 @@ export default function CarsRentContent({ cars, locations }: CarsRentContentProp
       <FilterSection title='Seats' id='seats'>
         <div className='space-y-2'>
           {seatOptions.map((seat) => {
-            const count = cars.filter((car) => car.seats === seat).length;
+            const count = cars.filter((car) => 5 === seat).length; // TODO: add seats
             return (
               <div key={seat} className='flex items-center space-x-2'>
                 <Checkbox
@@ -486,7 +483,7 @@ export default function CarsRentContent({ cars, locations }: CarsRentContentProp
       <FilterSection title='Location' id='location'>
         <div className='space-y-2 max-h-64 overflow-y-auto'>
           {locations.map((location) => {
-            const count = cars.filter((car) => car.location === location.key).length;
+            const count = cars.filter((car) => 'Dubai' === location.key).length; // TODO: add locations
             if (count === 0) return null;
             return (
               <div key={location.key} className='flex items-center space-x-2'>

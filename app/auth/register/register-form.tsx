@@ -2,26 +2,52 @@
 
 import { Button } from '@/components/ui/button';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
-import { Mail, Lock, User, Phone } from 'lucide-react';
+import { Mail, Lock, User, Phone, AlertCircle, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { register } from '@/data/auth/auth.actions';
 
 export default function RegisterForm() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
-    name: '',
+    fullName: '',
     email: '',
-    phone: '',
+    phoneNumber: '',
     password: '',
   });
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Register:', formData);
-    // Handle registration logic here
+    setError('');
+    setSuccess(false);
+    setIsLoading(true);
+
+    try {
+      const result = await register(formData);
+
+      if (result.success) {
+        setSuccess(true);
+        // Redirect to login page after 2 seconds
+        setTimeout(() => {
+          router.push('/auth?registered=true');
+        }, 2000);
+      } else {
+        setError(result.error || 'Registration failed');
+      }
+    } catch (err) {
+      setError('An unexpected error occurred');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (field: keyof typeof formData) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [field]: e.target.value }));
+    setError(''); // Clear error on change
   };
 
   return (
@@ -31,6 +57,22 @@ export default function RegisterForm() {
         <h1 className='text-3xl font-bold text-gray-900 mb-2'>Create Account</h1>
         <p className='text-gray-600'>Join YayaGo and start renting today</p>
       </div>
+
+      {/* Error Message */}
+      {error && (
+        <div className='mb-6 p-4 bg-red-50 border-l-4 border-red-500 flex items-center gap-3'>
+          <AlertCircle className='w-5 h-5 text-red-500 flex-shrink-0' />
+          <p className='text-sm text-red-700'>{error}</p>
+        </div>
+      )}
+
+      {/* Success Message */}
+      {success && (
+        <div className='mb-6 p-4 bg-green-50 border-l-4 border-green-500 flex items-center gap-3'>
+          <CheckCircle className='w-5 h-5 text-green-500 flex-shrink-0' />
+          <p className='text-sm text-green-700'>Account created successfully! Redirecting to login...</p>
+        </div>
+      )}
 
       {/* Form */}
       <form onSubmit={handleSubmit} className='space-y-6'>
@@ -44,9 +86,10 @@ export default function RegisterForm() {
               id='name'
               type='text'
               placeholder='Enter your full name'
-              value={formData.name}
-              onChange={handleChange('name')}
+              value={formData.fullName}
+              onChange={handleChange('fullName')}
               required
+              disabled={isLoading || success}
               className='h-12'
             />
             <InputGroupAddon>
@@ -68,6 +111,7 @@ export default function RegisterForm() {
               value={formData.email}
               onChange={handleChange('email')}
               required
+              disabled={isLoading || success}
               className='h-12'
             />
             <InputGroupAddon>
@@ -86,9 +130,10 @@ export default function RegisterForm() {
               id='phone'
               type='tel'
               placeholder='+971 XX XXX XXXX'
-              value={formData.phone}
-              onChange={handleChange('phone')}
+              value={formData.phoneNumber}
+              onChange={handleChange('phoneNumber')}
               required
+              disabled={isLoading || success}
               className='h-12'
             />
             <InputGroupAddon>
@@ -106,10 +151,12 @@ export default function RegisterForm() {
             <InputGroupInput
               id='password'
               type='password'
-              placeholder='Create a strong password'
+              placeholder='Create a strong password (min 8 characters)'
               value={formData.password}
               onChange={handleChange('password')}
               required
+              minLength={8}
+              disabled={isLoading || success}
               className='h-12'
             />
             <InputGroupAddon>
@@ -139,8 +186,12 @@ export default function RegisterForm() {
         </div>
 
         {/* Submit Button */}
-        <Button type='submit' className='w-full h-12 text-base font-semibold bg-primary hover:bg-primary/90'>
-          Create Account
+        <Button
+          type='submit'
+          disabled={isLoading || success}
+          className='w-full h-12 text-base font-semibold bg-primary hover:bg-primary/90'
+        >
+          {isLoading ? 'Creating Account...' : success ? 'Account Created!' : 'Create Account'}
         </Button>
       </form>
 
