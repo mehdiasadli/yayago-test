@@ -83,7 +83,9 @@ export default function LeasingCalculator() {
             <TrendingDown className='w-8 h-8' strokeWidth={2} />
             <h3 className='text-2xl md:text-3xl font-bold'>Your Monthly Payment</h3>
           </div>
-          <div className='text-6xl md:text-7xl font-bold mb-2'>₼{Math.round(totalMonthlyPayment).toLocaleString()}</div>
+          <div className='text-6xl md:text-7xl font-bold mb-2'>
+            AED {Math.round(totalMonthlyPayment).toLocaleString()}
+          </div>
           <p className='text-white/80 text-lg'>
             for {selectedDuration.months} months ({selectedDuration.label})
           </p>
@@ -101,7 +103,7 @@ export default function LeasingCalculator() {
             >
               {carOptions.map((car) => (
                 <option key={car.id} value={car.id}>
-                  {car.name} - {car.example} (₼{car.price.toLocaleString()} approx.)
+                  {car.name} - {car.example} (AED {car.price.toLocaleString()} approx.)
                 </option>
               ))}
             </select>
@@ -114,7 +116,7 @@ export default function LeasingCalculator() {
                 <DollarSign className='w-5 h-5 text-primary' strokeWidth={2} />
                 Car Price
               </label>
-              <span className='text-2xl font-bold text-primary'>₼{carPrice.toLocaleString()}</span>
+              <span className='text-2xl font-bold text-primary'>AED {carPrice.toLocaleString()}</span>
             </div>
             <input
               type='range'
@@ -126,8 +128,8 @@ export default function LeasingCalculator() {
               className='w-full h-3 bg-gray-200 appearance-none cursor-pointer accent-primary'
             />
             <div className='flex justify-between text-sm text-gray-500 mt-2'>
-              <span>₼50,000</span>
-              <span>₼1,500,000</span>
+              <span>AED 50,000</span>
+              <span>AED 1,500,000</span>
             </div>
           </div>
 
@@ -140,7 +142,7 @@ export default function LeasingCalculator() {
               </label>
               <div className='text-right'>
                 <span className='text-2xl font-bold text-primary'>{downPaymentPercent}%</span>
-                <div className='text-sm text-gray-600'>₼{Math.round(downPayment).toLocaleString()}</div>
+                <div className='text-sm text-gray-600'>AED {Math.round(downPayment).toLocaleString()}</div>
               </div>
             </div>
             <input
@@ -208,7 +210,7 @@ export default function LeasingCalculator() {
               <label htmlFor='include-insurance' className='flex-1 cursor-pointer'>
                 <div className='font-semibold text-gray-900'>Include Comprehensive Insurance</div>
                 <div className='text-sm text-gray-600'>
-                  Add ₼{Math.round(monthlyInsurance).toLocaleString()}/month for full coverage
+                  Add AED {Math.round(monthlyInsurance).toLocaleString()}/month for full coverage
                 </div>
               </label>
             </div>
@@ -230,7 +232,7 @@ export default function LeasingCalculator() {
                   <div className='text-sm text-gray-600'>Initial payment ({downPaymentPercent}%)</div>
                 </div>
               </div>
-              <div className='text-2xl font-bold text-orange-600'>₼{Math.round(downPayment).toLocaleString()}</div>
+              <div className='text-2xl font-bold text-orange-600'>AED {Math.round(downPayment).toLocaleString()}</div>
             </div>
 
             {/* Monthly Loan Payment */}
@@ -241,10 +243,12 @@ export default function LeasingCalculator() {
                 </div>
                 <div>
                   <div className='font-semibold text-gray-900'>Monthly Loan Payment</div>
-                  <div className='text-sm text-gray-600'>Principal + Interest at {selectedDuration.interestRate}% APR</div>
+                  <div className='text-sm text-gray-600'>
+                    Principal + Interest at {selectedDuration.interestRate}% APR
+                  </div>
                 </div>
               </div>
-              <div className='text-2xl font-bold text-blue-600'>₼{Math.round(monthlyPayment).toLocaleString()}</div>
+              <div className='text-2xl font-bold text-blue-600'>AED {Math.round(monthlyPayment).toLocaleString()}</div>
             </div>
 
             {/* Monthly Insurance */}
@@ -259,14 +263,18 @@ export default function LeasingCalculator() {
                     <div className='text-sm text-gray-600'>Comprehensive coverage included</div>
                   </div>
                 </div>
-                <div className='text-2xl font-bold text-green-600'>₼{Math.round(monthlyInsurance).toLocaleString()}</div>
+                <div className='text-2xl font-bold text-green-600'>
+                  AED {Math.round(monthlyInsurance).toLocaleString()}
+                </div>
               </div>
             )}
 
             {/* Total Monthly */}
             <div className='flex items-center justify-between py-4 bg-gradient-to-r from-primary/10 to-primary/5 px-4 mt-4'>
               <div className='font-bold text-xl text-gray-900'>Total Monthly Payment</div>
-              <div className='text-3xl font-bold text-primary'>₼{Math.round(totalMonthlyPayment).toLocaleString()}</div>
+              <div className='text-3xl font-bold text-primary'>
+                AED {Math.round(totalMonthlyPayment).toLocaleString()}
+              </div>
             </div>
           </div>
 
@@ -274,15 +282,15 @@ export default function LeasingCalculator() {
           <div className='grid md:grid-cols-3 gap-4 mt-8'>
             <div className='p-4 bg-white border-2 border-gray-200 text-center'>
               <div className='text-sm text-gray-600 mb-1'>Total Amount Financed</div>
-              <div className='text-2xl font-bold text-gray-900'>₼{Math.round(loanAmount).toLocaleString()}</div>
+              <div className='text-2xl font-bold text-gray-900'>AED {Math.round(loanAmount).toLocaleString()}</div>
             </div>
             <div className='p-4 bg-white border-2 border-gray-200 text-center'>
               <div className='text-sm text-gray-600 mb-1'>Total Interest Paid</div>
-              <div className='text-2xl font-bold text-gray-900'>₼{Math.round(totalInterest).toLocaleString()}</div>
+              <div className='text-2xl font-bold text-gray-900'>AED {Math.round(totalInterest).toLocaleString()}</div>
             </div>
             <div className='p-4 bg-white border-2 border-primary/30 text-center'>
               <div className='text-sm text-gray-600 mb-1'>Total Amount Payable</div>
-              <div className='text-2xl font-bold text-primary'>₼{Math.round(totalPayable).toLocaleString()}</div>
+              <div className='text-2xl font-bold text-primary'>AED {Math.round(totalPayable).toLocaleString()}</div>
             </div>
           </div>
         </div>
@@ -303,4 +311,3 @@ export default function LeasingCalculator() {
     </div>
   );
 }
-
