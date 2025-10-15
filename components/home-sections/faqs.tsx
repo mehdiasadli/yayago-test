@@ -97,7 +97,7 @@ export default function FAQs() {
         <div className='text-center'>
           <AnimateIcon animateOnHover>
             <Button asChild className='h-12 w-50' variant='link'>
-              <Link href='/faq'>
+              <Link href='/support/faq'>
                 <span>View All FAQs</span>
                 <ChevronRight
                   className='w-5 h-5 transition-transform duration-300 group-hover:translate-x-1'
@@ -114,10 +114,10 @@ export default function FAQs() {
           <p className='text-gray-600 mb-6'>Our support team is here to help you 24/7</p>
           <div className='flex flex-col sm:flex-row gap-4 justify-center'>
             <Button asChild variant='default' size='lg'>
-              <Link href='/contact'>Contact Support</Link>
+              <Link href='/support/contact'>Contact Support</Link>
             </Button>
             <Button asChild variant='outline' size='lg'>
-              <Link href='/help'>Visit Help Center</Link>
+              <Link href='/support/help'>Visit Help Center</Link>
             </Button>
           </div>
         </div>
