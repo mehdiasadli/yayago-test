@@ -3,6 +3,9 @@ import { notFound } from 'next/navigation';
 import CarDetailsContent from '@/components/car-details-content';
 import { carsService } from '@/lib/api/services';
 
+// Make this page dynamic to avoid build-time API calls
+export const dynamic = 'force-dynamic';
+
 interface CarDetailsPageProps {
   params: Promise<{
     id: string;
@@ -12,30 +15,28 @@ interface CarDetailsPageProps {
 export async function generateMetadata({ params }: CarDetailsPageProps) {
   const { id } = await params;
 
-  const car = await carsService.getCarById(Number(id));
+  try {
+    const car = await carsService.getCarById(Number(id));
 
-  if (!car) {
+    if (!car) {
+      return {
+        title: 'Car Not Found | YayaGo',
+      };
+    }
+
+    return {
+      title: `${car.year} ${car.brand} ${car.model} - Rent in Dubai | YayaGo`,
+      description: `Rent ${car.year} ${car.brand} ${car.model} for ₼${car.pricePerDay}/day. 4 seats, Automatic transmission, Petrol engine. Available in Dubai.`,
+      openGraph: {
+        title: `${car.year} ${car.brand} ${car.model} - Rent in Dubai | YayaGo`,
+        description: `Rent ${car.year} ${car.brand} ${car.model} for ₼${car.pricePerDay}/day. 4 seats, Automatic transmission, Petrol engine. Available in Dubai.`,
+      },
+    };
+  } catch (error) {
     return {
       title: 'Car Not Found | YayaGo',
     };
   }
-
-  return {
-    title: `${car.year} ${car.brand} ${car.model} - Rent in Dubai | YayaGo`,
-    description: `Rent ${car.year} ${car.brand} ${car.model} for ₼${car.pricePerDay}/day. 4 seats, Automatic transmission, Petrol engine. Available in Dubai.`,
-    openGraph: {
-      title: `${car.year} ${car.brand} ${car.model} - Rent in Dubai | YayaGo`,
-      description: `Rent ${car.year} ${car.brand} ${car.model} for ₼${car.pricePerDay}/day. 4 seats, Automatic transmission, Petrol engine. Available in Dubai.`,
-    },
-  };
-}
-
-export async function generateStaticParams() {
-  const cars = await carsService.getAllCars();
-
-  return (cars || []).map((car) => ({
-    id: car.id.toString(),
-  }));
 }
 
 export default async function CarDetailsPage({ params }: CarDetailsPageProps) {
