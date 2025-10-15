@@ -1,24 +1,54 @@
 'use client';
 
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
-import { Phone, MessageCircle, Users, Gauge, Fuel, MapPin, Star, Eye, Heart, Route } from 'lucide-react';
+import { Card, CardFooter, CardHeader, CardTitle } from '../ui/card';
+import { Users, Gauge, Fuel, MapPin, Star, Eye, Heart, Route, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
 import ImagesCarousel from './images-carousel';
 import { dubaiLocations } from '@/data/locations';
 import { CarDetailsResponseDto } from '@/data/cars/car.schema';
+import { useEffect, useState } from 'react';
+import { carImagesService } from '@/lib/api/services/car-images.service';
 
 interface CarCardProps {
   car: CarDetailsResponseDto;
 }
 
 export default function CarCard({ car }: CarCardProps) {
-  const [hoveredButton, setHoveredButton] = useState<'call' | 'whatsapp' | null>(null);
   const location = dubaiLocations.find((loc) => loc.key === 'Dubai'); // TODO: add location
+  const [images, setImages] = useState<string[]>([]);
+  const [loadingImages, setLoadingImages] = useState(true);
+
+  useEffect(() => {
+    async function fetchImages() {
+      try {
+        const imageData = await carImagesService.getCarImages(car.id);
+        // Extract image URLs from the response
+        const imageUrls = imageData.map((img) => img.imageUrl);
+        setImages(imageUrls);
+      } catch (error) {
+        console.error('Failed to fetch car images:', error);
+        // Set empty array on error
+        setImages([]);
+      } finally {
+        setLoadingImages(false);
+      }
+    }
+
+    fetchImages();
+  }, [car.id]);
 
   return (
-    <Card className='p-0 overflow-hidden flex flex-col h-[520px] group/card transition-all duration-500 bg-white/80 backdrop-blur-xl border border-white/50 hover:border-white/90 hover:shadow-[0_25px_60px_-5px_rgba(0,0,0,0.4)]'>
-      <ImagesCarousel car={{ id: car.id, images: [], brand: car.brand, model: car.model }} />
+    <Card className='p-0 overflow-hidden flex flex-col h-[520px] group/card transition-all duration-500 bg-white/80 backdrop-blur-xl border border-white/50 hover:border-white/90 hover:shadow-lg'>
+      {loadingImages ? (
+        <div className='relative h-64 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50 flex items-center justify-center'>
+          <div className='flex flex-col items-center gap-2'>
+            <div className='w-10 h-10 border-4 border-gray-300 border-t-primary rounded-full animate-spin' />
+            <span className='text-xs text-gray-500'>Loading images...</span>
+          </div>
+        </div>
+      ) : (
+        <ImagesCarousel car={{ id: car.id, images: images, brand: car.brand, model: car.model }} />
+      )}
 
       {/* Card Content */}
       <div className='flex-1 flex flex-col'>
@@ -96,46 +126,13 @@ export default function CarCard({ car }: CarCardProps) {
         </CardHeader>
 
         <CardFooter className='p-0'>
-          <div className='flex items-center w-full'>
-            <a
-              href={`tel:${'1234567890'}`}
-              className={`flex items-center justify-center gap-2 px-4 py-3.5 bg-primary/90 backdrop-blur-sm text-primary-foreground hover:bg-primary transition-all duration-300 font-medium relative ${
-                hoveredButton === 'call' ? 'flex-[2]' : hoveredButton === 'whatsapp' ? 'flex-[0_0_52px]' : 'flex-1'
-              }`}
-              onMouseEnter={() => setHoveredButton('call')}
-              onMouseLeave={() => setHoveredButton(null)}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <Phone className='w-4 h-4 flex-shrink-0' strokeWidth={2.5} />
-              <span
-                className={`text-sm font-medium whitespace-nowrap transition-all duration-300 overflow-hidden ${
-                  hoveredButton === 'whatsapp' ? 'max-w-0 opacity-0' : 'max-w-[100px] opacity-100'
-                }`}
-              >
-                Call
-              </span>
-            </a>
-            <a
-              href={`https://wa.me/${'1234567890'}?text=Hi, I'm interested in the ${car.brand} ${car.model} ${car.year}`} // TODO: add host whatsapp
-              target='_blank'
-              rel='noopener noreferrer'
-              className={`flex items-center justify-center gap-2 px-4 py-3.5 bg-green-600/90 backdrop-blur-sm text-white hover:bg-green-600 transition-all duration-300 font-medium relative ${
-                hoveredButton === 'whatsapp' ? 'flex-[2]' : hoveredButton === 'call' ? 'flex-[0_0_52px]' : 'flex-1'
-              }`}
-              onMouseEnter={() => setHoveredButton('whatsapp')}
-              onMouseLeave={() => setHoveredButton(null)}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <MessageCircle className='w-4 h-4 flex-shrink-0' strokeWidth={2.5} />
-              <span
-                className={`text-sm font-medium whitespace-nowrap transition-all duration-300 overflow-hidden ${
-                  hoveredButton === 'call' ? 'max-w-0 opacity-0' : 'max-w-[100px] opacity-100'
-                }`}
-              >
-                WhatsApp
-              </span>
-            </a>
-          </div>
+          <Link
+            href={`/cars/rent/${car.id}`}
+            className='w-full py-4 px-5 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-300 group/button'
+          >
+            <span>View Details</span>
+            <ArrowRight className='w-4 h-4 group-hover/button:translate-x-1 transition-transform duration-300' />
+          </Link>
         </CardFooter>
       </div>
     </Card>

@@ -1,19 +1,11 @@
+import { carsService } from '@/lib/api/services';
 import CarCarousel from './car-carousel';
 import ViewAllButton from './view-all-button';
 import { brands, cars } from '@/data/cars';
 
-const featuredCars = cars
-  .filter((c) => c.featured)
-  .slice(0, 12)
-  .map((c) => {
-    const brand = brands.find((b) => b.key === c.brand);
-    return {
-      ...c,
-      brand: brand?.name || c.brand,
-    };
-  });
-
 export default async function FeaturedCars() {
+  const featuredCars = ((await carsService.getAllCars()) || []).slice(0, 6);
+
   return (
     <section
       id='featured-cars'

@@ -16,6 +16,7 @@ import {
   Phone,
 } from 'lucide-react';
 import Link from 'next/link';
+import GetStartedButton from './get-started-button';
 
 export const metadata = {
   title: 'List Your Car on YayaGo',
@@ -58,15 +59,7 @@ export default function ListYourCarPage() {
             fees—just a simple monthly membership.
           </p>
           <div className='flex flex-col sm:flex-row gap-4 justify-center'>
-            <Link href='/auth/register'>
-              <Button
-                size='lg'
-                className='h-14 px-8 text-lg font-semibold bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all'
-              >
-                Get Started Now
-                <ArrowRight className='w-5 h-5 ml-2' />
-              </Button>
-            </Link>
+            <GetStartedButton />
             <Link href='/pricing'>
               <Button
                 size='lg'

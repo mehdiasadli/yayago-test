@@ -5,10 +5,10 @@ import Autoplay from 'embla-carousel-autoplay';
 import { useCallback, useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import CarCard from '../car-card/car-card';
-import { TCar } from '@/data/cars';
+import { CarDetailsResponseDto } from '@/data/cars/car.schema';
 
 interface CarCarouselProps {
-  cars: TCar[];
+  cars: CarDetailsResponseDto[];
 }
 
 export default function CarCarousel({ cars }: CarCarouselProps) {

@@ -1,5 +1,7 @@
 'use server';
 
+import { auth } from '@/lib/auth';
+import { authenticatedFetch } from './auth-helper';
 /**
  * Car Server Actions
  * Server-side actions for car mutations (create, update, delete)
@@ -7,7 +9,7 @@
  */
 
 import { CarDetailsSchema } from './car.schema';
-import type { CarDetailsDto, CarDetailsResponseDto } from '@/lib/api/types';
+import type { CarDetailsResponseDto } from '@/lib/api/types';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 
@@ -18,8 +20,19 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
  */
 export async function createCar(data: unknown) {
   try {
+    // Check authentication
+    const session = await auth();
+    if (!session?.accessToken) {
+      return {
+        success: false,
+        error: 'You must be logged in to create a car. Please sign in again.',
+      };
+    }
+
     // Validate input data
     const validationResult = CarDetailsSchema.safeParse(data);
+
+    console.log('VALIDATION RESULT', validationResult);
 
     if (!validationResult.success) {
       return {
@@ -28,7 +41,8 @@ export async function createCar(data: unknown) {
       };
     }
 
-    const response = await fetch(`${API_BASE_URL}/api/cars`, {
+    // Use authenticatedFetch which handles token refresh automatically
+    const response = await authenticatedFetch(`${API_BASE_URL}/api/cars`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -38,6 +52,16 @@ export async function createCar(data: unknown) {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => null);
+      console.log('ERROR ON RESPONSE', errorData);
+
+      // After token refresh attempt, if still 401, user needs to re-login
+      if (response.status === 401) {
+        return {
+          success: false,
+          error: 'Your session has expired. Please sign in again.',
+        };
+      }
+
       return {
         success: false,
         error: errorData?.message || 'Failed to create car',
@@ -45,6 +69,8 @@ export async function createCar(data: unknown) {
     }
 
     const carData = await response.json();
+
+    console.log('CAR DATA', carData);
 
     return {
       success: true,
@@ -66,6 +92,15 @@ export async function createCar(data: unknown) {
  */
 export async function updateCar(id: number, data: unknown) {
   try {
+    // Check authentication
+    const session = await auth();
+    if (!session?.accessToken) {
+      return {
+        success: false,
+        error: 'You must be logged in to update a car. Please sign in again.',
+      };
+    }
+
     // Validate input data
     const validationResult = CarDetailsSchema.safeParse(data);
 
@@ -76,7 +111,8 @@ export async function updateCar(id: number, data: unknown) {
       };
     }
 
-    const response = await fetch(`${API_BASE_URL}/api/cars/${id}`, {
+    // Use authenticatedFetch which handles token refresh automatically
+    const response = await authenticatedFetch(`${API_BASE_URL}/api/cars/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -86,6 +122,15 @@ export async function updateCar(id: number, data: unknown) {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => null);
+
+      // After token refresh attempt, if still 401, user needs to re-login
+      if (response.status === 401) {
+        return {
+          success: false,
+          error: 'Your session has expired. Please sign in again.',
+        };
+      }
+
       return {
         success: false,
         error: errorData?.message || 'Failed to update car',
@@ -113,12 +158,31 @@ export async function updateCar(id: number, data: unknown) {
  */
 export async function deleteCar(id: number) {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/cars/${id}`, {
+    // Check authentication
+    const session = await auth();
+    if (!session?.accessToken) {
+      return {
+        success: false,
+        error: 'You must be logged in to delete a car. Please sign in again.',
+      };
+    }
+
+    // Use authenticatedFetch which handles token refresh automatically
+    const response = await authenticatedFetch(`${API_BASE_URL}/api/cars/${id}`, {
       method: 'DELETE',
     });
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => null);
+
+      // After token refresh attempt, if still 401, user needs to re-login
+      if (response.status === 401) {
+        return {
+          success: false,
+          error: 'Your session has expired. Please sign in again.',
+        };
+      }
+
       return {
         success: false,
         error: errorData?.message || 'Failed to delete car',
@@ -143,8 +207,17 @@ export async function deleteCar(id: number) {
  */
 export async function getAllCars() {
   try {
+    // Optional authentication - send token if available
+    const session = await auth();
+    const headers: HeadersInit = {};
+
+    if (session?.accessToken) {
+      headers.Authorization = `Bearer ${session.accessToken}`;
+    }
+
     const response = await fetch(`${API_BASE_URL}/api/cars`, {
       method: 'GET',
+      headers,
       cache: 'no-store', // Disable caching for fresh data
     });
 
@@ -177,8 +250,17 @@ export async function getAllCars() {
  */
 export async function getCarById(id: number) {
   try {
+    // Optional authentication - send token if available
+    const session = await auth();
+    const headers: HeadersInit = {};
+
+    if (session?.accessToken) {
+      headers.Authorization = `Bearer ${session.accessToken}`;
+    }
+
     const response = await fetch(`${API_BASE_URL}/api/cars/${id}`, {
       method: 'GET',
+      headers,
       cache: 'no-store', // Disable caching for fresh data
     });
 

@@ -1,8 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { TCar, brands } from '@/data/cars';
-import { Button } from './ui/button';
+import { useEffect, useState } from 'react';
 import CarCard from './car-card/car-card';
 import Link from 'next/link';
 import {
@@ -22,40 +20,60 @@ import {
   Shield,
   CheckCircle,
   Info,
-  Clock,
-  TrendingUp,
   Award,
   Package,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
+import { CarDetailsResponseDto } from '@/lib/api/types';
+import { carImagesService } from '@/lib/api/services';
 
 interface CarDetailsContentProps {
-  car: TCar;
-  brand?: { id: number; key: string; name: string; logo: string; description: string };
+  car: CarDetailsResponseDto;
   location?: { id: number; key: string; name: string };
-  similarCars: TCar[];
+  similarCars: CarDetailsResponseDto[];
 }
 
-export default function CarDetailsContent({ car, brand, location, similarCars }: CarDetailsContentProps) {
+export default function CarDetailsContent({ car, location, similarCars }: CarDetailsContentProps) {
+  const [images, setImages] = useState<string[]>([]);
+  const [loadingImages, setLoadingImages] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const brandName = brand?.name || car.brand;
+  const brandName = car.brand;
+
+  useEffect(() => {
+    async function fetchImages() {
+      try {
+        const imageData = await carImagesService.getCarImages(car.id);
+        // Extract image URLs from the response
+        const imageUrls = imageData.map((img) => img.imageUrl);
+        setImages(imageUrls);
+      } catch (error) {
+        console.error('Failed to fetch car images:', error);
+        // Set empty array on error
+        setImages([]);
+      } finally {
+        setLoadingImages(false);
+      }
+    }
+
+    fetchImages();
+  }, [car.id]);
 
   const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % car.images.length);
+    setCurrentImageIndex((prev) => (prev + 1) % images.length);
   };
 
   const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + car.images.length) % car.images.length);
+    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
   const features = [
-    { icon: Users, label: 'Seats', value: `${car.seats} Seats` },
-    { icon: Gauge, label: 'Transmission', value: car.transmission },
-    { icon: Fuel, label: 'Fuel Type', value: car.engine },
-    { icon: Route, label: 'Mileage Limit', value: `${car.mileageLimitPerDay}km/day` },
+    { icon: Users, label: 'Seats', value: `4 Seats` },
+    { icon: Gauge, label: 'Transmission', value: 'Automatic' },
+    { icon: Fuel, label: 'Fuel Type', value: 'Petrol' },
+    { icon: Route, label: 'Mileage Limit', value: `${100}km/day` },
     { icon: Calendar, label: 'Year', value: car.year.toString() },
-    { icon: Package, label: 'Body Type', value: car.bodyType },
+    { icon: Package, label: 'Body Type', value: 'Sedan' },
   ];
 
   const inclusions = [
@@ -100,7 +118,7 @@ export default function CarDetailsContent({ car, brand, location, similarCars }:
               {/* Images Carousel */}
               <div className='bg-white border-2 border-gray-200 overflow-hidden'>
                 {/* Featured Badge */}
-                {car.featured && (
+                {true && (
                   <div className='absolute top-4 left-4 z-10 flex items-center gap-1 px-3 py-1.5 bg-primary text-white font-semibold'>
                     <Star className='w-4 h-4 fill-white' strokeWidth={2} />
                     FEATURED
@@ -110,13 +128,13 @@ export default function CarDetailsContent({ car, brand, location, similarCars }:
                 {/* Main Image */}
                 <div className='relative aspect-[4/3] bg-gray-900'>
                   <img
-                    src={car.images[currentImageIndex]}
+                    src={images[currentImageIndex]}
                     alt={`${brandName} ${car.model} ${car.year}`}
                     className='w-full h-full object-cover'
                   />
 
                   {/* Navigation Arrows */}
-                  {car.images.length > 1 && (
+                  {images.length > 1 && (
                     <>
                       <button
                         onClick={prevImage}
@@ -134,17 +152,17 @@ export default function CarDetailsContent({ car, brand, location, similarCars }:
                   )}
 
                   {/* Image Counter */}
-                  {car.images.length > 1 && (
+                  {images.length > 1 && (
                     <div className='absolute bottom-4 right-4 px-3 py-1 bg-black/70 text-white text-sm font-medium'>
-                      {currentImageIndex + 1} / {car.images.length}
+                      {currentImageIndex + 1} / {images.length}
                     </div>
                   )}
                 </div>
 
                 {/* Thumbnails */}
-                {car.images.length > 1 && (
+                {images.length > 1 && (
                   <div className='flex gap-2 p-4 bg-gray-50 overflow-x-auto'>
-                    {car.images.map((image, index) => (
+                    {images.map((image, index) => (
                       <button
                         key={index}
                         onClick={() => setCurrentImageIndex(index)}
@@ -170,11 +188,11 @@ export default function CarDetailsContent({ car, brand, location, similarCars }:
                 <div className='flex items-center gap-4 text-sm text-gray-600 mb-6 pb-6 border-b-2 border-gray-200'>
                   <div className='flex items-center gap-1'>
                     <Eye className='w-4 h-4' strokeWidth={2} />
-                    <span>{car.viewCount} views</span>
+                    <span>{0} views</span>
                   </div>
                   <div className='flex items-center gap-1'>
                     <Heart className='w-4 h-4' strokeWidth={2} />
-                    <span>{car.favoriteCount} favorites</span>
+                    <span>{0} favorites</span>
                   </div>
                 </div>
 
@@ -182,12 +200,16 @@ export default function CarDetailsContent({ car, brand, location, similarCars }:
                 <div className='mb-6 pb-6 border-b-2 border-gray-200'>
                   <div className='flex items-baseline gap-2 mb-2'>
                     <span className='text-4xl font-bold text-primary'>{car.pricePerDay}</span>
-                    <span className='text-xl font-semibold text-gray-600'>{car.priceCurrency}</span>
+                    <span className='text-xl font-semibold text-gray-600'>{car.currency}</span>
                     <span className='text-gray-500'>/ day</span>
                   </div>
                   <div className='text-sm text-gray-600'>
-                    <div>Weekly: ₼{(car.pricePerDay * 7 * 0.9).toFixed(0)} (10% off)</div>
-                    <div>Monthly: ₼{(car.pricePerDay * 30 * 0.8).toFixed(0)} (20% off)</div>
+                    <div>
+                      Weekly: {(car.pricePerDay * 7 * 0.9).toFixed(0)} {car.currency} (10% off)
+                    </div>
+                    <div>
+                      Monthly: {(car.pricePerDay * 30 * 0.8).toFixed(0)} {car.currency} (20% off)
+                    </div>
                   </div>
                 </div>
 
@@ -215,14 +237,14 @@ export default function CarDetailsContent({ car, brand, location, similarCars }:
                 {/* Contact Buttons */}
                 <div className='space-y-3'>
                   <a
-                    href={`tel:${car.host.phone}`}
+                    href={`tel:1234567890`}
                     className='flex items-center justify-center gap-2 w-full py-3 bg-primary hover:bg-primary-dark text-white font-semibold transition-colors'
                   >
                     <Phone className='w-5 h-5' strokeWidth={2} />
                     Call Now
                   </a>
                   <a
-                    href={`https://wa.me/${car.host.whatsapp.replace(/[^0-9]/g, '')}?text=Hi, I'm interested in the ${brandName} ${car.model} ${car.year}`}
+                    href={`https://wa.me/1234567890?text=Hi, I'm interested in the ${brandName} ${car.model} ${car.year}`}
                     target='_blank'
                     rel='noopener noreferrer'
                     className='flex items-center justify-center gap-2 w-full py-3 bg-green-600 hover:bg-green-700 text-white font-semibold transition-colors'
@@ -231,7 +253,7 @@ export default function CarDetailsContent({ car, brand, location, similarCars }:
                     WhatsApp
                   </a>
                   <a
-                    href={`mailto:${car.host.email}`}
+                    href={`mailto:test@test.com`}
                     className='flex items-center justify-center gap-2 w-full py-3 bg-gray-800 hover:bg-gray-900 text-white font-semibold transition-colors'
                   >
                     <Mail className='w-5 h-5' strokeWidth={2} />
@@ -245,10 +267,10 @@ export default function CarDetailsContent({ car, brand, location, similarCars }:
                 <h3 className='text-lg font-bold text-gray-900 mb-4'>Hosted By</h3>
                 <div className='flex items-center gap-4'>
                   <div className='w-12 h-12 bg-primary/10 flex items-center justify-center font-bold text-primary text-lg'>
-                    {car.host.name.charAt(0)}
+                    H
                   </div>
                   <div className='flex-1'>
-                    <div className='font-semibold text-gray-900'>{car.host.name}</div>
+                    <div className='font-semibold text-gray-900'>Host Name</div>
                     <div className='text-sm text-gray-600'>Verified Host</div>
                   </div>
                   <Award className='w-6 h-6 text-primary' strokeWidth={2} />
@@ -265,13 +287,12 @@ export default function CarDetailsContent({ car, brand, location, similarCars }:
               <div className='prose max-w-none text-gray-700'>
                 <p className='mb-4'>
                   Experience the perfect blend of luxury and performance with the {car.year} {brandName} {car.model}.
-                  This {car.bodyType} is equipped with a {car.engine} engine and {car.transmission} transmission,
-                  ensuring a smooth and comfortable ride throughout Dubai.
+                  This Sedan is equipped with a Petrol engine and Automatic transmission, ensuring a smooth and
+                  comfortable ride throughout Dubai.
                 </p>
                 <p>
-                  With {car.seats} seats and {car.doors} doors, this vehicle is ideal for both business and leisure
-                  trips. The car has only {car.mileage.toLocaleString()} km on the odometer and is maintained in
-                  excellent condition.
+                  With 4 seats and 4 doors, this vehicle is ideal for both business and leisure trips. The car has only
+                  100 km on the odometer and is maintained in excellent condition.
                 </p>
               </div>
             </div>
@@ -333,21 +354,27 @@ export default function CarDetailsContent({ car, brand, location, similarCars }:
                     <div className='font-semibold text-gray-900'>Daily Rate</div>
                     <div className='text-sm text-gray-600'>Standard daily rental rate</div>
                   </div>
-                  <div className='text-2xl font-bold text-primary'>₼{car.pricePerDay}</div>
+                  <div className='text-2xl font-bold text-primary'>
+                    {car.pricePerDay} {car.currency}
+                  </div>
                 </div>
                 <div className='flex items-center justify-between py-3 border-b border-gray-200'>
                   <div>
                     <div className='font-semibold text-gray-900'>Weekly Rate</div>
                     <div className='text-sm text-gray-600'>7 days or more (10% discount)</div>
                   </div>
-                  <div className='text-2xl font-bold text-green-600'>₼{(car.pricePerDay * 0.9).toFixed(0)}/day</div>
+                  <div className='text-2xl font-bold text-green-600'>
+                    {(car.pricePerDay * 0.9).toFixed(0)} {car.currency}/day
+                  </div>
                 </div>
                 <div className='flex items-center justify-between py-3'>
                   <div>
                     <div className='font-semibold text-gray-900'>Monthly Rate</div>
                     <div className='text-sm text-gray-600'>30 days or more (20% discount)</div>
                   </div>
-                  <div className='text-2xl font-bold text-green-600'>₼{(car.pricePerDay * 0.8).toFixed(0)}/day</div>
+                  <div className='text-2xl font-bold text-green-600'>
+                    {(car.pricePerDay * 0.8).toFixed(0)} {car.currency}/day
+                  </div>
                 </div>
               </div>
 
@@ -371,8 +398,7 @@ export default function CarDetailsContent({ car, brand, location, similarCars }:
               </div>
               <div className='space-y-3 text-sm text-gray-700'>
                 <p>
-                  <strong>Daily Mileage:</strong> {car.mileageLimitPerDay}km per day included. Additional kilometers
-                  charged at ₼1.50/km.
+                  <strong>Daily Mileage:</strong> 100km per day included. Additional kilometers charged at ₼1.50/km.
                 </p>
                 <p>
                   <strong>Fuel Policy:</strong> The vehicle is provided with a full tank and must be returned with a

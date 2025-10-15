@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { TCar, brands } from '@/data/cars';
+import { brands } from '@/data/cars';
 import CarCard from './car-card/car-card';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
@@ -145,10 +145,13 @@ export default function CarsRentContent({ cars, locations }: CarsRentContentProp
         const brandName = brands.find((b) => b.key === car.brand)?.name.toLowerCase() || '';
         const modelName = car.model.toLowerCase();
         const year = car.year.toString();
+
         if (!brandName.includes(query) && !modelName.includes(query) && !year.includes(query)) {
           return false;
         }
       }
+
+      return true;
 
       // Brand
       if (selectedBrands.length > 0 && !selectedBrands.includes(car.brand)) {
