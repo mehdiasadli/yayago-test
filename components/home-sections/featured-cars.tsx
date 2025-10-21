@@ -1,10 +1,11 @@
-import { carsService } from '@/lib/api/services';
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import CarCarousel from './car-carousel';
 import ViewAllButton from './view-all-button';
-import { brands, cars } from '@/data/cars';
+import { createGetCarsQueryOptions } from '@/features/cars/cars.queries';
 
 export default async function FeaturedCars() {
-  const featuredCars = ((await carsService.getAllCars()) || []).slice(0, 6);
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery(createGetCarsQueryOptions());
 
   return (
     <section
@@ -50,7 +51,9 @@ export default async function FeaturedCars() {
         </div>
 
         {/* Carousel */}
-        <CarCarousel cars={featuredCars} />
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <CarCarousel />
+        </HydrationBoundary>
       </div>
     </section>
   );

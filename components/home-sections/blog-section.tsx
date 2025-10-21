@@ -68,7 +68,7 @@ export default function BlogSection() {
           {/* View All Button */}
           <AnimateIcon animateOnHover>
             <Button asChild className='h-12 w-50' variant='link'>
-              <Link href='/blog'>
+              <Link href='/community/blog'>
                 <span>View All Blogs</span>
                 <ChevronRight
                   className='w-5 h-5 transition-transform duration-300 group-hover:translate-x-1'
@@ -87,7 +87,7 @@ export default function BlogSection() {
               className='group bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-xl hover:border-primary/20 transition-all duration-500 hover:-translate-y-2'
             >
               {/* Image */}
-              <Link href={`/blog/${blog.slug}`} className='relative block h-56 overflow-hidden'>
+              <Link href={`/community/blog/${blog.slug}`} className='relative block h-56 overflow-hidden'>
                 <Image
                   src={blog.image}
                   alt={blog.title}
@@ -119,7 +119,7 @@ export default function BlogSection() {
                 </div>
 
                 {/* Title */}
-                <Link href={`/blog/${blog.slug}`}>
+                <Link href={`/community/blog/${blog.slug}`}>
                   <h3 className='text-xl md:text-2xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-primary transition-colors duration-300'>
                     {blog.title}
                   </h3>
@@ -130,7 +130,7 @@ export default function BlogSection() {
 
                 {/* Read More Link */}
                 <Link
-                  href={`/blog/${blog.slug}`}
+                  href={`/community/blog/${blog.slug}`}
                   className='inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all duration-300'
                 >
                   Read Article

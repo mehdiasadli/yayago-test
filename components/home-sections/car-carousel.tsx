@@ -5,13 +5,10 @@ import Autoplay from 'embla-carousel-autoplay';
 import { useCallback, useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import CarCard from '../car-card/car-card';
-import { CarDetailsResponseDto } from '@/data/cars/car.schema';
+import { useCars } from '@/features/cars/cars.queries';
 
-interface CarCarouselProps {
-  cars: CarDetailsResponseDto[];
-}
-
-export default function CarCarousel({ cars }: CarCarouselProps) {
+export default function CarCarousel() {
+  const { data } = useCars();
   const [emblaRef, emblaApi] = useEmblaCarousel(
     {
       loop: false,
@@ -52,7 +49,7 @@ export default function CarCarousel({ cars }: CarCarouselProps) {
     emblaApi.on('reInit', onSelect);
   }, [emblaApi, onSelect]);
 
-  if (cars.length === 0) {
+  if (!data || data.length === 0) {
     return (
       <div className='text-center py-12'>
         <p className='text-gray-500'>No cars available at the moment</p>
@@ -65,7 +62,7 @@ export default function CarCarousel({ cars }: CarCarouselProps) {
       {/* Carousel Container */}
       <div className='overflow-hidden' ref={emblaRef}>
         <div className='flex gap-5 md:gap-6 lg:gap-7'>
-          {cars.map((car) => (
+          {data.map((car) => (
             <div
               key={car.id}
               className='flex-[0_0_100%] min-w-0 sm:flex-[0_0_calc(50%-15px)] lg:flex-[0_0_calc(40%-17.5px)] xl:flex-[0_0_calc(33.333%-19px)] 2xl:flex-[0_0_calc(28%-21px)]'

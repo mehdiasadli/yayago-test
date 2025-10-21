@@ -23,6 +23,10 @@ const nextConfig: NextConfig = {
         protocol: 'http',
         hostname: 'bucket.railway.internal',
       },
+      {
+        protocol: 'https',
+        hostname: 'bucket-test-6934.up.railway.app',
+      },
     ],
   },
 };

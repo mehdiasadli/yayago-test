@@ -13,8 +13,8 @@ export default function NavUser() {
     return null;
   }
 
-  const label = session?.user?.name || 'Sign In';
-  const href = session?.user ? '/profile' : '/auth';
+  const label = session?.user?.fullName || 'Sign In';
+  const href = session?.user?.id ? '/profile' : '/auth';
 
   return (
     <AnimateIcon animateOnHover className='h-full' suppressHydrationWarning>

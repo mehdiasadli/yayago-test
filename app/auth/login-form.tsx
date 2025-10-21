@@ -5,9 +5,9 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/in
 import { Mail, Lock, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
-import { login } from '@/data/auth/auth.actions';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { login } from '@/features/auth/auth.actions';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
@@ -23,7 +23,7 @@ export default function LoginForm() {
     setIsLoading(true);
 
     try {
-      const result = await login(email, password);
+      const result = await login({ email, password });
 
       if (result.error) {
         setError(result.error);

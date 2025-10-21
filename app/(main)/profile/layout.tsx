@@ -10,10 +10,13 @@ export default async function ProfileLayout({ children }: { children: React.Reac
     redirect('/auth');
   }
 
+  const fullName = session.user.fullName;
+  const isAdmin = session.user.role === 'ADMIN';
+
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-50 to-white'>
       {/* Profile Header */}
-      <ProfileHeader user={session.user} />
+      <ProfileHeader name={fullName} createdAt={session.user.createdAt} isAdmin={isAdmin} />
 
       {/* Main Content */}
       <div className='max-w-7xl mx-auto px-6 lg:px-8 py-12'>{children}</div>

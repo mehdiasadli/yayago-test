@@ -1,62 +1,27 @@
-import { z } from 'zod';
-
 /**
- * Zod schemas for Car Images API based on backend Swagger specification
- * Backend: YayaGo Rent-A-Car API v2.0
+ * @deprecated This file is deprecated. Please import from '@/schemas/car-image.schema' instead.
+ * This file is kept for backward compatibility only.
  */
 
-// Schema for image response from API
-export const ImageResponseSchema = z.object({
-  id: z.number().int().positive(),
-  carId: z.number().int().positive(),
-  imageUrl: z.string().url('Must be a valid URL'),
-  imageName: z.string().min(1, 'Image name is required'),
-  imageSize: z.number().int().positive('Image size must be positive'),
-  mimeType: z.string().min(1, 'MIME type is required'),
-  isPrimary: z.boolean(),
-  uploadDate: z.string().datetime(),
-  createdAt: z.string().datetime(),
-});
+export {
+  CarImageOutputSchema as ImageResponseSchema,
+  CarImageUploadInputSchema as ImageUploadSchema,
+  type TCarImageOutput as ImageResponseDto,
+  type TCarImageUploadInput as ImageUploadData,
+} from '@/schemas/car-image.schema';
 
-// Schema for uploading an image (client-side validation)
-export const ImageUploadSchema = z.object({
-  file: z
-    .instanceof(File, { message: 'File is required' })
-    .refine(
-      (file) => {
-        const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
-        return validTypes.includes(file.type);
-      },
-      {
-        message: 'File must be a valid image (JPEG, PNG, WebP, or GIF)',
-      }
-    )
-    .refine(
-      (file) => {
-        const maxSize = 10 * 1024 * 1024; // 10MB
-        return file.size <= maxSize;
-      },
-      {
-        message: 'File size must be less than 10MB',
-      }
-    ),
-  isPrimary: z.boolean().optional().default(false),
-});
+// Validation helpers (maintained for backward compatibility)
+import { CarImageOutputSchema, CarImageUploadInputSchema } from '@/schemas/car-image.schema';
 
-// Type exports
-export type ImageResponseDto = z.infer<typeof ImageResponseSchema>;
-export type ImageUploadData = z.infer<typeof ImageUploadSchema>;
-
-// Validation helpers
 export const validateImageResponse = (data: unknown) => {
-  return ImageResponseSchema.safeParse(data);
+  return CarImageOutputSchema.safeParse(data);
 };
 
 export const validateImageUpload = (data: unknown) => {
-  return ImageUploadSchema.safeParse(data);
+  return CarImageUploadInputSchema.safeParse(data);
 };
 
-// Helper function to validate file before upload
+// Helper function to validate file before upload (maintained for backward compatibility)
 export function isValidImageFile(file: File) {
   const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
   const maxSize = 10 * 1024 * 1024; // 10MB

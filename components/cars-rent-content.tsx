@@ -10,17 +10,17 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from './ui
 import { Slider } from './ui/slider';
 import { Checkbox } from './ui/checkbox';
 import { Label } from './ui/label';
-import { Search, SlidersHorizontal, X, ChevronDown, ChevronUp, ArrowUpDown } from 'lucide-react';
-import { CarDetailsResponseDto } from '@/data/cars/car.schema';
+import { Search, SlidersHorizontal, X, ChevronDown, ChevronUp } from 'lucide-react';
+import { useCars } from '@/features/cars/cars.queries';
 
 interface CarsRentContentProps {
-  cars: CarDetailsResponseDto[];
   locations: Array<{ id: number; key: string; name: string }>;
 }
 
 type SortOption = 'popular' | 'newest' | 'oldest' | 'expensive' | 'cheap' | 'closest';
 
-export default function CarsRentContent({ cars, locations }: CarsRentContentProps) {
+export default function CarsRentContent({ locations }: CarsRentContentProps) {
+  const { data: cars = [] } = useCars();
   const searchParams = useSearchParams();
   const router = useRouter();
   const [isInitialized, setIsInitialized] = useState(false);

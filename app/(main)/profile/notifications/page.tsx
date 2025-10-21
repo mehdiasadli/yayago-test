@@ -1,8 +1,4 @@
-import { Button } from '@/components/ui/button';
 import {
-  Bell,
-  Check,
-  Trash2,
   MessageCircle,
   Star,
   DollarSign,
@@ -11,18 +7,43 @@ import {
   Car,
   UserCheck,
   TrendingUp,
-  Settings,
   CheckCheck,
-  Archive,
 } from 'lucide-react';
+import NotificationStats from './notifications-sections/notification-stats';
+import NotificationsFilters from './notifications-sections/notifications-filters';
+import NotificationsEmptyState from './notifications-sections/notifications-empty-state';
+import NotificationsLoadMore from './notifications-sections/notifications-load-more';
+import NotificationsList from './notifications-sections/notifications-list';
+import NotificationsHeader from './notifications-sections/notifications-header';
 
 export const metadata = {
   title: 'Notifications',
   description: 'View and manage your notifications',
 };
 
+export type ProfileNotificationType =
+  | 'booking'
+  | 'message'
+  | 'review'
+  | 'payment'
+  | 'alert'
+  | 'system'
+  | 'verification';
+
+export type ProfileNotification = {
+  id: number;
+  type: ProfileNotificationType;
+  icon: React.ElementType;
+  title: string;
+  message: string;
+  time: string;
+  unread: boolean;
+  color: string;
+  action: string | null;
+};
+
 // Mock notifications data
-const notifications = [
+const notifications: ProfileNotification[] = [
   {
     id: 1,
     type: 'booking',
@@ -157,205 +178,45 @@ const notifications = [
   },
 ];
 
-const notificationTypeColors = {
-  booking: 'bg-blue-100 text-blue-600',
-  message: 'bg-green-100 text-green-600',
-  review: 'bg-yellow-100 text-yellow-600',
-  payment: 'bg-green-100 text-green-600',
-  alert: 'bg-orange-100 text-orange-600',
-  system: 'bg-purple-100 text-purple-600',
-  verification: 'bg-green-100 text-green-600',
-};
-
 export default function NotificationsPage() {
+  const allCount = notifications.length;
   const unreadCount = notifications.filter((n) => n.unread).length;
+  const messagesCount = notifications.filter((n) => n.type === 'message').length;
+  const bookingsCount = notifications.filter((n) => n.type === 'booking').length;
+  const reviewsCount = notifications.filter((n) => n.type === 'review').length;
+  const paymentsCount = notifications.filter((n) => n.type === 'payment').length;
 
   return (
     <div className='space-y-8'>
       {/* Page Header */}
-      <div className='flex items-start justify-between gap-4 flex-wrap'>
-        <div>
-          <h1 className='text-3xl font-bold text-gray-900 mb-2'>Notifications</h1>
-          <p className='text-gray-600'>
-            You have {unreadCount} unread notification{unreadCount !== 1 ? 's' : ''}
-          </p>
-        </div>
-
-        <div className='flex gap-3'>
-          <Button variant='outline' className='hover:bg-gray-50'>
-            <Settings className='w-4 h-4 mr-2' />
-            Preferences
-          </Button>
-          <Button variant='outline' className='hover:bg-gray-50'>
-            <CheckCheck className='w-4 h-4 mr-2' />
-            Mark All Read
-          </Button>
-        </div>
-      </div>
+      <NotificationsHeader unreadCount={unreadCount} />
 
       {/* Quick Stats */}
-      <div className='grid md:grid-cols-4 gap-6'>
-        <div className='bg-white border-2 border-gray-200 p-6'>
-          <div className='flex items-center gap-4'>
-            <div className='w-12 h-12 bg-blue-100 flex items-center justify-center'>
-              <Bell className='w-6 h-6 text-blue-600' strokeWidth={2} />
-            </div>
-            <div>
-              <div className='text-2xl font-bold text-gray-900'>{unreadCount}</div>
-              <div className='text-sm text-gray-600'>Unread</div>
-            </div>
-          </div>
-        </div>
-
-        <div className='bg-white border-2 border-gray-200 p-6'>
-          <div className='flex items-center gap-4'>
-            <div className='w-12 h-12 bg-green-100 flex items-center justify-center'>
-              <MessageCircle className='w-6 h-6 text-green-600' strokeWidth={2} />
-            </div>
-            <div>
-              <div className='text-2xl font-bold text-gray-900'>
-                {notifications.filter((n) => n.type === 'message').length}
-              </div>
-              <div className='text-sm text-gray-600'>Messages</div>
-            </div>
-          </div>
-        </div>
-
-        <div className='bg-white border-2 border-gray-200 p-6'>
-          <div className='flex items-center gap-4'>
-            <div className='w-12 h-12 bg-yellow-100 flex items-center justify-center'>
-              <Star className='w-6 h-6 text-yellow-600' strokeWidth={2} />
-            </div>
-            <div>
-              <div className='text-2xl font-bold text-gray-900'>
-                {notifications.filter((n) => n.type === 'review').length}
-              </div>
-              <div className='text-sm text-gray-600'>Reviews</div>
-            </div>
-          </div>
-        </div>
-
-        <div className='bg-white border-2 border-gray-200 p-6'>
-          <div className='flex items-center gap-4'>
-            <div className='w-12 h-12 bg-blue-100 flex items-center justify-center'>
-              <Calendar className='w-6 h-6 text-blue-600' strokeWidth={2} />
-            </div>
-            <div>
-              <div className='text-2xl font-bold text-gray-900'>
-                {notifications.filter((n) => n.type === 'booking').length}
-              </div>
-              <div className='text-sm text-gray-600'>Bookings</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <NotificationStats
+        unreadCount={unreadCount}
+        messagesCount={messagesCount}
+        reviewsCount={reviewsCount}
+        bookingsCount={bookingsCount}
+      />
 
       {/* Filter Tabs */}
-      <div className='bg-white border-2 border-gray-200 overflow-hidden'>
-        <div className='flex items-center gap-2 p-2 overflow-x-auto'>
-          <button className='px-6 py-3 bg-primary text-primary-foreground font-semibold whitespace-nowrap hover:bg-primary/90 transition-colors'>
-            All ({notifications.length})
-          </button>
-          <button className='px-6 py-3 font-semibold text-gray-700 hover:bg-gray-100 transition-colors whitespace-nowrap'>
-            Unread ({unreadCount})
-          </button>
-          <button className='px-6 py-3 font-semibold text-gray-700 hover:bg-gray-100 transition-colors whitespace-nowrap'>
-            Messages ({notifications.filter((n) => n.type === 'message').length})
-          </button>
-          <button className='px-6 py-3 font-semibold text-gray-700 hover:bg-gray-100 transition-colors whitespace-nowrap'>
-            Bookings ({notifications.filter((n) => n.type === 'booking').length})
-          </button>
-          <button className='px-6 py-3 font-semibold text-gray-700 hover:bg-gray-100 transition-colors whitespace-nowrap'>
-            Reviews ({notifications.filter((n) => n.type === 'review').length})
-          </button>
-          <button className='px-6 py-3 font-semibold text-gray-700 hover:bg-gray-100 transition-colors whitespace-nowrap'>
-            Payments ({notifications.filter((n) => n.type === 'payment').length})
-          </button>
-        </div>
-      </div>
+      <NotificationsFilters
+        allCount={allCount}
+        unreadCount={unreadCount}
+        messagesCount={messagesCount}
+        bookingsCount={bookingsCount}
+        reviewsCount={reviewsCount}
+        paymentsCount={paymentsCount}
+      />
 
       {/* Notifications List */}
-      <div className='bg-white border-2 border-gray-200 overflow-hidden'>
-        <div className='divide-y-2 divide-gray-100'>
-          {notifications.map((notification) => {
-            const Icon = notification.icon;
-            const colorClass = notificationTypeColors[notification.type as keyof typeof notificationTypeColors];
-
-            return (
-              <div
-                key={notification.id}
-                className={`p-6 hover:bg-gray-50 transition-colors ${notification.unread ? 'bg-blue-50/50' : ''}`}
-              >
-                <div className='flex items-start gap-4'>
-                  {/* Icon */}
-                  <div className={`w-12 h-12 flex items-center justify-center flex-shrink-0 ${colorClass}`}>
-                    <Icon className='w-6 h-6' strokeWidth={2} />
-                  </div>
-
-                  {/* Content */}
-                  <div className='flex-1 min-w-0'>
-                    <div className='flex items-start justify-between gap-4 mb-2'>
-                      <div className='flex items-center gap-2'>
-                        <h3 className='font-bold text-gray-900'>{notification.title}</h3>
-                        {notification.unread && <div className='w-2 h-2 bg-primary rounded-full animate-pulse' />}
-                      </div>
-                      <span className='text-sm text-gray-600 whitespace-nowrap'>{notification.time}</span>
-                    </div>
-
-                    <p className='text-gray-700 mb-3'>{notification.message}</p>
-
-                    {/* Actions */}
-                    <div className='flex items-center gap-3 flex-wrap'>
-                      {notification.action && (
-                        <Button size='sm' className='bg-primary hover:bg-primary/90 text-primary-foreground'>
-                          {notification.action}
-                        </Button>
-                      )}
-                      {notification.unread && (
-                        <button className='text-sm font-semibold text-gray-700 hover:text-primary transition-colors flex items-center gap-1'>
-                          <Check className='w-4 h-4' />
-                          Mark as Read
-                        </button>
-                      )}
-                      <button className='text-sm font-semibold text-gray-700 hover:text-primary transition-colors flex items-center gap-1'>
-                        <Archive className='w-4 h-4' />
-                        Archive
-                      </button>
-                      <button className='text-sm font-semibold text-red-700 hover:text-red-600 transition-colors flex items-center gap-1'>
-                        <Trash2 className='w-4 h-4' />
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      <NotificationsList notifications={notifications} />
 
       {/* Load More */}
-      <div className='text-center'>
-        <Button variant='outline' className='hover:bg-gray-50'>
-          Load More Notifications
-        </Button>
-      </div>
+      <NotificationsLoadMore />
 
       {/* Empty State (hidden when there are notifications) */}
-      {notifications.length === 0 && (
-        <div className='bg-white border-2 border-gray-200 p-16 text-center'>
-          <div className='max-w-md mx-auto'>
-            <div className='w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6'>
-              <Bell className='w-10 h-10 text-gray-400' strokeWidth={2} />
-            </div>
-            <h3 className='text-2xl font-bold text-gray-900 mb-3'>No Notifications</h3>
-            <p className='text-gray-600 mb-6'>
-              You're all caught up! You'll see notifications here when you have new activity.
-            </p>
-            <Button className='bg-primary hover:bg-primary/90 text-primary-foreground'>Go to Dashboard</Button>
-          </div>
-        </div>
-      )}
+      {notifications.length === 0 && <NotificationsEmptyState />}
     </div>
   );
 }

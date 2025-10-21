@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Heart, Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useState } from 'react';
@@ -8,14 +8,20 @@ import { useCallback, useState } from 'react';
 interface ImagesCarouselProps {
   car: {
     id: number;
-    images: string[];
+    featured?: boolean;
+    noDeposit?: boolean;
+    images: {
+      imageUrl: string;
+      isPrimary: boolean;
+    }[];
     brand: string;
     model: string;
   };
+  favoritePage?: boolean;
 }
 
-export default function ImagesCarousel({ car }: ImagesCarouselProps) {
-  const featuredImages = car.images.slice(0, 4);
+export default function ImagesCarousel({ car, favoritePage }: ImagesCarouselProps) {
+  const featuredImages = car.images.map((image) => image.imageUrl).slice(0, 4);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const handleMouseMove = useCallback(
@@ -50,6 +56,19 @@ export default function ImagesCarousel({ car }: ImagesCarouselProps) {
       href={`/cars/rent/${car.id}`}
       className='relative h-64 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50'
     >
+      {car.featured && (
+        <div className='absolute top-3 left-3 z-10 bg-primary text-white px-2 py-1 text-xs font-medium flex items-center gap-1'>
+          <Star className='w-3.5 h-3.5 fill-white' strokeWidth={2} />
+          Featured
+        </div>
+      )}
+
+      {car.noDeposit && (
+        <div className='absolute top-3 right-3 z-10 bg-green-500 text-white px-2 py-1 text-xs font-medium flex items-center gap-1'>
+          No Deposit
+        </div>
+      )}
+
       {featuredImages.length > 0 ? (
         <>
           <div

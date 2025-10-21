@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { User, Mail, Phone, MapPin, Calendar, Camera, Save, X } from 'lucide-react';
+import { Camera, Save, X } from 'lucide-react';
 
 export const metadata = {
   title: 'General Settings',

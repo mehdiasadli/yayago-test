@@ -1,10 +1,12 @@
 import { Suspense } from 'react';
 import CarsRentContent from '@/components/cars-rent-content';
 import { dubaiLocations } from '@/data/locations';
-import { carsService } from '@/lib/api/services';
+import { CarsApi } from '@/features/cars/cars.api';
+import { createGetCarsQueryOptions } from '@/features/cars/cars.queries';
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 
 export const metadata = {
-  title: 'Rent a Car in Dubai | YayaGo',
+  title: 'Rent a Car in Dubai',
   description:
     'Browse our extensive collection of rental cars in Dubai. From economy to luxury, find the perfect vehicle for your needs. Compare prices, features, and book instantly.',
 };
@@ -23,7 +25,14 @@ function LoadingFallback() {
 }
 
 export default async function CarsRentPage() {
-  const cars = await carsService.getAllCars();
+  const cars = await CarsApi.getCars();
+
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery(createGetCarsQueryOptions());
+
+  if (!cars.success) {
+    return <div>Error: {cars.message}</div>;
+  }
 
   return (
     <div className='min-h-screen bg-gray-50'>
@@ -38,7 +47,7 @@ export default async function CarsRentPage() {
             </p>
             <div className='mt-8 flex flex-wrap gap-4 text-sm'>
               <div className='flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm'>
-                <span className='text-2xl font-bold text-primary'>{cars.length}</span>
+                <span className='text-2xl font-bold text-primary'>{cars.data.length}</span>
                 <span className='text-gray-300'>Available Cars</span>
               </div>
               <div className='flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm'>
@@ -56,7 +65,9 @@ export default async function CarsRentPage() {
 
       {/* Main Content */}
       <Suspense fallback={<LoadingFallback />}>
-        <CarsRentContent cars={cars} locations={dubaiLocations} />
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <CarsRentContent locations={dubaiLocations} />
+        </HydrationBoundary>
       </Suspense>
     </div>
   );

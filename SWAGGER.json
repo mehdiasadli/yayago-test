@@ -1028,6 +1028,36 @@
         }
       }
     },
+    "/api/bookings/{bookingId}": {
+      "get": {
+        "tags": ["Booking"],
+        "description": "Get a specific booking by ID",
+        "operationId": "getBookingById",
+        "parameters": [
+          {
+            "name": "bookingId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookingDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/bookings/user/{userId}": {
       "get": {
         "tags": ["Booking"],
@@ -1638,6 +1668,22 @@
           },
           "available": {
             "type": "boolean"
+          },
+          "fuelType": {
+            "type": "string"
+          },
+          "doorCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "carType": {
+            "type": "string"
+          },
+          "engineVolume": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
           }
         }
       },
@@ -1666,6 +1712,34 @@
           },
           "available": {
             "type": "boolean"
+          },
+          "fuelType": {
+            "type": "string"
+          },
+          "doorCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "carType": {
+            "type": "string"
+          },
+          "engineVolume": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          },
+          "createdByFullName": {
+            "type": "string"
+          },
+          "primaryImageUrl": {
+            "type": "string"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageResponseDto"
+            }
           }
         }
       },
@@ -1818,6 +1892,14 @@
           },
           "phoneNumber": {
             "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["USER", "ADMIN"]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
@@ -1928,6 +2010,33 @@
           "endDate": {
             "type": "string",
             "format": "date"
+          },
+          "pickupTime": {
+            "$ref": "#/components/schemas/LocalTime"
+          },
+          "returnTime": {
+            "$ref": "#/components/schemas/LocalTime"
+          }
+        }
+      },
+      "LocalTime": {
+        "type": "object",
+        "properties": {
+          "hour": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "minute": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "second": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nano": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -1971,6 +2080,12 @@
           "endDate": {
             "type": "string",
             "format": "date"
+          },
+          "pickupTime": {
+            "$ref": "#/components/schemas/LocalTime"
+          },
+          "returnTime": {
+            "$ref": "#/components/schemas/LocalTime"
           }
         }
       },
@@ -2095,6 +2210,26 @@
           },
           "phoneNumber": {
             "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["USER", "ADMIN"]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "addedCars": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CarDetailsResponseDto"
+            }
+          },
+          "bookings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BookingDetails"
+            }
           }
         }
       },
