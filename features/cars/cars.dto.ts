@@ -2,8 +2,8 @@ import z from 'zod';
 import { CreateCarImageResponseDto } from '../car-images/car-images.dto';
 
 export const CreateCarRequestDto = z.object({
-  brand: z.string(),
-  model: z.string(),
+  brand: z.string().min(1),
+  model: z.string().min(1),
   year: z.number().int().min(1850),
   currency: z.string(),
   pricePerDay: z.number().positive(),
