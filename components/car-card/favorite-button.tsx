@@ -14,7 +14,14 @@ interface FavoriteButtonProps {
 
 export default function FavoriteButton({ carId, favoritePage }: FavoriteButtonProps) {
   const { data: session, status } = useSession();
-  const { data: isFavorite, isLoading, error } = useQuery(createCheckFavoriteQueryOptions(carId));
+  const {
+    data: isFavorite,
+    isLoading,
+    error,
+  } = useQuery({
+    ...createCheckFavoriteQueryOptions(carId),
+    enabled: status === 'authenticated' && !!session?.user?.id,
+  });
 
   if (isLoading || status === 'loading') {
     return (
