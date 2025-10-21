@@ -88,7 +88,7 @@ function DeleteFavoriteButton({ carId, favoritePage }: { carId: string; favorite
     <Button variant='ghost' size='icon' className='h-full w-20' onClick={() => mutate()}>
       {isPending ? (
         <Loader2 className='w-5 h-5 animate-spin' />
-      ) : favoritePage ? (
+      ) : !favoritePage ? (
         <Heart className='w-5 text-red-500 fill-red-500' strokeWidth={2.5} />
       ) : (
         <Trash2 className='w-5 text-red-500' strokeWidth={2.5} />
