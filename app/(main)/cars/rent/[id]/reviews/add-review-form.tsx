@@ -71,6 +71,9 @@ export default function AddReview({ userReview, userId, carId }: AddReviewFormPr
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: reviewsQueryKeys.listById(carId.toString()) });
+      queryClient.invalidateQueries({ queryKey: reviewsQueryKeys.countByCarId(carId.toString()) });
+      queryClient.invalidateQueries({ queryKey: reviewsQueryKeys.averageRatingByCarId(carId.toString()) });
+
       router.refresh();
     },
   });
@@ -89,6 +92,10 @@ export default function AddReview({ userReview, userId, carId }: AddReviewFormPr
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: reviewsQueryKeys.listById(carId.toString()) });
+      queryClient.invalidateQueries({ queryKey: reviewsQueryKeys.listById(carId.toString()) });
+      queryClient.invalidateQueries({ queryKey: reviewsQueryKeys.countByCarId(carId.toString()) });
+      queryClient.invalidateQueries({ queryKey: reviewsQueryKeys.averageRatingByCarId(carId.toString()) });
+
       form.reset();
       router.refresh();
     },

@@ -1,5 +1,10 @@
 'use client';
 
+import {
+  createGetAverageRatingQueryOptions,
+  createGetReviewsCountQueryOptions,
+} from '@/features/reviews/reviews.queries';
+import { useQuery } from '@tanstack/react-query';
 import { Eye, Heart, Star } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -12,14 +17,22 @@ interface InfoCardMetricsProps {
   reviewCount: number;
 }
 
-export default function InfoCardMetrics({
-  id,
-  viewCount,
-  favoriteCount,
-  averageRating,
-  reviewCount,
-}: InfoCardMetricsProps) {
+export default function InfoCardMetrics({ id, viewCount, favoriteCount }: InfoCardMetricsProps) {
   const { status } = useSession();
+
+  const { data: reviewsCount, status: reviewsCountStatus } = useQuery(createGetReviewsCountQueryOptions(id));
+  const { data: averageRating, status: averageRatingStatus } = useQuery(createGetAverageRatingQueryOptions(id));
+
+  const container =
+    typeof averageRating === 'number' && typeof reviewsCount === 'number' ? (
+      <div className='flex items-center gap-1 text-yellow-600 hover:underline hover:text-yellow-500'>
+        <Star className='w-4 h-4' strokeWidth={2} />
+        <span>
+          {averageRating.toFixed(1)} ({reviewsCount === 0 ? 'No' : reviewsCount}{' '}
+          {reviewsCount === 1 ? 'review' : 'reviews'})
+        </span>
+      </div>
+    ) : null;
 
   return (
     <div className='flex items-center gap-4 text-sm text-gray-600 mb-6 pb-6 border-b-2 border-gray-200'>
@@ -32,21 +45,9 @@ export default function InfoCardMetrics({
         <span>{favoriteCount} favorites</span>
       </div>
       {status === 'authenticated' ? (
-        <Link href={`/cars/rent/${id}/reviews#reviews-section`}>
-          <div className='flex items-center gap-1 text-yellow-600 hover:underline hover:text-yellow-500'>
-            <Star className='w-4 h-4' strokeWidth={2} />
-            <span>
-              {averageRating} ({reviewCount} reviews)
-            </span>
-          </div>
-        </Link>
+        <Link href={`/cars/rent/${id}/reviews#reviews-section`}>{container}</Link>
       ) : (
-        <div className='flex items-center gap-1 text-yellow-600'>
-          <Star className='w-4 h-4' strokeWidth={2} />
-          <span>
-            {averageRating} ({reviewCount} reviews)
-          </span>
-        </div>
+        container
       )}
     </div>
   );
