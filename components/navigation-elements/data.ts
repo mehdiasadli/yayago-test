@@ -4,8 +4,8 @@ export const NAVIGATION_BLUR = 'backdrop-blur-3xl';
 export const primaryNavigationLinks = [
   { href: '/cars/rent', label: 'Rent' },
   { href: '/leasing', label: 'Leasing' },
-  { href: '/support/how-it-works', label: 'How It Works' },
   { href: '/about', label: 'About' },
+  { href: '/pricing', label: 'Pricing' },
 ];
 
 export const secondaryNavigationLinks = [
