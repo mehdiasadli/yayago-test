@@ -28,15 +28,15 @@ export default function UserPanel({ name, createdAt }: UserPanelProps) {
 
         {/* Stats - Mobile/Tablet */}
         <div className='flex flex-wrap items-center gap-3 sm:gap-4'>
-          <div className='flex items-center gap-2 text-sm'>
+          {/* <div className='flex items-center gap-2 text-sm'>
             <div className='w-8 h-8 bg-white/10 flex items-center justify-center'>
               <Car className='w-4 h-4 text-primary' strokeWidth={2} />
             </div>
             <div>
-              <div className='text-white font-bold'>5</div>
+              <div className='text-white font-bold'>{0}</div>
               <div className='text-gray-400 text-xs'>Listings</div>
             </div>
-          </div>
+          </div> */}
           {/* <div className='h-8 w-px bg-gray-600' /> */}
           {/* <div className='flex items-center gap-2 text-sm'>
             <div className='w-8 h-8 bg-white/10 flex items-center justify-center'>
