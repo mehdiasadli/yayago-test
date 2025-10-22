@@ -5,6 +5,7 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group'
 import { Search, MapPin, Car, Filter } from 'lucide-react';
 import { Button } from '../ui/button';
 import FiltersDialog from '../filters-dialog';
+import Link from 'next/link';
 
 export default function HeroSearch() {
   return (
@@ -43,9 +44,11 @@ export default function HeroSearch() {
             </Button>
           </FiltersDialog>
 
-          <Button className='h-14 sm:h-16 w-14 sm:w-16 text-white'>
-            <Search />
-          </Button>
+          <Link href='/cars/rent'>
+            <Button className='h-14 sm:h-16 w-14 sm:w-16 text-white'>
+              <Search />
+            </Button>
+          </Link>
         </div>
       </CardContent>
     </Card>
