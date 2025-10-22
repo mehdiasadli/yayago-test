@@ -18,7 +18,7 @@ export default function Requirements() {
           <AccordionTrigger>
             <div className='flex items-center gap-2'>
               <Info className='w-6 h-6 text-blue-600' strokeWidth={2} />
-              <h2 className='text-lg font-bold text-gray-900'>Rental Requirements</h2>
+              <h2 className='text-lg font-bold text-gray-900'>Requirements</h2>
             </div>
           </AccordionTrigger>
           <AccordionContent>

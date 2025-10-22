@@ -1,7 +1,6 @@
 'use client';
 
-import Link from 'next/link';
-import { ArrowLeft, Users, Gauge, Fuel, Package, DoorOpen } from 'lucide-react';
+import { Users, Gauge, Fuel, Package, DoorOpen } from 'lucide-react';
 import { TGetCarByIdResponse } from '@/features/cars/cars.types';
 import ImageSection from './image-section';
 import InfoCard from './info-card';
@@ -12,6 +11,8 @@ import WhatsIncluded from './whats-included';
 import Overview from './overview';
 import SimilarCars from './similar-cars';
 import HostInfo from './host-info';
+import FixedContactButton from './fixed-contact-button';
+import { useFixedContactButtonInView } from './use-fixed-contact-button-in-view';
 
 interface CarDetailsContentProps {
   car: TGetCarByIdResponse;
@@ -27,6 +28,10 @@ export default function CarDetailsContent({ car, location, similarCars }: CarDet
     { Icon: Fuel, label: 'Fuel Type', value: car.fuelType ?? '' },
     { Icon: Package, label: 'Body Type', value: car.carType ?? '' },
   ];
+  const { isVisible: isFixedContactButtonVisible, ref: infoCardRef } = useFixedContactButtonInView({
+    rootMargin: '-80px 0px 0px 0px',
+    threshold: 0.1,
+  });
 
   return (
     <div className='min-h-screen bg-gray-50 pt-20'>
@@ -44,14 +49,16 @@ export default function CarDetailsContent({ car, location, similarCars }: CarDet
               />
 
               {/* Car Info Card */}
-              <InfoCard
-                name={`${car.brand} ${car.model} ${car.year}`}
-                pricePerDay={car.pricePerDay}
-                currency={car.currency}
-                location={location?.name || 'Dubai, UAE'}
-                viewCount={car.viewCount || 0}
-                features={features}
-              />
+              <div ref={infoCardRef}>
+                <InfoCard
+                  name={`${car.brand} ${car.model} ${car.year}`}
+                  pricePerDay={car.pricePerDay}
+                  currency={car.currency}
+                  location={location?.name || 'Dubai, UAE'}
+                  viewCount={car.viewCount || 0}
+                  features={features}
+                />
+              </div>
 
               {/* Host Info */}
               <HostInfo host={car.createdByFullName || ''} />
@@ -85,6 +92,14 @@ export default function CarDetailsContent({ car, location, similarCars }: CarDet
 
         {/* Similar Cars */}
         {similarCars.length > 0 && <SimilarCars similarCars={similarCars} />}
+
+        <FixedContactButton
+          name={`${car.brand} ${car.model} ${car.year}`}
+          pricePerDay={car.pricePerDay}
+          currency={car.currency}
+          visible={isFixedContactButtonVisible}
+          primaryImageUrl={car.primaryImageUrl}
+        />
       </div>
     </div>
   );

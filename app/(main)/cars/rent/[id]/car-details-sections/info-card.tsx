@@ -1,6 +1,7 @@
 import { Eye, Heart, LucideIcon, MapPin, MessageCircle, Phone } from 'lucide-react';
 import ContactSection from './contact-section';
 import InfoCardPricing from './info-card-pricing';
+import InfoCardTitle from './info-card-title';
 
 interface InfoCardProps {
   name: string;
@@ -15,7 +16,7 @@ export default function InfoCard({ name, pricePerDay, currency, location, viewCo
   return (
     <div className='bg-white border-2 border-gray-200 p-6'>
       {/* Title */}
-      <h1 className='text-3xl font-bold text-gray-900 mb-2'>{name}</h1>
+      <InfoCardTitle name={name} />
 
       {/* Stats */}
       <div className='flex items-center gap-4 text-sm text-gray-600 mb-6 pb-6 border-b-2 border-gray-200'>
