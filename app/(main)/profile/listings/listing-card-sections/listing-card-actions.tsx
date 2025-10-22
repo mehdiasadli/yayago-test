@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Edit, BarChart3, Eye, Share2, Copy, Trash2, CheckCircle, EyeOff } from 'lucide-react';
+import DeleteListingButton from './delete-listing-button';
 
 interface ListingCardActionsProps {
   id: number;
@@ -53,10 +54,7 @@ export default function ListingCardActions({ id, status }: ListingCardActionsPro
         </Button>
       )}
 
-      <Button size='sm' variant='outline' className='hover:bg-red-50 text-red-700 border-red-300'>
-        <Trash2 className='w-4 h-4 mr-2' />
-        Delete
-      </Button>
+      <DeleteListingButton id={id} />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import ListingCard from './listing-card';
+import ListingCard from '../listing-card-sections/listing-card';
 import { TGetUserByIdResponse } from '@/features/users/users.types';
 // import ListingsFilters from './listings-filters';
 // import ListingsPagination from './listings-pagination';

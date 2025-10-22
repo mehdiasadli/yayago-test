@@ -1,7 +1,8 @@
 import { dubaiLocations } from '@/data/locations';
 import { notFound } from 'next/navigation';
-import CarDetailsContent from '@/components/car-details-content';
+import CarDetailsContent from '@/app/(main)/cars/rent/[id]/car-details-sections/content';
 import { carsService } from '@/lib/api/services';
+import { CarsApi } from '@/features/cars/cars.api';
 
 // Make this page dynamic to avoid build-time API calls
 export const dynamic = 'force-dynamic';
@@ -41,18 +42,14 @@ export async function generateMetadata({ params }: CarDetailsPageProps) {
 
 export default async function CarDetailsPage({ params }: CarDetailsPageProps) {
   const { id } = await params;
-  const car = await carsService.getCarById(Number(id));
+  const carData = await CarsApi.getCarById({ id: +id });
 
-  if (!car) {
+  if (!carData.success) {
     notFound();
   }
 
+  const car = carData.data;
   const location = dubaiLocations.find((l) => l.key === 'Dubai');
 
-  // Get similar cars (same brand or body type)
-  const similarCars = ((await carsService.getAllCars()) || [])
-    .filter((c) => c.id !== car.id && c.brand === car.brand && Math.abs(c.pricePerDay - car.pricePerDay) < 300)
-    .slice(0, 4);
-
-  return <CarDetailsContent car={car} location={location} similarCars={similarCars} />;
+  return <CarDetailsContent car={car} location={location} similarCars={[]} />;
 }
