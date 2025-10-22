@@ -30,19 +30,6 @@ export default function CarDetailsContent({ car, location, similarCars }: CarDet
 
   return (
     <div className='min-h-screen bg-gray-50 pt-20'>
-      {/* Back Button */}
-      <div className='bg-white border-b-2 border-gray-200'>
-        <div className='max-w-[1920px] mx-auto px-6 lg:px-8 py-4'>
-          <Link
-            href='/cars/rent'
-            className='inline-flex items-center gap-2 text-gray-600 hover:text-primary transition-colors font-medium'
-          >
-            <ArrowLeft className='w-5 h-5' strokeWidth={2} />
-            Back to Search
-          </Link>
-        </div>
-      </div>
-
       <div className='max-w-[1920px] mx-auto px-6 lg:px-8 py-8'>
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
           {/* Left Sidebar - Sticky on Desktop */}
