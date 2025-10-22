@@ -56,7 +56,7 @@ export default function ListYourCarCTA() {
           {/* CTA Button */}
           <div className='flex flex-col sm:flex-row gap-4 items-start'>
             <Button asChild size='lg' className='h-16 px-10 text-lg font-semibold group'>
-              <Link href='/list-car'>
+              <Link href='/support/list-your-car'>
                 List Your Car Now
                 <ArrowRight className='w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1' />
               </Link>
@@ -66,9 +66,9 @@ export default function ListYourCarCTA() {
               asChild
               size='lg'
               variant='outline'
-              className='h-16 px-10 text-lg font-semibold bg-white/10 hover:bg-white/20 text-white border-white/30 hover:border-white/50 backdrop-blur-sm'
+              className='h-16 px-10 text-lg font-semibold bg-white/10 hover:bg-white/20 text-white hover:text-white border-white/30 hover:border-white/50 backdrop-blur-sm'
             >
-              <Link href='/how-it-works'>Learn How It Works</Link>
+              <Link href='/support/how-it-works'>Learn How It Works</Link>
             </Button>
           </div>
 
