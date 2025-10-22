@@ -63,11 +63,17 @@ export default function CarDetailsContent({ car, location, similarCars }: CarDet
             {/* Overview */}
             <Overview name={`${car.brand} ${car.model} ${car.year}`} />
 
-            {/* What's Included */}
-            <WhatsIncluded />
+            <div className='flex flex-col lg:flex-row items-start lg:items-start gap-4'>
+              {/* What's Included */}
+              <div className='flex-1 w-full'>
+                <WhatsIncluded />
+              </div>
 
-            {/* Requirements */}
-            <Requirements />
+              {/* Requirements */}
+              <div className='flex-1 w-full'>
+                <Requirements />
+              </div>
+            </div>
 
             {/* Pricing Breakdown */}
             <Pricing pricePerDay={car.pricePerDay} currency={car.currency} />
