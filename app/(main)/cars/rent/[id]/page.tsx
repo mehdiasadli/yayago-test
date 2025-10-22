@@ -1,8 +1,11 @@
-import { dubaiLocations } from '@/data/locations';
 import { notFound } from 'next/navigation';
-import CarDetailsContent from '@/app/(main)/cars/rent/[id]/car-details-sections/content';
 import { carsService } from '@/lib/api/services';
 import { CarsApi } from '@/features/cars/cars.api';
+import Overview from './car-details-sections/overview';
+import WhatsIncluded from './car-details-sections/whats-included';
+import Requirements from './car-details-sections/requirements';
+import Pricing from './car-details-sections/pricing';
+import TermsConditions from './car-details-sections/terms-conditions';
 
 // Make this page dynamic to avoid build-time API calls
 export const dynamic = 'force-dynamic';
@@ -49,7 +52,29 @@ export default async function CarDetailsPage({ params }: CarDetailsPageProps) {
   }
 
   const car = carData.data;
-  const location = dubaiLocations.find((l) => l.key === 'Dubai');
 
-  return <CarDetailsContent car={car} location={location} similarCars={[]} />;
+  return (
+    <div className='lg:col-span-2 space-y-6'>
+      {/* Overview */}
+      <Overview name={`${car.brand} ${car.model} ${car.year}`} />
+
+      <div className='flex flex-col lg:flex-row items-start lg:items-start gap-4'>
+        {/* What's Included */}
+        <div className='flex-1 w-full'>
+          <WhatsIncluded />
+        </div>
+
+        {/* Requirements */}
+        <div className='flex-1 w-full'>
+          <Requirements />
+        </div>
+      </div>
+
+      {/* Pricing Breakdown */}
+      <Pricing pricePerDay={car.pricePerDay} currency={car.currency} />
+
+      {/* Terms & Conditions */}
+      <TermsConditions />
+    </div>
+  );
 }
