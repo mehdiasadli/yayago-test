@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Edit, BarChart3, Eye, Share2, Copy, Trash2, CheckCircle, EyeOff } from 'lucide-react';
 import DeleteListingButton from './delete-listing-button';
+import ShareButton from '@/components/share-button';
 
 interface ListingCardActionsProps {
   id: number;
@@ -30,10 +31,12 @@ export default function ListingCardActions({ id, status }: ListingCardActionsPro
         </Button>
       </Link>
 
-      <Button size='sm' variant='outline' className='hover:bg-gray-50'>
-        <Share2 className='w-4 h-4 mr-2' />
-        Share
-      </Button>
+      <ShareButton title='Share this listing' url={`${process.env.AUTH_URL}/cars/rent/${id}`}>
+        <Button size='sm' variant='outline' className='hover:bg-gray-50'>
+          <Share2 className='w-4 h-4 mr-2' />
+          Share
+        </Button>
+      </ShareButton>
 
       <Button size='sm' variant='outline' className='hover:bg-gray-50'>
         <Copy className='w-4 h-4 mr-2' />
