@@ -3,14 +3,13 @@
 import { Users, Gauge, Fuel, Package, DoorOpen } from 'lucide-react';
 import { TGetCarByIdResponse } from '@/features/cars/cars.types';
 import ImageSection from './image-section';
-import InfoCard from './info-card';
+import InfoCard from '../info-card/info-card';
 import TermsConditions from './terms-conditions';
 import Pricing from './pricing';
 import Requirements from './requirements';
 import WhatsIncluded from './whats-included';
 import Overview from './overview';
 import SimilarCars from './similar-cars';
-import HostInfo from './host-info';
 import FixedContactButton from './fixed-contact-button';
 import { useFixedContactButtonInView } from './use-fixed-contact-button-in-view';
 
@@ -28,79 +27,34 @@ export default function CarDetailsContent({ car, location, similarCars }: CarDet
     { Icon: Fuel, label: 'Fuel Type', value: car.fuelType ?? '' },
     { Icon: Package, label: 'Body Type', value: car.carType ?? '' },
   ];
+
   const { isVisible: isFixedContactButtonVisible, ref: infoCardRef } = useFixedContactButtonInView({
     rootMargin: '-80px 0px 0px 0px',
     threshold: 0.1,
   });
 
   return (
-    <div className='min-h-screen bg-gray-50 pt-20'>
-      <div className='max-w-[1920px] mx-auto px-6 lg:px-8 py-8'>
-        <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
-          {/* Left Sidebar - Sticky on Desktop */}
-          <div className='lg:col-span-1'>
-            <div className='lg:sticky lg:top-24 space-y-6'>
-              {/* Images Carousel */}
-              <ImageSection
-                images={car.images?.map((img) => img.imageUrl) || []}
-                name={`${car.brand} ${car.model} ${car.year}`}
-                featured={car.featured || false}
-                noDeposit={car.deposit === 0 || false}
-              />
+    <div className='lg:col-span-2 space-y-6'>
+      {/* Overview */}
+      <Overview name={`${car.brand} ${car.model} ${car.year}`} />
 
-              {/* Car Info Card */}
-              <div ref={infoCardRef}>
-                <InfoCard
-                  name={`${car.brand} ${car.model} ${car.year}`}
-                  pricePerDay={car.pricePerDay}
-                  currency={car.currency}
-                  location={location?.name || 'Dubai, UAE'}
-                  viewCount={car.viewCount || 0}
-                  features={features}
-                />
-              </div>
-
-              {/* Host Info */}
-              <HostInfo host={car.createdByFullName || ''} />
-            </div>
-          </div>
-
-          {/* Right Content */}
-          <div className='lg:col-span-2 space-y-6'>
-            {/* Overview */}
-            <Overview name={`${car.brand} ${car.model} ${car.year}`} />
-
-            <div className='flex flex-col lg:flex-row items-start lg:items-start gap-4'>
-              {/* What's Included */}
-              <div className='flex-1 w-full'>
-                <WhatsIncluded />
-              </div>
-
-              {/* Requirements */}
-              <div className='flex-1 w-full'>
-                <Requirements />
-              </div>
-            </div>
-
-            {/* Pricing Breakdown */}
-            <Pricing pricePerDay={car.pricePerDay} currency={car.currency} />
-
-            {/* Terms & Conditions */}
-            <TermsConditions />
-          </div>
+      <div className='flex flex-col lg:flex-row items-start lg:items-start gap-4'>
+        {/* What's Included */}
+        <div className='flex-1 w-full'>
+          <WhatsIncluded />
         </div>
 
-        {/* Similar Cars */}
-        {similarCars.length > 0 && <SimilarCars similarCars={similarCars} />}
-
-        <FixedContactButton
-          name={`${car.brand} ${car.model} ${car.year}`}
-          pricePerDay={car.pricePerDay}
-          currency={car.currency}
-          visible={isFixedContactButtonVisible}
-          primaryImageUrl={car.primaryImageUrl}
-        />
+        {/* Requirements */}
+        <div className='flex-1 w-full'>
+          <Requirements />
+        </div>
       </div>
+
+      {/* Pricing Breakdown */}
+      <Pricing pricePerDay={car.pricePerDay} currency={car.currency} />
+
+      {/* Terms & Conditions */}
+      <TermsConditions />
     </div>
   );
 }

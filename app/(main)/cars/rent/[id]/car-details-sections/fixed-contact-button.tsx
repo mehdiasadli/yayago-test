@@ -2,8 +2,8 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import ContactSection from './contact-section';
-import InfoCardPricing from './info-card-pricing';
-import InfoCardTitle from './info-card-title';
+import InfoCardPricing from '../info-card/info-card-pricing';
+import InfoCardTitle from '../info-card/info-card-title';
 import Image from 'next/image';
 
 interface FixedContactButtonProps {
