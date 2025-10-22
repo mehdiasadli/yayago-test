@@ -81,7 +81,7 @@ export default function Stats() {
       />
 
       <div className='relative max-w-7xl mx-auto'>
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0'>
+        <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-0'>
           {stats.map((stat, index) => (
             <StatCard key={stat.id} stat={stat} index={index} isVisible={isVisible} />
           ))}
@@ -129,7 +129,9 @@ function StatCard({ stat, index, isVisible }: { stat: (typeof stats)[0]; index: 
       <div className='relative h-full p-8 md:p-10 bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/15 hover:border-white/30 transition-all duration-500 flex flex-col justify-center items-center'>
         {/* Stat Number */}
         <div className='mb-4'>
-          <span className='text-5xl md:text-6xl font-bold text-white tracking-tight'>{count.toLocaleString()}</span>
+          <span className='text-4xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight'>
+            {count.toLocaleString()}
+          </span>
           <span className='text-4xl md:text-5xl font-bold text-white/90'>{stat.suffix}</span>
         </div>
 
