@@ -54,7 +54,7 @@ export default async function CarDetailsPage({ params }: CarDetailsPageProps) {
   const car = carData.data;
 
   return (
-    <div className='lg:col-span-2 space-y-6'>
+    <div className='space-y-6'>
       {/* Overview */}
       <Overview name={`${car.brand} ${car.model} ${car.year}`} />
 
