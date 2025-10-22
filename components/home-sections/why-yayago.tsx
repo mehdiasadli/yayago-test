@@ -84,9 +84,9 @@ export default function WhyYayaGo() {
       <div className='absolute inset-0 bg-gradient-to-tr from-transparent via-amber-50/15 to-transparent' />
 
       {/* Sophisticated floating elements */}
-      <div className='absolute top-20 right-10 w-72 h-72 bg-gradient-to-br from-blue-100/30 to-purple-100/30 rounded-full blur-3xl animate-pulse' />
+      <div className='absolute top-20 right-10 w-72 h-72 bg-gradient-to-br from-blue-100/30 to-purple-100/30 blur-3xl animate-pulse' />
       <div
-        className='absolute bottom-20 left-10 w-96 h-96 bg-gradient-to-tr from-purple-100/20 to-blue-100/20 rounded-full blur-3xl animate-pulse'
+        className='absolute bottom-20 left-10 w-96 h-96 bg-gradient-to-tr from-purple-100/20 to-blue-100/20 blur-3xl animate-pulse'
         style={{ animationDelay: '1s' }}
       />
 
@@ -95,7 +95,7 @@ export default function WhyYayaGo() {
         <img
           src='https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=400&h=200&fit=crop'
           alt='Car silhouette'
-          className='w-full h-full object-cover rounded-lg'
+          className='w-full h-full object-cover'
         />
       </div>
 
@@ -139,13 +139,13 @@ export default function WhyYayaGo() {
                 className={`group relative ${isFeatured ? 'md:col-span-1 md:row-span-1' : ''}`}
               >
                 <div
-                  className={`relative bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-100/50 hover:border-gray-200/80 transition-all duration-500 hover:shadow-xl hover:shadow-gray-200/50 h-full flex flex-col ${
+                  className={`relative bg-white/90 backdrop-blur-sm p-8 border border-gray-100/50 hover:border-gray-200/80 transition-all duration-500 hover:shadow-xl hover:shadow-gray-200/50 h-full flex flex-col ${
                     isFeatured ? 'md:scale-110 md:z-10 ring-1 ring-blue-100/50' : ''
                   }`}
                 >
                   {/* Subtle background gradient for featured card */}
                   {isFeatured && (
-                    <div className='absolute inset-0 bg-gradient-to-br from-blue-50/30 to-purple-50/30 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500' />
+                    <div className='absolute inset-0 bg-gradient-to-br from-blue-50/30 to-purple-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500' />
                   )}
 
                   <div className='relative flex-grow flex flex-col'>
