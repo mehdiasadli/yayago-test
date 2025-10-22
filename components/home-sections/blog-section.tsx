@@ -45,15 +45,15 @@ export default function BlogSection() {
   return (
     <section id='blog' className='relative py-20 md:py-24 px-6 lg:px-8 bg-white overflow-hidden'>
       {/* Background Decorations */}
-      <div className='absolute top-20 -right-32 w-96 h-96 bg-primary/5 rounded-full blur-3xl' />
-      <div className='absolute -bottom-32 -left-32 w-96 h-96 bg-primary/5 rounded-full blur-3xl' />
+      <div className='absolute top-20 -right-32 w-96 h-96 bg-primary/5 blur-3xl' />
+      <div className='absolute -bottom-32 -left-32 w-96 h-96 bg-primary/5 blur-3xl' />
 
       <div className='relative max-w-7xl mx-auto'>
         {/* Header */}
         <div className='flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12'>
           <div className='flex-1 text-center md:text-left'>
             <div className='inline-block mb-4'>
-              <span className='px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold tracking-wide uppercase'>
+              <span className='px-4 py-2 bg-primary/10 text-primary text-sm font-semibold tracking-wide uppercase'>
                 Latest Insights
               </span>
             </div>
@@ -84,7 +84,7 @@ export default function BlogSection() {
           {blogs.map((blog) => (
             <article
               key={blog.id}
-              className='group bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-xl hover:border-primary/20 transition-all duration-500 hover:-translate-y-2'
+              className='group bg-white border border-gray-200 overflow-hidden hover:shadow-xl hover:border-primary/20 transition-all duration-500 hover:-translate-y-2'
             >
               {/* Image */}
               <Link href={`/community/blog/${blog.slug}`} className='relative block h-56 overflow-hidden'>
@@ -98,7 +98,7 @@ export default function BlogSection() {
 
                 {/* Category Badge */}
                 <div className='absolute top-4 left-4'>
-                  <span className='px-3 py-1.5 bg-primary text-primary-foreground rounded-full text-xs font-semibold uppercase tracking-wide'>
+                  <span className='px-3 py-1.5 bg-primary text-primary-foreground text-xs font-semibold uppercase tracking-wide'>
                     {blog.category}
                   </span>
                 </div>
