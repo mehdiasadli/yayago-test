@@ -1,7 +1,5 @@
 'use client';
 
-import Link from 'next/link';
-import { Button } from '../ui/button';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import NavigationSearch from './navigation-search';
