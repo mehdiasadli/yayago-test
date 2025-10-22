@@ -16,7 +16,7 @@ export default function LocationsGrid({ setHoveredLocation, locations, columns =
     columns === 3 ? 'md:grid-cols-3' : columns === 4 ? 'md:grid-cols-2 lg:grid-cols-4' : 'md:grid-cols-2';
 
   return (
-    <div className={`grid grid-cols-1 ${gridColsClass}`}>
+    <div className={`grid grid-cols-2 ${gridColsClass}`}>
       {locations.map((location, index) => (
         <Link
           key={location.id}
