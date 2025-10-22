@@ -18,10 +18,10 @@ export default function DesktopNavigation({ ...props }: DesktopNavigationProps) 
       <div className='flex-1 min-w-0'>
         <NavigationMenu />
       </div>
-      <div className='flex-1 min-w-0'>
+      <div className='flex-1 min-w-0 flex justify-center'>
         <NavigationLogo />
       </div>
-      <div className='flex-1 min-w-0'>
+      <div className='flex-1 min-w-0 flex justify-end'>
         <NavigationActions />
       </div>
     </div>

@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import NavigationLogo from './navigation-logo';
 import NavigationActions from './navigation-actions';
 import HamburgerButton from './hamburger-button';
+import BackButton from './back-button';
 
 interface MobileNavigationProps extends HTMLAttributes<HTMLDivElement> {
   isMenuOpen: boolean;
@@ -31,9 +32,16 @@ export default function MobileNavigation({ isMenuOpen, onMenuToggle, ...props }:
       style={{ height: NAVIGATION_HEIGHT }}
       className={cn('flex items-center justify-between px-4 text-white relative z-50', props.className)}
     >
-      <NavigationLogo />
-      <NavigationActions />
-      <HamburgerButton isOpen={isMenuOpen} onClick={onMenuToggle} />
+      <div className='flex-1 min-w-0'>
+        <BackButton />
+      </div>
+      <div className='flex-1 min-w-0 flex justify-center'>
+        <NavigationLogo />
+      </div>
+      <div className='flex-1 min-w-0 flex justify-end'>
+        <NavigationActions />
+        <HamburgerButton isOpen={isMenuOpen} onClick={onMenuToggle} />
+      </div>
     </div>
   );
 }

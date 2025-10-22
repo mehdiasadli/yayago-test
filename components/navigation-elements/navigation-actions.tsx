@@ -10,8 +10,6 @@ import NavUser from './nav-user';
 export default function NavigationActions() {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
-  const hideListCarButton =
-    pathname === '/' || pathname.startsWith('/profile') || pathname === '/support/list-your-car';
   const isHomePage = pathname === '/';
 
   useEffect(() => {
@@ -32,21 +30,10 @@ export default function NavigationActions() {
     }
   }, [isHomePage]);
 
-  const showListCarButton = isHomePage ? isScrolled : !hideListCarButton;
   const showSearchButton = !isHomePage || isScrolled;
 
   return (
     <div className='h-full flex items-center justify-end'>
-      <Button
-        asChild
-        className={`h-full hover:bg-primary/80 transition-all duration-500 ${
-          showListCarButton ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4 pointer-events-none'
-        }`}
-      >
-        <Link href='/support/list-your-car' className='h-full'>
-          List Your Car
-        </Link>
-      </Button>
       <NavigationSearch show={showSearchButton} />
       <NavUser />
     </div>
