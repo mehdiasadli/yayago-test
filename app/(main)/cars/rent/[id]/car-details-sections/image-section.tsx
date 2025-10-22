@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils';
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -36,7 +37,7 @@ export default function ImageSection({ images, name, featured, noDeposit }: Imag
       )}
 
       {/* Main Image */}
-      <div className='relative aspect-[4/3] bg-gray-900'>
+      <div className={cn('relative bg-gray-900', images.length === 0 ? 'aspect-square h-32 w-full' : 'aspect-[4/3]')}>
         {images.length > 0 ? (
           <Image
             src={images[currentImageIndex]}

@@ -4,8 +4,7 @@ import InfoCardPricing from './info-card-pricing';
 import InfoCardTitle from './info-card-title';
 import InfoCardMetrics from './info-card-metrics';
 import InfoCardSpecs from './info-card-specs';
-import InfoCardLocation from './info-card-location';
-import HostInfo from '../car-details-sections/host-info';
+import InfoCardHostInfo from './info-card-location';
 
 interface InfoCardProps {
   id: string;
@@ -14,10 +13,20 @@ interface InfoCardProps {
   currency: string;
   location: string;
   viewCount: number;
+  hostName: string;
   features: { Icon: LucideIcon; label: string; value: string | number }[];
 }
 
-export default function InfoCard({ id, name, pricePerDay, currency, location, viewCount, features }: InfoCardProps) {
+export default function InfoCard({
+  id,
+  name,
+  pricePerDay,
+  currency,
+  location,
+  viewCount,
+  hostName,
+  features,
+}: InfoCardProps) {
   return (
     <div className='bg-white border-2 border-gray-200 p-6'>
       {/* Title */}
@@ -33,9 +42,7 @@ export default function InfoCard({ id, name, pricePerDay, currency, location, vi
       <InfoCardSpecs features={features} />
 
       {/* Location */}
-      {location && <InfoCardLocation location={location} />}
-
-      <HostInfo host='John Doe' />
+      <InfoCardHostInfo hostName={hostName} location={location} />
 
       {/* Contact Buttons */}
       <ContactSection name={name} />
