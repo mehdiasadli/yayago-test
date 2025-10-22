@@ -52,14 +52,14 @@ export default function FAQs() {
       className='relative py-20 md:py-24 px-6 lg:px-8 bg-gradient-to-br from-gray-50 via-white to-gray-50 overflow-hidden'
     >
       {/* Background Decorations */}
-      <div className='absolute top-20 -right-32 w-96 h-96 bg-primary/5 rounded-full blur-3xl' />
-      <div className='absolute -bottom-32 -left-32 w-96 h-96 bg-primary/5 rounded-full blur-3xl' />
+      <div className='absolute top-20 -right-32 w-96 h-96 bg-primary/5 blur-3xl' />
+      <div className='absolute -bottom-32 -left-32 w-96 h-96 bg-primary/5 blur-3xl' />
 
       <div className='relative max-w-5xl mx-auto'>
         {/* Header */}
         <div className='text-center mb-12 md:mb-16'>
           <div className='inline-block mb-4'>
-            <span className='px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold tracking-wide uppercase'>
+            <span className='px-4 py-2 bg-primary/10 text-primary text-sm font-semibold tracking-wide uppercase'>
               Got Questions?
             </span>
           </div>
@@ -78,7 +78,7 @@ export default function FAQs() {
               <AccordionItem
                 key={faq.id}
                 value={faq.id}
-                className='bg-white border border-gray-200 px-6 md:px-8 shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-300 data-[state=open]:shadow-lg data-[state=open]:border-primary/50'
+                className='bg-white border border-gray-200 px-6 md:px-8 shadow-xs hover:shadow-sm hover:border-primary/30 transition-all duration-300 data-[state=open]:shadow-lg data-[state=open]:border-primary/50'
               >
                 <AccordionTrigger className='text-left py-6 hover:no-underline group'>
                   <span className='text-lg md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors duration-300 pr-4'>
