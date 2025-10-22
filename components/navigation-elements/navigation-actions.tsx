@@ -36,7 +36,7 @@ export default function NavigationActions() {
   const showSearchButton = !isHomePage || isScrolled;
 
   return (
-    <div className='h-full flex items-center flex-1 justify-end'>
+    <div className='h-full flex items-center justify-end'>
       <Button
         asChild
         className={`h-full hover:bg-primary/80 transition-all duration-500 ${

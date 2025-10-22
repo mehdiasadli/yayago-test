@@ -15,9 +15,15 @@ export default function DesktopNavigation({ ...props }: DesktopNavigationProps) 
       style={{ height: NAVIGATION_HEIGHT }}
       className={cn('flex items-center justify-between px-4 text-white', props.className)}
     >
-      <NavigationMenu />
-      <NavigationLogo />
-      <NavigationActions />
+      <div className='flex-1 min-w-0'>
+        <NavigationMenu />
+      </div>
+      <div className='flex-1 min-w-0'>
+        <NavigationLogo />
+      </div>
+      <div className='flex-1 min-w-0'>
+        <NavigationActions />
+      </div>
     </div>
   );
 }

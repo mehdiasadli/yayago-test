@@ -11,7 +11,7 @@ export default function NavigationMenu() {
   const isActive = (href: string) => pathname === href || pathname.startsWith(href);
 
   return (
-    <nav className='h-full flex-1 justify-start'>
+    <nav className='h-full justify-start'>
       <ul className='h-full flex gap-2'>
         {primaryNavigationLinks.map((link) => (
           <li
@@ -21,7 +21,7 @@ export default function NavigationMenu() {
               isActive(link.href) && 'bg-primary/20 text-primary hover:text-white'
             )}
           >
-            <Link href={link.href} className='w-full h-full flex items-center justify-center'>
+            <Link href={link.href} className='w-full h-full text-sm flex items-center justify-center'>
               {link.label}
             </Link>
           </li>
