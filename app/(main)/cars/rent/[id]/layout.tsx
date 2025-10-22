@@ -48,16 +48,12 @@ export default async function CarDetailsLayout({ params, children }: CarDetailsL
   const location = dubaiLocations.find((l) => l.key === 'Dubai');
 
   return (
-    <>
-      <div>
-        <div className='min-h-screen bg-gray-50 pt-20'>
-          <div className='max-w-[1920px] mx-auto px-6 lg:px-8 py-8'>
-            <CarDetailsLayoutContent locationName={location?.name || 'Dubai, UAE'} car={car}>
-              {children}
-            </CarDetailsLayoutContent>
-          </div>
-        </div>
+    <div className='min-h-screen bg-gray-50 pt-20'>
+      <div className='max-w-7xl mx-auto px-6 lg:px-8 py-8'>
+        <CarDetailsLayoutContent locationName={location?.name || 'Dubai, UAE'} car={car}>
+          {children}
+        </CarDetailsLayoutContent>
       </div>
-    </>
+    </div>
   );
 }
