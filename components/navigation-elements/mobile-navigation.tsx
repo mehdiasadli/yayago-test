@@ -32,13 +32,13 @@ export default function MobileNavigation({ isMenuOpen, onMenuToggle, ...props }:
       style={{ height: NAVIGATION_HEIGHT }}
       className={cn('flex items-center justify-between px-4 text-white relative z-50', props.className)}
     >
-      <div className='flex-1 min-w-0'>
+      <div className='flex-1 min-w-0 h-full'>
         <BackButton />
       </div>
-      <div className='flex-1 min-w-0 flex justify-center'>
+      <div className='flex-1 min-w-0 flex justify-center h-full'>
         <NavigationLogo />
       </div>
-      <div className='flex-1 min-w-0 flex justify-end'>
+      <div className='flex-1 min-w-0 flex justify-end h-full'>
         <NavigationActions />
         <HamburgerButton isOpen={isMenuOpen} onClick={onMenuToggle} />
       </div>
