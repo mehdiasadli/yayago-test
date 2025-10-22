@@ -20,17 +20,21 @@ interface InfoCardMetricsProps {
 export default function InfoCardMetrics({ id, viewCount, favoriteCount }: InfoCardMetricsProps) {
   const { status } = useSession();
 
-  const { data: reviewsCount, status: reviewsCountStatus } = useQuery(createGetReviewsCountQueryOptions(id));
-  const { data: averageRating, status: averageRatingStatus } = useQuery(createGetAverageRatingQueryOptions(id));
+  const { data: reviewsCount } = useQuery(createGetReviewsCountQueryOptions(id));
+  const { data: averageRating } = useQuery(createGetAverageRatingQueryOptions(id));
 
   const container =
     typeof averageRating === 'number' && typeof reviewsCount === 'number' ? (
       <div className='flex items-center gap-1 text-yellow-600 hover:underline hover:text-yellow-500'>
         <Star className='w-4 h-4' strokeWidth={2} />
-        <span>
-          {averageRating.toFixed(1)} ({reviewsCount === 0 ? 'No' : reviewsCount}{' '}
-          {reviewsCount === 1 ? 'review' : 'reviews'})
-        </span>
+        {averageRating === 0 ? (
+          'No reviews yet'
+        ) : (
+          <span>
+            {averageRating.toFixed(1)} ({reviewsCount === 0 ? 'No' : reviewsCount}{' '}
+            {reviewsCount === 1 ? 'review' : 'reviews'})
+          </span>
+        )}
       </div>
     ) : null;
 

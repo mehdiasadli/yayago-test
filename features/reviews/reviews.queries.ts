@@ -39,7 +39,7 @@ export const createGetReviewsCountQueryOptions = (carId: string) =>
         throw new Error(count.message);
       }
 
-      return count.data;
+      return count.data || 0;
     },
     enabled: !!carId,
   });
@@ -54,7 +54,7 @@ export const createGetAverageRatingQueryOptions = (carId: string) =>
         throw new Error(averageRating.message);
       }
 
-      return averageRating.data;
+      return averageRating.data || 0;
     },
     enabled: !!carId,
   });
