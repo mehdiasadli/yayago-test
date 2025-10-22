@@ -33,7 +33,7 @@ export default function ListYourCarCTA() {
         <div className='max-w-4xl'>
           {/* Badge */}
           <div className='inline-block mb-6'>
-            <span className='px-5 py-2.5 bg-primary/20 text-primary-foreground rounded-full text-sm font-semibold tracking-wide uppercase backdrop-blur-sm border border-primary/30'>
+            <span className='px-5 py-2.5 bg-primary/20 text-primary-foreground text-sm font-semibold tracking-wide uppercase backdrop-blur-sm border border-primary/30'>
               Start Earning Today
             </span>
           </div>
