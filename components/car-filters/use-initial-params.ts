@@ -17,5 +17,6 @@ export function useInitialParams(): TGetCarsQuery {
     yearRange: object.yearRange,
     featuredOnly: object.featuredOnly === 'true',
     noDepositOnly: object.noDepositOnly === 'true',
+    sortBy: object.sortBy,
   } as TGetCarsQuery;
 }

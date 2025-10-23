@@ -17,12 +17,7 @@ export default function CarsRentContent() {
 
   const [query, setQuery] = useState<TGetCarsQuery>(initialParams);
 
-  console.log(query);
-
   const { data: cars = [], status } = useQuery(createGetCarsQueryOptions({}));
-
-  // Sort
-  const [sortBy, setSortBy] = useState<string>('relevance');
 
   // UI State
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
@@ -53,7 +48,10 @@ export default function CarsRentContent() {
 
             {/* Sort */}
             <div className='flex gap-2'>
-              <SortSelector sortBy={sortBy} setSortBy={setSortBy} />
+              <SortSelector
+                sortBy={query.sortBy ?? 'relevance'}
+                setSortBy={(sortBy) => setQuery({ ...query, sortBy })}
+              />
 
               <CarFilters
                 open={mobileFiltersOpen}

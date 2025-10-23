@@ -75,4 +75,5 @@ export const GetCarsQueryDto = z.object({
   yearRange: z.tuple([z.number(), z.number()]).optional(),
   featuredOnly: z.boolean().optional(),
   noDepositOnly: z.boolean().optional(),
+  sortBy: z.string().optional(),
 });

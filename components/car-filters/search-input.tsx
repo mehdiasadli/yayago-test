@@ -23,11 +23,8 @@ export default function SearchInput({ q, setQ }: SearchInputProps) {
     router.push(url, { scroll: false });
   };
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setQ(e.target.value);
-  }
-
   useEffect(() => {
+    if (!debouncedQ) return;
     handleSearch();
   }, [debouncedQ]);
 
