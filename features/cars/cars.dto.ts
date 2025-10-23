@@ -63,3 +63,16 @@ export const GetCarReviewsResponseDto = z
     createdAt: z.coerce.date(),
   })
   .array();
+
+export const GetCarsQueryDto = z.object({
+  q: z.string().optional(),
+  brand: z.string().optional(),
+  location: z.string().optional(),
+  carTypes: z.array(z.string()).optional(),
+  transmissions: z.array(z.string()).optional(),
+  fuelTypes: z.array(z.string()).optional(),
+  priceRange: z.tuple([z.number(), z.number()]).optional(),
+  yearRange: z.tuple([z.number(), z.number()]).optional(),
+  featuredOnly: z.boolean().optional(),
+  noDepositOnly: z.boolean().optional(),
+});

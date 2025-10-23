@@ -156,7 +156,11 @@ export class Api {
       }
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
+        const errorData = await response.json().catch((err) => {
+          console.error('Failed to parse response as JSON:', err);
+
+          return {};
+        });
         throw new Error(errorData.message || `HTTP ${response.status}`);
       }
 
@@ -175,6 +179,7 @@ export class Api {
 
         // Try to parse as JSON
         rawData = JSON.parse(text);
+        // console.log('Raw data:', rawData);
       } catch (parseError) {
         console.error('Failed to parse response as JSON:', parseError);
         return {

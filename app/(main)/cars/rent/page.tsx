@@ -1,14 +1,26 @@
 import { Suspense } from 'react';
-import CarsRentContent from '@/components/cars-rent-content';
-import { dubaiLocations } from '@/data/locations';
-import { CarsApi } from '@/features/cars/cars.api';
+import CarsRentContent from '@/components/cars-rent-content/cars-rent-content';
 import { createGetCarsQueryOptions } from '@/features/cars/cars.queries';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
+import { TGetCarsQuery } from '@/features/cars/cars.types';
 
 export const metadata = {
   title: 'Rent a Car in Dubai',
   description:
     'Browse our extensive collection of rental cars in Dubai. From economy to luxury, find the perfect vehicle for your needs. Compare prices, features, and book instantly.',
+};
+
+const initialQuery: TGetCarsQuery = {
+  q: '',
+  brand: undefined,
+  location: undefined,
+  carTypes: [],
+  transmissions: [],
+  fuelTypes: [],
+  priceRange: [0, 2000],
+  yearRange: [2020, 2024],
+  featuredOnly: false,
+  noDepositOnly: false,
 };
 
 function LoadingFallback() {
@@ -25,14 +37,8 @@ function LoadingFallback() {
 }
 
 export default async function CarsRentPage() {
-  const cars = await CarsApi.getCars();
-
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery(createGetCarsQueryOptions());
-
-  if (!cars.success) {
-    return <div>Error: {cars.message}</div>;
-  }
+  await queryClient.prefetchQuery(createGetCarsQueryOptions(initialQuery));
 
   return (
     <div className='min-h-screen bg-gray-50'>
@@ -45,20 +51,6 @@ export default async function CarsRentPage() {
               Browse through our extensive collection of vehicles. From economy to luxury, we have the perfect car for
               every journey in Dubai.
             </p>
-            <div className='mt-8 flex flex-wrap gap-4 text-sm'>
-              <div className='flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm'>
-                <span className='text-2xl font-bold text-primary'>{cars.data.length}</span>
-                <span className='text-gray-300'>Available Cars</span>
-              </div>
-              <div className='flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm'>
-                <span className='text-2xl font-bold text-primary'>{dubaiLocations.length}</span>
-                <span className='text-gray-300'>Locations</span>
-              </div>
-              <div className='flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm'>
-                <span className='text-2xl font-bold text-primary'>24/7</span>
-                <span className='text-gray-300'>Support</span>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -66,7 +58,7 @@ export default async function CarsRentPage() {
       {/* Main Content */}
       <Suspense fallback={<LoadingFallback />}>
         <HydrationBoundary state={dehydrate(queryClient)}>
-          <CarsRentContent locations={dubaiLocations} />
+          <CarsRentContent />
         </HydrationBoundary>
       </Suspense>
     </div>

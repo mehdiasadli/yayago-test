@@ -13,16 +13,21 @@ import {
   TCreateCarRequest,
   TDeleteCarParams,
   TGetCarByIdParams,
+  TGetCarsQuery,
   TUpdateCarParams,
   TUpdateCarRequest,
 } from './cars.types';
+import qs from 'qs';
 
 export class CarsApi {
   static readonly baseURL = CARS_BASE_URL;
 
   /** GET /api/cars */
-  static async getCars() {
-    return await Api.get(this.baseURL, {
+  static async getCars(query: TGetCarsQuery) {
+    const queryString = qs.stringify(query);
+    const queryParams = queryString ? '?' + queryString : '';
+
+    return await Api.get(this.baseURL + queryParams, {
       outputSchema: GetCarsResponseDto,
       successMessage: 'Cars fetched successfully',
     });

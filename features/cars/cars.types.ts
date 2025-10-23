@@ -11,6 +11,7 @@ import {
   GetCarsResponseDto,
   GetCarReviewsParamsDto,
   GetCarReviewsResponseDto,
+  GetCarsQueryDto,
 } from './cars.dto';
 import { CarColorEnumSchema, CarFuelTypeEnumSchema, CarTransmissionEnumSchema, CarTypeEnumSchema } from './cars.enums';
 
@@ -30,3 +31,4 @@ export type TGetCarByIdResponse = z.infer<typeof GetCarByIdResponseDto>;
 export type TGetCarsResponse = z.infer<typeof GetCarsResponseDto>;
 export type TGetCarReviewsParams = z.infer<typeof GetCarReviewsParamsDto>;
 export type TGetCarReviewsResponse = z.infer<typeof GetCarReviewsResponseDto>;
+export type TGetCarsQuery = z.infer<typeof GetCarsQueryDto>;

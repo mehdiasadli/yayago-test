@@ -171,6 +171,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           if (!refreshResponse.ok) {
             console.error('Token refresh failed:', refreshResponse.status);
             // Return null to force re-login
+            return null as any;
             return { ...token, error: 'RefreshTokenError' } as any;
           }
 
@@ -180,6 +181,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           const refreshValidation = RefreshTokenResponseDto.safeParse(refreshData);
           if (!refreshValidation.success) {
             console.error('Invalid refresh response:', refreshValidation.error);
+            return null as any;
             return { ...token, error: 'RefreshTokenError' } as any;
           }
 
@@ -194,6 +196,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         } catch (error) {
           console.error('Error refreshing token:', error);
           // Return token with error flag instead of throwing
+          return null as any;
           return { ...token, error: 'RefreshTokenError' } as any;
         }
       }
