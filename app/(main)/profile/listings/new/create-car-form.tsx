@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import FormStep1 from './form-step-1';
+import CarDetailsForm from './car-details-form';
 import FormStep2 from './form-step-2';
 import FormStep3 from './form-step-3';
 
@@ -21,7 +21,7 @@ export default function CreateCarForm() {
 
   // Step 1: Car Details Form
   if (step === 1) {
-    return <FormStep1 setCarId={setCarId} setStep={setStep} />;
+    return <CarDetailsForm setCarId={setCarId} setStep={setStep} />;
   }
 
   // Step 2: Image Upload

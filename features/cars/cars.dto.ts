@@ -1,5 +1,6 @@
 import z from 'zod';
 import { CreateCarImageResponseDto } from '../car-images/car-images.dto';
+import { CarDriveTypeSchema, CarFuelPolicySchema } from './cars.enums';
 
 export const CreateCarRequestDto = z.object({
   brand: z.string(),
@@ -7,6 +8,19 @@ export const CreateCarRequestDto = z.object({
   year: z.number().int().min(1850),
   currency: z.string(),
   pricePerDay: z.number().positive(),
+  pricePerWeek: z.number().positive().nullish(),
+  pricePerMonth: z.number().positive().nullish(),
+  minimumRentalDays: z.number().int().min(1).nullish(),
+  maxMileagePerDay: z.number().int().nullish(),
+  maxMileagePerWeek: z.number().int().nullish(),
+  maxMileagePerMonth: z.number().int().nullish(),
+  minimumAge: z.number().int().min(12).nullish(),
+  minimumDrivingExperience: z.number().int().min(1).nullish(),
+  horsePower: z.number().int().nullish(),
+  torque: z.number().int().nullish(),
+  maxSpeed: z.number().int().nullish(),
+  fuelPolicy: CarFuelPolicySchema.nullish(),
+  driveType: CarDriveTypeSchema.nullish(),
   available: z.boolean(),
   fuelType: z.string().nullish(),
   doorCount: z.number().int().nullish(),

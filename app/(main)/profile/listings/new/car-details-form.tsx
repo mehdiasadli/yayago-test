@@ -33,16 +33,16 @@ const defaultValues: TCreateCarRequest = {
   seatCount: 5,
 };
 
-interface FormStep1Props {
+interface CarDetailsFormProps {
   setCarId: (carId: number) => void;
   setStep: (step: 2 | 3) => void;
 }
 
-export default function FormStep1({ setCarId, setStep }: FormStep1Props) {
+export default function CarDetailsForm({ setCarId, setStep }: CarDetailsFormProps) {
   const [error, setError] = useState('');
 
   const form = useForm({
-    formId: 'create-car-form-step-1',
+    formId: 'car-details-form',
     defaultValues,
     validators: {
       onSubmit: CreateCarRequestDto,

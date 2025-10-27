@@ -18,7 +18,11 @@ export default function NavUser() {
 
   return (
     <AnimateIcon animateOnHover className='h-full' suppressHydrationWarning>
-      <Button asChild variant='ghost' className='h-full hover:text-primary hover:bg-primary/20'>
+      <Button
+        asChild
+        variant='ghost'
+        className='h-full hover:text-white hover:bg-white/20 transition-colors duration-300'
+      >
         <Link href={href} className='h-full'>
           <UserRound />
           <span className='hidden md:block' suppressHydrationWarning>

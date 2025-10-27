@@ -11,9 +11,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 bg-neutral-900/40 ${NAVIGATION_BLUR} border-b border-white/20 shadow-lg`}
-      >
+      <header className={`fixed top-0 left-0 right-0 z-50 bg-primary border-b border-primary/20 shadow-lg`}>
         <DesktopNavigation className='hidden md:flex' />
         <MobileNavigation
           className='md:hidden'

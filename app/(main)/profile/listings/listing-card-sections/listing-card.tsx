@@ -31,7 +31,7 @@ export default function ListingCard({ listing }: ListingCardProps) {
               carType={listing.carType || 'Unknown Car Type'}
               fuelType={listing.fuelType || 'Unknown Fuel Type'}
               location='Unknown Location'
-              transmission='Unknown Transmission'
+              transmission={listing.transmission || 'Unknown Transmission'}
             />
 
             {/* Actions Dropdown */}

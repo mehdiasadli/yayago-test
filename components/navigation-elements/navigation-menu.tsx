@@ -17,8 +17,8 @@ export default function NavigationMenu() {
           <li
             key={link.href}
             className={cn(
-              'h-full flex items-center justify-center px-2 hover:bg-primary/90 transition-colors duration-300',
-              isActive(link.href) && 'bg-primary/20 text-primary hover:text-white'
+              'h-full flex items-center justify-center px-2 transition-colors duration-300 hover:bg-white/20',
+              isActive(link.href) && 'bg-white/30'
             )}
           >
             <Link href={link.href} className='w-full h-full text-sm flex items-center justify-center'>

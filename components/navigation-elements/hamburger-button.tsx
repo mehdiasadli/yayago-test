@@ -13,7 +13,7 @@ export default function HamburgerButton({ isOpen, onClick }: HamburgerButtonProp
   return (
     <Button
       variant='ghost'
-      className='md:hidden h-full hover:text-primary hover:bg-primary/20 relative'
+      className='md:hidden h-full hover:text-white hover:bg-white/20 transition-colors duration-300 relative'
       onClick={onClick}
       aria-label={isOpen ? 'Close menu' : 'Open menu'}
     >

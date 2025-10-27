@@ -27,7 +27,7 @@ export default function NavigationSearch({ show }: NavigationSearchProps) {
     <Dialog modal={true}>
       <DialogTrigger asChild>
         <AnimateIcon animateOnHover className='h-full'>
-          <Button variant='ghost' className='h-full hover:text-primary hover:bg-primary/20'>
+          <Button variant='ghost' className='h-full hover:text-white hover:bg-white/20 transition-colors duration-300'>
             <Search />
             <span className='hidden md:block'>Search</span>
           </Button>

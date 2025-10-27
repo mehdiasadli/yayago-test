@@ -29,3 +29,18 @@ export const CarFuelTypeEnumSchema = z.enum(['PETROL', 'DIESEL', 'ELECTRIC', 'HY
   message: 'Invalid car fuel type',
   required_error: 'Car fuel type is required',
 });
+
+export const CarFuelPolicySchema = z.enum(
+  ['SAME_TO_SAME', 'PRE_PURCHASE', 'PAY_FOR_USAGE', 'QUARTER_TANK', 'SAME_LEVEL', 'FREE_TANK'],
+  {
+    invalid_type_error: 'Invalid car fuel policy',
+    message: 'Invalid car fuel policy',
+    required_error: 'Car fuel policy is required',
+  }
+);
+
+export const CarDriveTypeSchema = z.enum(['FRONT', 'REAR', 'ALL', 'FOUR_FOUR'], {
+  invalid_type_error: 'Invalid car drive type',
+  message: 'Invalid car drive type',
+  required_error: 'Car drive type is required',
+});

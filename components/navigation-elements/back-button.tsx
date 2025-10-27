@@ -17,7 +17,7 @@ export default function BackButton() {
     <Button
       variant='ghost'
       className={cn(
-        'h-full hover:text-primary hover:bg-primary/20',
+        'h-full hover:text-white hover:bg-white/20 transition-colors duration-300',
         pathname !== '/' ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4 pointer-events-none'
       )}
       onClick={handleBack}
