@@ -2,8 +2,6 @@ import { notFound } from 'next/navigation';
 import { carsService } from '@/lib/api/services';
 import { CarsApi } from '@/features/cars/cars.api';
 import Overview from './car-details-sections/overview';
-import WhatsIncluded from './car-details-sections/whats-included';
-import Requirements from './car-details-sections/requirements';
 import Pricing from './car-details-sections/pricing';
 import TermsConditions from './car-details-sections/terms-conditions';
 
@@ -58,23 +56,8 @@ export default async function CarDetailsPage({ params }: CarDetailsPageProps) {
       {/* Overview */}
       <Overview name={`${car.brand} ${car.model} ${car.year}`} />
 
-      <div className='flex flex-col lg:flex-row items-start lg:items-start gap-4'>
-        {/* What's Included */}
-        <div className='flex-1 w-full'>
-          <WhatsIncluded />
-        </div>
-
-        {/* Requirements */}
-        <div className='flex-1 w-full'>
-          <Requirements />
-        </div>
-      </div>
-
       {/* Pricing Breakdown */}
       <Pricing pricePerDay={car.pricePerDay} currency={car.currency} />
-
-      {/* Terms & Conditions */}
-      <TermsConditions />
     </div>
   );
 }

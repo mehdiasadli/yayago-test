@@ -31,6 +31,19 @@ const defaultValues: TCreateCarRequest = {
   fuelType: 'PETROL',
   transmission: 'MANUAL',
   seatCount: 5,
+  driveType: undefined,
+  fuelPolicy: undefined,
+  horsePower: undefined,
+  maxMileagePerDay: undefined,
+  maxMileagePerMonth: undefined,
+  maxMileagePerWeek: undefined,
+  minimumAge: undefined,
+  minimumDrivingExperience: undefined,
+  minimumRentalDays: undefined,
+  torque: undefined,
+  maxSpeed: undefined,
+  pricePerWeek: undefined,
+  pricePerMonth: undefined,
 };
 
 interface CarDetailsFormProps {

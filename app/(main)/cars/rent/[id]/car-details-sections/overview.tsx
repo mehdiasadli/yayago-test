@@ -1,3 +1,7 @@
+import WhatsIncluded from './whats-included';
+import Requirements from './requirements';
+import TermsConditions from './terms-conditions';
+
 interface OverviewProps {
   name: string;
 }
@@ -15,6 +19,12 @@ export default function Overview({ name }: OverviewProps) {
           With 4 seats and 4 doors, this vehicle is ideal for both business and leisure trips. The car has only 100 km
           on the odometer and is maintained in excellent condition.
         </p>
+      </div>
+
+      <div className='flex gap-2 justify-end mt-2'>
+        <TermsConditions />
+        <WhatsIncluded />
+        <Requirements />
       </div>
     </div>
   );
