@@ -1,4 +1,5 @@
-import { Bell, Calendar, Car, User } from 'lucide-react';
+import AvatarUploader from '@/components/avatar-uploader';
+import { Calendar } from 'lucide-react';
 
 interface UserPanelProps {
   name: string;
@@ -10,12 +11,10 @@ export default function UserPanel({ name, createdAt }: UserPanelProps) {
     <>
       {/* Avatar */}
       <div className='relative group flex-shrink-0'>
-        <div className='w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center text-white text-3xl sm:text-4xl font-bold border-4 border-white shadow-xl'>
+        {/* <div className='w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center text-white text-3xl sm:text-4xl font-bold border-4 border-white shadow-xl'>
           {name.charAt(0)}
-        </div>
-        <div className='absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer'>
-          <User className='w-6 h-6 sm:w-8 sm:h-8 text-white' strokeWidth={2} />
-        </div>
+        </div> */}
+        <AvatarUploader />
       </div>
 
       {/* User Details */}

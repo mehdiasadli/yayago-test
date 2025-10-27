@@ -52,6 +52,24 @@ export class Api {
   }
 
   /**
+   * UPLOAD FILE request
+   */
+  static async upload<OutputSchema extends z.ZodSchema>(
+    url: string,
+    formData: FormData,
+    options: RequestOptions<OutputSchema>
+  ) {
+    return this.request(url, {
+      ...options,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      body: formData,
+    });
+  }
+
+  /**
    * POST/PUT/DELETE/PATCH requests - with input and output validation
    */
   static async mutation<InputSchema extends z.ZodSchema, OutputSchema extends z.ZodSchema>(
@@ -214,94 +232,4 @@ export class Api {
       };
     }
   }
-}
-
-// ============================================================================
-// USAGE EXAMPLES
-// ============================================================================
-
-/**
- * Example schemas
- */
-const UserOutputSchema = z.object({
-  id: z.string(),
-  email: z.string(),
-  name: z.string(),
-});
-
-const CreateUserInputSchema = z.object({
-  email: z.string().email(),
-  name: z.string(),
-  password: z.string().min(8),
-});
-
-const CreateUserOutputSchema = z.object({
-  id: z.string(),
-  email: z.string(),
-  name: z.string(),
-  createdAt: z.date(),
-});
-
-/**
- * Example: GET request
- */
-export async function getUser(id: string) {
-  const response = await Api.get(`/api/users/${id}`, {
-    outputSchema: UserOutputSchema,
-    successMessage: 'User fetched successfully',
-  });
-
-  // TypeScript knows response.data is { id: string; email: string; name: string; }
-  if (response.success) {
-    console.log(response.data.email); // ✓ Type-safe
-  }
-
-  return response;
-}
-
-/**
- * Example: POST request
- */
-export async function createUser(input: z.infer<typeof CreateUserInputSchema>) {
-  // Input is automatically validated against CreateUserInputSchema
-  const response = await Api.post(`/api/users`, input, {
-    inputSchema: CreateUserInputSchema,
-    outputSchema: CreateUserOutputSchema,
-    successMessage: 'User created successfully',
-  });
-
-  // TypeScript knows response.data matches CreateUserOutputSchema
-  if (response.success) {
-    console.log(response.data.createdAt); // ✓ Type-safe
-  }
-
-  return response;
-}
-
-/**
- * Example: PUT request
- */
-export async function updateUser(id: string, input: Partial<z.infer<typeof CreateUserInputSchema>>) {
-  const response = await Api.put(`/api/users/${id}`, input, {
-    inputSchema: CreateUserInputSchema.partial(),
-    outputSchema: UserOutputSchema,
-  });
-
-  return response;
-}
-
-/**
- * Example: DELETE request
- */
-export async function deleteUser(id: string) {
-  const DeleteResponseSchema = z.object({
-    success: z.boolean(),
-    message: z.string(),
-  });
-
-  const response = await Api.delete(`/api/users/${id}`, {
-    outputSchema: DeleteResponseSchema,
-  });
-
-  return response;
 }

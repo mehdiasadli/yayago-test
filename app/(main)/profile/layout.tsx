@@ -13,6 +13,8 @@ export default async function ProfileLayout({ children }: { children: React.Reac
   const fullName = session.user.fullName;
   const isAdmin = session.user.role === 'ADMIN';
 
+  console.log(session.user);
+
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-50 to-white'>
       {/* Profile Header */}

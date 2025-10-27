@@ -26,3 +26,17 @@ export const GetUserByIdResponseDto = CreateUserResponseDto.extend({
   addedCars: z.array(CreateCarResponseDto),
   bookings: z.array(z.any()),
 });
+
+export const UploadUserAvatarParamsDto = z.object({
+  id: z.number().int().positive(),
+});
+
+export const UploadUserAvatarRequestDto = z.object({
+  file: z.instanceof(File, { message: 'File is required' }),
+});
+
+export const UploadUserAvatarResponseDto = z.string().url();
+
+export const RemoveUserAvatarParamsDto = z.object({
+  id: z.number().int().positive(),
+});
