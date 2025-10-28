@@ -1,6 +1,6 @@
 import z from 'zod';
 import { UserRoleEnumSchema } from './users.enums';
-import { CreateCarResponseDto } from '../cars/cars.dto';
+import { GetCarByIdResponseDto } from '../cars/cars.dto';
 
 export const CreateUserRequestDto = z.object({
   email: z.string().email(),
@@ -23,8 +23,10 @@ export const GetUserByIdParamsDto = z.object({
 });
 
 export const GetUserByIdResponseDto = CreateUserResponseDto.extend({
-  addedCars: z.array(CreateCarResponseDto),
+  addedCars: z.array(GetCarByIdResponseDto),
   bookings: z.array(z.any()),
+  avatarName: z.string().nullish(),
+  avatarUrl: z.string().url().nullish(),
 });
 
 export const UploadUserAvatarParamsDto = z.object({

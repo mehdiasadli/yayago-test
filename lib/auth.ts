@@ -8,6 +8,7 @@ declare module 'next-auth' {
     id: string;
     accessToken: string;
     refreshToken: string;
+    avatarUrl?: string | null;
   }
 
   interface Session {
@@ -18,6 +19,7 @@ declare module 'next-auth' {
       phoneNumber: string;
       role: 'USER' | 'ADMIN';
       createdAt: string;
+      avatarUrl?: string | null;
     };
     accessToken: string;
     refreshToken: string;
@@ -31,6 +33,7 @@ declare module '@auth/core/jwt' {
     accessToken: string;
     refreshToken: string;
     expiresAt: number;
+    avatarUrl?: string | null;
   }
 }
 
@@ -96,8 +99,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           const userResponseData = await userResponse.json();
           console.log('User data received');
 
+          const importantUserSchema = GetUserByIdResponseDto.omit({
+            addedCars: true,
+            bookings: true,
+          });
+
           // Validate user response
-          const userValidation = GetUserByIdResponseDto.safeParse(userResponseData);
+          const userValidation = importantUserSchema.safeParse(userResponseData);
           if (!userValidation.success) {
             console.error('Invalid user data:', userValidation.error);
             return null; // Return null, don't throw
@@ -113,6 +121,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             email: userData.email,
             phoneNumber: userData.phoneNumber,
             role: userData.role,
+            avatarUrl: userData.avatarUrl,
             accessToken: token,
             refreshToken: refreshToken,
             expiresAt: expiresAt,
@@ -143,6 +152,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           fullName: user.fullName,
           phoneNumber: user.phoneNumber,
           role: user.role,
+          avatarUrl: user.avatarUrl,
           accessToken: user.accessToken,
           refreshToken: user.refreshToken,
           createdAt: user.createdAt,
@@ -235,6 +245,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             fullName: userData.fullName,
             phoneNumber: userData.phoneNumber,
             role: userData.role,
+            avatarUrl: userData.avatarUrl,
           };
         } catch (error) {
           console.error('Error updating user data:', error);
@@ -252,6 +263,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.fullName = token.fullName;
         session.user.phoneNumber = token.phoneNumber;
         session.user.role = token.role;
+        session.user.avatarUrl = token.avatarUrl;
         session.accessToken = token.accessToken;
         session.refreshToken = token.refreshToken;
         session.expiresAt = token.expiresAt;

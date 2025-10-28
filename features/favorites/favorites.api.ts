@@ -1,11 +1,10 @@
 import z from 'zod';
 import { Api } from '../_common/common.api';
-import { FAVORITES_API_URL } from './favorites.constants';
 import { CheckFavoriteResponseDto, CreateFavoriteResponseDto, GetUserFavoritesResponseDto } from './favorites.dto';
 import { TCheckFavoriteParams, TCreateFavoriteParams, TDeleteFavoriteParams } from './favorites.types';
 
 export class FavoritesApi {
-  static readonly baseURL = FAVORITES_API_URL;
+  static readonly baseURL = '/api/favorites';
 
   /** POST /api/favorites */
   static async createFavorite(params: TCreateFavoriteParams) {

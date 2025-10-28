@@ -15,6 +15,7 @@ import { CarsApi } from '@/features/cars/cars.api';
 import { carsQueryKeys } from '@/features/cars/cars.queries';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Loader2, Trash2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 interface DeleteListingButtonProps {
@@ -24,6 +25,7 @@ interface DeleteListingButtonProps {
 export default function DeleteListingButton({ id }: DeleteListingButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (id: number) => {
@@ -38,6 +40,7 @@ export default function DeleteListingButton({ id }: DeleteListingButtonProps) {
     onSuccess: () => {
       setIsOpen(false);
       queryClient.invalidateQueries({ queryKey: carsQueryKeys.index() });
+      router.refresh();
     },
   });
 
@@ -68,7 +71,7 @@ export default function DeleteListingButton({ id }: DeleteListingButtonProps) {
             onClick={() => mutate(id)}
             disabled={isPending}
           >
-            {isPending ? <Loader2 className='w-4 h-4 mr-2 animate-spin' /> : 'Delete'}
+            {isPending ? <Loader2 className='w-4 h-4 animate-spin' /> : 'Delete'}
           </Button>
         </DialogFooter>
       </DialogContent>

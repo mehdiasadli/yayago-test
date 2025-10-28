@@ -8,10 +8,9 @@ import {
   TLoginInput,
   TRefreshTokenInput,
 } from '@/schemas';
-import { AUTH_BASE_URL } from './auth.constants';
 
 export class AuthApi {
-  static readonly baseURL = AUTH_BASE_URL;
+  static readonly baseURL = '/api/auth';
 
   static async refreshToken(input: TRefreshTokenInput) {
     return await Api.post(this.baseURL + '/refresh', input, {

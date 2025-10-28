@@ -1,6 +1,5 @@
 import z from 'zod';
 import { Api } from '../_common/common.api';
-import { REVIEWS_BASE_URL } from './reviews.constants';
 import {
   CreateReviewRequestDto,
   CreateReviewResponseDto,
@@ -22,7 +21,7 @@ import {
 } from './reviews.types';
 
 export class ReviewsApi {
-  static readonly baseURL = REVIEWS_BASE_URL;
+  static readonly baseURL = '/api/reviews';
 
   /** POST /api/reviews */
   static async createReview(input: TCreateReviewRequest) {

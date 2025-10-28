@@ -44,3 +44,21 @@ export const CarDriveTypeSchema = z.enum(['FRONT', 'REAR', 'ALL', 'FOUR_FOUR'], 
   message: 'Invalid car drive type',
   required_error: 'Car drive type is required',
 });
+
+export const CarStatusEnumSchema = z.enum(
+  [
+    'PENDING', // host has listed the car and waits for approval
+    'REJECTED', // admins have rejected the car
+    'AVAILABLE', // car is available for rent
+    'BLOCKED', // car is blocked by the admins
+    'INACTIVE', // car is inactivated by the host
+    'OCCUPIED', // car is occupied by a renter
+    'DISABLED', // car is disabled by the host
+    'APPROVED', // car is approved by the admins
+  ],
+  {
+    invalid_type_error: 'Invalid car status',
+    message: 'Invalid car status',
+    required_error: 'Car status is required',
+  }
+);

@@ -30,3 +30,23 @@ export function getInitials(name?: string | null, count: 1 | 2 | 3 = 2) {
     .slice(0, count)
     .join('');
 }
+
+export function mapEnumLabel(enumValue?: string | null, defaultValue = 'Unknown') {
+  if (!enumValue || !enumValue.trim()) {
+    return defaultValue;
+  }
+
+  return enumValue.replace(/_/g, ' ').charAt(0).toUpperCase() + enumValue.slice(1).toLowerCase();
+}
+
+export function createMutationFn<Fn extends (...args: any[]) => Promise<any>>(fn: Fn) {
+  return async (...args: Parameters<Fn>) => {
+    const response = await fn(...args);
+
+    if (!response.success) {
+      throw new Error(response.message);
+    }
+
+    return response.data;
+  };
+}

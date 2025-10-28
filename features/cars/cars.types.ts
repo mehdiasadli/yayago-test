@@ -13,12 +13,21 @@ import {
   GetCarReviewsResponseDto,
   GetCarsQueryDto,
 } from './cars.dto';
-import { CarColorEnumSchema, CarFuelTypeEnumSchema, CarTransmissionEnumSchema, CarTypeEnumSchema } from './cars.enums';
+import {
+  CarColorEnumSchema,
+  CarDriveTypeSchema,
+  CarFuelTypeEnumSchema,
+  CarStatusEnumSchema,
+  CarTransmissionEnumSchema,
+  CarTypeEnumSchema,
+} from './cars.enums';
 
 export type TCarType = z.infer<typeof CarTypeEnumSchema>;
 export type TCarColor = z.infer<typeof CarColorEnumSchema>;
 export type TCarTransmission = z.infer<typeof CarTransmissionEnumSchema>;
 export type TCarFuelType = z.infer<typeof CarFuelTypeEnumSchema>;
+export type TCarDriveType = z.infer<typeof CarDriveTypeSchema>;
+export type TCarStatus = z.infer<typeof CarStatusEnumSchema>;
 
 export type TCreateCarRequest = z.infer<typeof CreateCarRequestDto>;
 export type TCreateCarResponse = z.infer<typeof CreateCarResponseDto>;

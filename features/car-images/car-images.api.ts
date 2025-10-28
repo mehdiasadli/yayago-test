@@ -1,5 +1,4 @@
 import { TDeleteImageParams, TGetCarImagesParams } from '@/schemas';
-import { CAR_IMAGES_BASE_URL } from './car-images.constants';
 import { Api } from '../_common/common.api';
 import {
   CreateCarImageRequestDto,
@@ -19,7 +18,7 @@ import {
 import z from 'zod';
 
 export class CarImagesApi {
-  static readonly baseURL = CAR_IMAGES_BASE_URL;
+  static readonly baseURL = '/api/cars';
 
   /** GET /api/cars/{carId}/image */
   static async getCarImages(params: TGetCarImagesParams) {

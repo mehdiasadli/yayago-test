@@ -41,16 +41,7 @@ export default function CarDetailsLayoutContent({ car, locationName, children }:
 
           {/* Car Info Card */}
           <div ref={infoCardRef}>
-            <InfoCard
-              id={car.id.toString()}
-              hostName={car.createdByFullName || 'Unknown Host'}
-              name={`${car.brand} ${car.model} ${car.year}`}
-              pricePerDay={car.pricePerDay}
-              currency={car.currency}
-              location={locationName}
-              viewCount={car.viewCount || 0}
-              features={features}
-            />
+            <InfoCard car={car} locationName={locationName} features={features} />
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@ import { CirclePercent, Route } from 'lucide-react';
 interface PricingSectionProps {
   pricePerDay: number;
   currency: string;
-  km?: number;
+  maxMileagePerDay?: number | null;
   discount?: number | null;
 }
 
@@ -13,7 +13,12 @@ function calculateDiscountedPrice(pricePerDay: number, discount?: number | null)
   return Number((pricePerDay * (1 - discount / 100)).toFixed(2));
 }
 
-export default function PricingSection({ pricePerDay, currency, km = 100, discount = null }: PricingSectionProps) {
+export default function PricingSection({
+  pricePerDay,
+  currency,
+  maxMileagePerDay,
+  discount = null,
+}: PricingSectionProps) {
   const discountedPrice = calculateDiscountedPrice(pricePerDay, discount);
   const hasDiscount = Boolean(discount && discount > 0);
 
@@ -35,7 +40,7 @@ export default function PricingSection({ pricePerDay, currency, km = 100, discou
 
         <div className='flex items-center gap-1 text-xs text-gray-500'>
           <Route className='w-3 h-3' strokeWidth={2.5} />
-          <span>{km} km</span>
+          <span>{typeof maxMileagePerDay === 'number' ? `${maxMileagePerDay} km` : 'Unlimited'}</span>
         </div>
       </div>
     </div>

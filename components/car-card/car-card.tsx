@@ -13,16 +13,14 @@ import Title from './title';
 
 interface CarCardProps {
   car: TGetCarByIdResponse & { favoriteCreatedAt?: Date };
-  favoritePage?: boolean;
 }
 
-export default function CarCard({ car, favoritePage }: CarCardProps) {
+export default function CarCard({ car }: CarCardProps) {
   const featuredImages = getFeaturedImages(car.images);
 
   return (
     <Card className='p-0 overflow-hidden flex flex-col h-[520px] group/card transition-all duration-500 bg-white/80 backdrop-blur-xl border border-white/50 hover:border-white/90 hover:shadow-lg'>
       <ImagesCarousel
-        favoritePage={favoritePage}
         car={{
           id: car.id,
           featured: car.featured || false,
@@ -47,7 +45,12 @@ export default function CarCard({ car, favoritePage }: CarCardProps) {
           />
 
           {/* Stats */}
-          <Stats viewCount={car.viewCount} favoriteCount={0} rating={4.8} reviewCount={10} />
+          <Stats
+            viewCount={car.viewCount}
+            favoriteCount={car.favoritesCount || 0}
+            rating={car.averageRating || 0}
+            reviewCount={car.reviewCount || 0}
+          />
 
           {/* Specs */}
           <Specs
@@ -60,10 +63,15 @@ export default function CarCard({ car, favoritePage }: CarCardProps) {
           <HostSection host={car.createdByFullName || 'Unknown Host'} />
 
           {/* Price & Mileage */}
-          <PricingSection pricePerDay={car.pricePerDay} currency={car.currency} discount={car.discountPercentage} />
+          <PricingSection
+            pricePerDay={car.pricePerDay}
+            maxMileagePerDay={car.maxMileagePerDay}
+            currency={car.currency}
+            discount={car.discountPercentage}
+          />
         </CardHeader>
 
-        <FooterActions carId={car.id.toString()} favoritePage={favoritePage} />
+        <FooterActions carId={car.id.toString()} isFavorite={car.isFavorite || false} />
       </div>
     </Card>
   );

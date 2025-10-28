@@ -1,6 +1,5 @@
 import z from 'zod';
 import { Api } from '../_common/common.api';
-import { USERS_BASE_URL } from './users.constants';
 import {
   CreateUserRequestDto,
   CreateUserResponseDto,
@@ -16,7 +15,7 @@ import {
 } from './users.types';
 
 export class UsersApi {
-  static readonly baseURL = USERS_BASE_URL;
+  static readonly baseURL = '/api/users';
 
   static async getUserById(params: TGetUserByIdParams) {
     return await Api.get(this.baseURL + '/' + params.id, {

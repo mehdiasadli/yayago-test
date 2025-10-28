@@ -1,10 +1,8 @@
 import { CheckCircle } from 'lucide-react';
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -26,8 +24,7 @@ export default function WhatsIncluded() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant='outline'>
-          <CheckCircle className='w-4- h-4 text-green-200' strokeWidth={2} />
+        <Button variant='link'>
           <h2 className='font-bold'>What's Included</h2>
         </Button>
       </DialogTrigger>
@@ -46,11 +43,6 @@ export default function WhatsIncluded() {
                 ))}
               </div>
             </DialogDescription>
-            <DialogFooter className='px-6 pb-6 sm:justify-start'>
-              <DialogClose asChild>
-                <Button type='button'>Close</Button>
-              </DialogClose>
-            </DialogFooter>
           </div>
         </DialogHeader>
       </DialogContent>

@@ -1,6 +1,6 @@
 import z from 'zod';
 import { CreateCarImageResponseDto } from '../car-images/car-images.dto';
-import { CarDriveTypeSchema, CarFuelPolicySchema } from './cars.enums';
+import { CarDriveTypeSchema, CarFuelPolicySchema, CarStatusEnumSchema } from './cars.enums';
 
 export const CreateCarRequestDto = z.object({
   brand: z.string(),
@@ -32,6 +32,8 @@ export const CreateCarRequestDto = z.object({
   discountPercentage: z.number().nullish(),
   transmission: z.string().nullish(),
   seatCount: z.number().int().nullish(),
+  features: z.array(z.string()).nullish(),
+  description: z.string().nullish(),
 });
 
 export const CreateCarResponseDto = CreateCarRequestDto.extend({
@@ -58,9 +60,16 @@ export const GetCarByIdParamsDto = z.object({
   id: z.number().int().positive(),
 });
 
-export const GetCarByIdResponseDto = CreateCarResponseDto;
+export const GetCarByIdResponseDto = CreateCarResponseDto.extend({
+  favoritesCount: z.number().int().nonnegative().nullish(),
+  isFavorite: z.boolean().nullish(),
+  reviewCount: z.number().int().nonnegative().nullish(),
+  averageRating: z.number().min(1).max(10).nullish(),
+  status: CarStatusEnumSchema.nullish(),
+  rejectionReason: z.string().nullish(),
+});
 
-export const GetCarsResponseDto = CreateCarResponseDto.array();
+export const GetCarsResponseDto = GetCarByIdResponseDto.array();
 
 export const GetCarReviewsParamsDto = z.object({
   id: z.number().int().positive(),

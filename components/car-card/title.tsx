@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { CardDescription, CardTitle } from '../ui/card';
+import { mapEnumLabel } from '@/lib/utils';
 
 interface TitleProps {
   carId: string;
@@ -17,7 +18,7 @@ export default function Title({ carId, brand, model, year, carType, transmission
         {year} {brand} {model}
       </CardTitle>
       <CardDescription className='text-gray-500'>
-        {carType || 'Type'} • {transmission || 'Transmission'}
+        {mapEnumLabel(carType, 'Unknown Type')} • {mapEnumLabel(transmission, 'Unknown Transmission')}
       </CardDescription>
     </Link>
   );

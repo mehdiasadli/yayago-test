@@ -57,7 +57,12 @@ export default async function CarDetailsPage({ params }: CarDetailsPageProps) {
       <Overview name={`${car.brand} ${car.model} ${car.year}`} />
 
       {/* Pricing Breakdown */}
-      <Pricing pricePerDay={car.pricePerDay} currency={car.currency} />
+      <Pricing
+        pricePerDay={car.pricePerDay}
+        pricePerWeek={car.pricePerWeek || undefined}
+        pricePerMonth={car.pricePerMonth || undefined}
+        currency={car.currency}
+      />
     </div>
   );
 }

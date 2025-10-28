@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronLeft, ChevronRight, Heart, Star } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useState } from 'react';
@@ -17,10 +17,9 @@ interface ImagesCarouselProps {
     brand: string;
     model: string;
   };
-  favoritePage?: boolean;
 }
 
-export default function ImagesCarousel({ car, favoritePage }: ImagesCarouselProps) {
+export default function ImagesCarousel({ car }: ImagesCarouselProps) {
   const featuredImages = car.images.map((image) => image.imageUrl).slice(0, 4);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 

@@ -1,6 +1,5 @@
 import z from 'zod';
 import { Api } from '../_common/common.api';
-import { CARS_BASE_URL } from './cars.constants';
 import {
   CreateCarRequestDto,
   CreateCarResponseDto,
@@ -20,7 +19,7 @@ import {
 import qs from 'qs';
 
 export class CarsApi {
-  static readonly baseURL = CARS_BASE_URL;
+  static readonly baseURL = '/api/cars';
 
   /** GET /api/cars */
   static async getCars(query: TGetCarsQuery) {

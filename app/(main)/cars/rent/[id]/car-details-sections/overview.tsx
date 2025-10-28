@@ -21,7 +21,7 @@ export default function Overview({ name }: OverviewProps) {
         </p>
       </div>
 
-      <div className='flex gap-2 justify-end mt-2'>
+      <div className='grid md:grid-cols-3 grid-cols-2 gap-2 justify-end mt-4'>
         <TermsConditions />
         <WhatsIncluded />
         <Requirements />

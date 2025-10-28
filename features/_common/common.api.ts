@@ -179,6 +179,7 @@ export class Api {
 
           return {};
         });
+
         throw new Error(errorData.message || `HTTP ${response.status}`);
       }
 
@@ -197,7 +198,8 @@ export class Api {
 
         // Try to parse as JSON
         rawData = JSON.parse(text);
-        // console.log('Raw data:', rawData);
+
+        console.log('Raw data:', rawData);
       } catch (parseError) {
         console.error('Failed to parse response as JSON:', parseError);
         return {
@@ -211,6 +213,7 @@ export class Api {
       const validation = outputSchema.safeParse(rawData);
       if (!validation.success) {
         console.error('Output validation failed:', validation.error);
+
         return {
           success: false,
           message: 'Invalid response format',

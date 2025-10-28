@@ -7,8 +7,10 @@ interface ListingsStatsProps {
 
 export default function ListingsStats({ addedCars }: ListingsStatsProps) {
   const total = addedCars.length;
-  const active = addedCars.filter((car) => car.available).length;
-  const rented = addedCars.filter((car) => !car.available).length;
+
+  const active = addedCars.filter((car) => car.status === 'AVAILABLE').length;
+  const rented = addedCars.filter((car) => car.status === 'OCCUPIED').length;
+
   const totalViews = addedCars.reduce((acc, car) => acc + (car.viewCount || 0), 0);
 
   return (

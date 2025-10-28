@@ -1,5 +1,6 @@
 'use client';
 
+import ColorSelector from '@/components/color-selector';
 import { Button } from '@/components/ui/button';
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
@@ -8,42 +9,51 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { CarsApi } from '@/features/cars/cars.api';
 import { CreateCarRequestDto } from '@/features/cars/cars.dto';
-import { CarFuelTypeEnumSchema, CarTransmissionEnumSchema } from '@/features/cars/cars.enums';
-import { TCreateCarRequest } from '@/features/cars/cars.types';
+import {
+  CarDriveTypeSchema,
+  CarFuelTypeEnumSchema,
+  CarTransmissionEnumSchema,
+  CarTypeEnumSchema,
+} from '@/features/cars/cars.enums';
+import { TCarDriveType, TCreateCarRequest } from '@/features/cars/cars.types';
 import { useForm } from '@tanstack/react-form';
-import { AlertCircle, ArrowRight, Calendar, Car, DollarSign, DoorOpen, Users } from 'lucide-react';
+import { AlertCircle, ArrowRight, Calendar, Car, DollarSign, DoorOpen, Route, Users } from 'lucide-react';
 import { useState } from 'react';
 
 const defaultValues: TCreateCarRequest = {
-  brand: '',
-  model: '',
-  year: new Date().getFullYear(),
-  pricePerDay: 0,
-  available: true,
+  // Basic Information
+  brand: '', // added to form
+  model: '', // added to form
+  year: new Date().getFullYear(), // added to form
+  // Pricing Information
   currency: 'AED',
-  carType: '',
-  featured: false,
-  color: '',
+  pricePerDay: 0, // added to form
+  maxMileagePerDay: undefined, // added to form
+  pricePerWeek: undefined, // added to form
+  maxMileagePerWeek: undefined, // added to form
+  pricePerMonth: undefined, // added to form
+  maxMileagePerMonth: undefined, // added to form
+  // Booking Information
+  available: true, // added to form
+  featured: false, // added to form
   deposit: 0,
   discountPercentage: 0,
-  doorCount: 4,
-  engineVolume: '',
-  fuelType: 'PETROL',
-  transmission: 'MANUAL',
-  seatCount: 5,
-  driveType: undefined,
   fuelPolicy: undefined,
-  horsePower: undefined,
-  maxMileagePerDay: undefined,
-  maxMileagePerMonth: undefined,
-  maxMileagePerWeek: undefined,
   minimumAge: undefined,
   minimumDrivingExperience: undefined,
   minimumRentalDays: undefined,
-  torque: undefined,
-  maxSpeed: undefined,
-  pricePerWeek: undefined,
-  pricePerMonth: undefined,
+  // Vehicle Information
+  carType: '', // added to form
+  color: '#FFFFFF', // added to form
+  doorCount: 4, // added to form
+  engineVolume: '',
+  fuelType: 'PETROL', // added to form
+  transmission: 'MANUAL', // added to form
+  seatCount: 5, // added to form
+  driveType: undefined, // added to form
+  horsePower: undefined, // added to form
+  torque: undefined, // added to form
+  maxSpeed: undefined, // added to form
 };
 
 interface CarDetailsFormProps {
@@ -111,8 +121,11 @@ export default function CarDetailsForm({ setCarId, setStep }: CarDetailsFormProp
         }}
         className='space-y-6'
       >
-        {/* Brand */}
-        <FieldGroup className='space-y-2'>
+        {/* Basic Information */}
+        <FieldGroup className='border border-gray-200 p-4'>
+          <h2 className='text-lg font-semibold text-gray-700 uppercase tracking-wider'>Basic Information</h2>
+
+          {/* Brand */}
           <form.Field
             name='brand'
             children={(field) => {
@@ -146,10 +159,8 @@ export default function CarDetailsForm({ setCarId, setStep }: CarDetailsFormProp
               );
             }}
           />
-        </FieldGroup>
 
-        {/* Model */}
-        <FieldGroup className='space-y-2'>
+          {/* Model */}
           <form.Field
             name='model'
             children={(field) => {
@@ -183,10 +194,8 @@ export default function CarDetailsForm({ setCarId, setStep }: CarDetailsFormProp
               );
             }}
           />
-        </FieldGroup>
 
-        {/* Year */}
-        <FieldGroup className='space-y-2'>
+          {/* Year */}
           <form.Field
             name='year'
             children={(field) => {
@@ -225,9 +234,41 @@ export default function CarDetailsForm({ setCarId, setStep }: CarDetailsFormProp
           />
         </FieldGroup>
 
-        {/* Price Per Day & Currency */}
-        <div className='grid grid-cols-2 gap-4'>
-          <FieldGroup className='space-y-2'>
+        {/* Pricing Information */}
+        <FieldGroup className='border border-gray-200 p-4'>
+          <h2 className='text-lg font-semibold text-gray-700 uppercase tracking-wider'>Pricing Information</h2>
+
+          <form.Field
+            name='currency'
+            children={(field) => {
+              const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
+              return (
+                <Field data-invalid={isInvalid}>
+                  <FieldLabel
+                    htmlFor={field.name}
+                    className='text-sm font-semibold text-gray-700 uppercase tracking-wider'
+                  >
+                    Currency
+                  </FieldLabel>
+                  <Select value={field.state.value} onValueChange={(value) => field.handleChange(value)}>
+                    <SelectTrigger className='h-12 w-full'>
+                      <SelectValue placeholder='Select currency' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value='AED'>AED (د.إ)</SelectItem>
+                      <SelectItem value='USD'>USD ($)</SelectItem>
+                      <SelectItem value='EUR'>EUR (€)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                </Field>
+              );
+            }}
+          />
+
+          {/* Price Per Day & Max Mileage Per Day */}
+          <FieldGroup className='grid grid-cols-2 gap-4'>
             <form.Field
               name='pricePerDay'
               children={(field) => {
@@ -264,11 +305,9 @@ export default function CarDetailsForm({ setCarId, setStep }: CarDetailsFormProp
                 );
               }}
             />
-          </FieldGroup>
 
-          <FieldGroup className='space-y-2'>
             <form.Field
-              name='currency'
+              name='maxMileagePerDay'
               children={(field) => {
                 const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
 
@@ -278,28 +317,194 @@ export default function CarDetailsForm({ setCarId, setStep }: CarDetailsFormProp
                       htmlFor={field.name}
                       className='text-sm font-semibold text-gray-700 uppercase tracking-wider'
                     >
-                      Currency
+                      Max Mileage Per Day
                     </FieldLabel>
-                    <Select value={field.state.value} onValueChange={(value) => field.handleChange(value)}>
-                      <SelectTrigger className='h-12 w-full'>
-                        <SelectValue placeholder='Select currency' />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value='AED'>AED (د.إ)</SelectItem>
-                        <SelectItem value='USD'>USD ($)</SelectItem>
-                        <SelectItem value='EUR'>EUR (€)</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <InputGroup>
+                      <InputGroupInput
+                        id={field.name}
+                        name={field.name}
+                        type='number'
+                        min={0}
+                        step='0.01'
+                        value={field.state.value || ''}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(Number(e.target.value))}
+                        aria-invalid={isInvalid}
+                        placeholder='e.g., 150'
+                        autoComplete='off'
+                      />
+                      <InputGroupAddon>
+                        <Route className='w-5 h-5 text-gray-400' />
+                      </InputGroupAddon>
+                    </InputGroup>
                     {isInvalid && <FieldError errors={field.state.meta.errors} />}
                   </Field>
                 );
               }}
             />
           </FieldGroup>
-        </div>
 
-        <div className='grid grid-cols-2 gap-4'>
-          <FieldGroup className='space-y-2'>
+          {/* Price Per Week & Max Mileage Per Week */}
+          <FieldGroup className='grid grid-cols-2 gap-4'>
+            <form.Field
+              name='pricePerWeek'
+              children={(field) => {
+                const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
+                return (
+                  <Field data-invalid={isInvalid}>
+                    <FieldLabel
+                      htmlFor={field.name}
+                      className='text-sm font-semibold text-gray-700 uppercase tracking-wider'
+                    >
+                      Price Per Week
+                    </FieldLabel>
+                    <InputGroup>
+                      <InputGroupInput
+                        id={field.name}
+                        name={field.name}
+                        type='number'
+                        min={0}
+                        step='0.01'
+                        value={field.state.value || ''}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(Number(e.target.value))}
+                        aria-invalid={isInvalid}
+                        placeholder='e.g., 150'
+                        autoComplete='off'
+                      />
+                      <InputGroupAddon>
+                        <DollarSign className='w-5 h-5 text-gray-400' />
+                      </InputGroupAddon>
+                    </InputGroup>
+                    {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                  </Field>
+                );
+              }}
+            />
+
+            <form.Field
+              name='maxMileagePerWeek'
+              children={(field) => {
+                const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
+                return (
+                  <Field data-invalid={isInvalid}>
+                    <FieldLabel
+                      htmlFor={field.name}
+                      className='text-sm font-semibold text-gray-700 uppercase tracking-wider'
+                    >
+                      Max Mileage Per Week
+                    </FieldLabel>
+                    <InputGroup>
+                      <InputGroupInput
+                        id={field.name}
+                        name={field.name}
+                        type='number'
+                        min={0}
+                        step='0.01'
+                        value={field.state.value || ''}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(Number(e.target.value))}
+                        aria-invalid={isInvalid}
+                        placeholder='e.g., 150'
+                        autoComplete='off'
+                      />
+                      <InputGroupAddon>
+                        <Route className='w-5 h-5 text-gray-400' />
+                      </InputGroupAddon>
+                    </InputGroup>
+                    {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                  </Field>
+                );
+              }}
+            />
+          </FieldGroup>
+
+          {/* Price Per Month & Max Mileage Per Month */}
+          <FieldGroup className='grid grid-cols-2 gap-4'>
+            <form.Field
+              name='pricePerMonth'
+              children={(field) => {
+                const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
+                return (
+                  <Field data-invalid={isInvalid}>
+                    <FieldLabel
+                      htmlFor={field.name}
+                      className='text-sm font-semibold text-gray-700 uppercase tracking-wider'
+                    >
+                      Price Per Month
+                    </FieldLabel>
+                    <InputGroup>
+                      <InputGroupInput
+                        id={field.name}
+                        name={field.name}
+                        type='number'
+                        min={0}
+                        step='0.01'
+                        value={field.state.value || ''}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(Number(e.target.value))}
+                        aria-invalid={isInvalid}
+                        placeholder='e.g., 150'
+                        autoComplete='off'
+                      />
+                      <InputGroupAddon>
+                        <DollarSign className='w-5 h-5 text-gray-400' />
+                      </InputGroupAddon>
+                    </InputGroup>
+                    {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                  </Field>
+                );
+              }}
+            />
+
+            <form.Field
+              name='maxMileagePerMonth'
+              children={(field) => {
+                const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
+                return (
+                  <Field data-invalid={isInvalid}>
+                    <FieldLabel
+                      htmlFor={field.name}
+                      className='text-sm font-semibold text-gray-700 uppercase tracking-wider'
+                    >
+                      Max Mileage Per Month
+                    </FieldLabel>
+                    <InputGroup>
+                      <InputGroupInput
+                        id={field.name}
+                        name={field.name}
+                        type='number'
+                        min={0}
+                        step='0.01'
+                        value={field.state.value || ''}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(Number(e.target.value))}
+                        aria-invalid={isInvalid}
+                        placeholder='e.g., 150'
+                        autoComplete='off'
+                      />
+                      <InputGroupAddon>
+                        <Route className='w-5 h-5 text-gray-400' />
+                      </InputGroupAddon>
+                    </InputGroup>
+                    {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                  </Field>
+                );
+              }}
+            />
+          </FieldGroup>
+        </FieldGroup>
+
+        {/* Vehicle Information */}
+        <FieldGroup className='border border-gray-200 p-4'>
+          <h2 className='text-lg font-semibold text-gray-700 uppercase tracking-wider'>Vehicle Information</h2>
+
+          {/* Transmission & Fuel Type */}
+          <FieldGroup className='grid grid-cols-2 gap-4'>
             <form.Field
               name='transmission'
               children={(field) => {
@@ -330,9 +535,7 @@ export default function CarDetailsForm({ setCarId, setStep }: CarDetailsFormProp
                 );
               }}
             />
-          </FieldGroup>
 
-          <FieldGroup className='space-y-2'>
             <form.Field
               name='fuelType'
               children={(field) => {
@@ -364,10 +567,9 @@ export default function CarDetailsForm({ setCarId, setStep }: CarDetailsFormProp
               }}
             />
           </FieldGroup>
-        </div>
 
-        <div className='grid grid-cols-2 gap-4'>
-          <FieldGroup className='space-y-2'>
+          {/* Doors & Seats */}
+          <FieldGroup className='grid grid-cols-2 gap-4'>
             <form.Field
               name='doorCount'
               children={(field) => {
@@ -405,9 +607,7 @@ export default function CarDetailsForm({ setCarId, setStep }: CarDetailsFormProp
                 );
               }}
             />
-          </FieldGroup>
 
-          <FieldGroup className='space-y-2'>
             <form.Field
               name='seatCount'
               children={(field) => {
@@ -446,27 +646,252 @@ export default function CarDetailsForm({ setCarId, setStep }: CarDetailsFormProp
               }}
             />
           </FieldGroup>
-        </div>
 
-        {/* Available */}
-        <form.Field
-          name='available'
-          children={(field) => (
-            <div className='relative flex w-full items-start gap-2 rounded-md border border-input p-4 shadow-xs outline-none has-data-[state=checked]:border-primary/50'>
-              <Switch
-                id={field.name}
-                checked={field.state.value}
-                onCheckedChange={(checked) => field.handleChange(checked)}
-                onBlur={field.handleBlur}
-                className='order-1 h-4 w-6 after:absolute after:inset-0 [&_span]:size-3 data-[state=checked]:[&_span]:translate-x-2 data-[state=checked]:[&_span]:rtl:-translate-x-2'
-              />
-              <div className='grid grow gap-2'>
-                <Label htmlFor={field.name}>Available for Rent</Label>
-                <p className='text-xs text-muted-foreground'>A short description goes here.</p>
-              </div>
-            </div>
-          )}
-        />
+          {/* Horse Power & Torque & Max Speed */}
+          <FieldGroup className='grid grid-cols-2 lg:grid-cols-3 gap-4'>
+            <form.Field
+              name='horsePower'
+              children={(field) => {
+                const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
+                return (
+                  <Field data-invalid={isInvalid}>
+                    <FieldLabel
+                      htmlFor={field.name}
+                      className='text-sm font-semibold text-gray-700 uppercase tracking-wider'
+                    >
+                      Horse Power
+                    </FieldLabel>
+                    <InputGroup>
+                      <InputGroupInput
+                        id={field.name}
+                        name={field.name}
+                        type='number'
+                        min={1}
+                        step='1'
+                        value={field.state.value || ''}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(Number(e.target.value))}
+                        aria-invalid={isInvalid}
+                        placeholder='e.g., 100'
+                        autoComplete='off'
+                      />
+                      <InputGroupAddon>
+                        <DoorOpen className='w-5 h-5 text-gray-400' />
+                      </InputGroupAddon>
+                    </InputGroup>
+                    {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                  </Field>
+                );
+              }}
+            />
+
+            <form.Field
+              name='torque'
+              children={(field) => {
+                const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
+                return (
+                  <Field data-invalid={isInvalid}>
+                    <FieldLabel
+                      htmlFor={field.name}
+                      className='text-sm font-semibold text-gray-700 uppercase tracking-wider'
+                    >
+                      Torque
+                    </FieldLabel>
+                    <InputGroup>
+                      <InputGroupInput
+                        id={field.name}
+                        name={field.name}
+                        type='number'
+                        min={1}
+                        step='1'
+                        value={field.state.value || ''}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(Number(e.target.value))}
+                        aria-invalid={isInvalid}
+                        placeholder='e.g., 100'
+                        autoComplete='off'
+                      />
+                      <InputGroupAddon>
+                        <DoorOpen className='w-5 h-5 text-gray-400' />
+                      </InputGroupAddon>
+                    </InputGroup>
+                    {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                  </Field>
+                );
+              }}
+            />
+
+            <form.Field
+              name='maxSpeed'
+              children={(field) => {
+                const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
+                return (
+                  <Field data-invalid={isInvalid}>
+                    <FieldLabel
+                      htmlFor={field.name}
+                      className='text-sm font-semibold text-gray-700 uppercase tracking-wider'
+                    >
+                      Max Speed
+                    </FieldLabel>
+                    <InputGroup>
+                      <InputGroupInput
+                        id={field.name}
+                        name={field.name}
+                        type='number'
+                        min={1}
+                        step='1'
+                        value={field.state.value || ''}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(Number(e.target.value))}
+                        aria-invalid={isInvalid}
+                        placeholder='e.g., 100'
+                        autoComplete='off'
+                      />
+                      <InputGroupAddon>
+                        <DoorOpen className='w-5 h-5 text-gray-400' />
+                      </InputGroupAddon>
+                    </InputGroup>
+                    {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                  </Field>
+                );
+              }}
+            />
+          </FieldGroup>
+
+          <FieldGroup className='grid grid-cols-2 gap-4'>
+            <form.Field
+              name='carType'
+              children={(field) => {
+                const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
+                return (
+                  <Field data-invalid={isInvalid}>
+                    <FieldLabel
+                      htmlFor={field.name}
+                      className='text-sm font-semibold text-gray-700 uppercase tracking-wider'
+                    >
+                      Car Type
+                    </FieldLabel>
+                    <Select value={field.state.value || ''} onValueChange={(value) => field.handleChange(value)}>
+                      <SelectTrigger className='h-12 w-full'>
+                        <SelectValue placeholder='Select car type' />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CarTypeEnumSchema.options.map((option) => (
+                          <SelectItem key={option} value={option}>
+                            {option.charAt(0).toUpperCase() + option.slice(1).toLowerCase()}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                  </Field>
+                );
+              }}
+            />
+
+            <form.Field
+              name='driveType'
+              children={(field) => {
+                const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
+                return (
+                  <Field data-invalid={isInvalid}>
+                    <FieldLabel
+                      htmlFor={field.name}
+                      className='text-sm font-semibold text-gray-700 uppercase tracking-wider'
+                    >
+                      Drive Type
+                    </FieldLabel>
+                    <Select
+                      value={field.state.value || ''}
+                      onValueChange={(value) => field.handleChange(value as TCarDriveType)}
+                    >
+                      <SelectTrigger className='h-12 w-full'>
+                        <SelectValue placeholder='Select drive type' />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CarDriveTypeSchema.options.map((option) => (
+                          <SelectItem key={option} value={option}>
+                            {option.charAt(0).toUpperCase() + option.slice(1).toLowerCase()}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                  </Field>
+                );
+              }}
+            />
+          </FieldGroup>
+
+          <form.Field
+            name='color'
+            children={(field) => {
+              const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
+              return (
+                <Field data-invalid={isInvalid}>
+                  <FieldLabel
+                    htmlFor={field.name}
+                    className='text-sm font-semibold text-gray-700 uppercase tracking-wider'
+                  >
+                    Color
+                  </FieldLabel>
+                  <ColorSelector value={field.state.value || ''} onChange={(value) => field.handleChange(value)} />
+                </Field>
+              );
+            }}
+          />
+        </FieldGroup>
+
+        <FieldGroup className='border border-gray-200 p-4'>
+          <h2 className='text-lg font-semibold text-gray-700 uppercase tracking-wider'>Booking Information</h2>
+
+          <FieldGroup className='grid grid-cols-2 gap-4'>
+            {/* Available */}
+            <form.Field
+              name='available'
+              children={(field) => (
+                <div className='relative flex w-full items-start gap-2 rounded-md border border-input p-4 shadow-xs outline-none has-data-[state=checked]:border-primary/50'>
+                  <Switch
+                    id={field.name}
+                    checked={field.state.value}
+                    onCheckedChange={(checked) => field.handleChange(checked)}
+                    onBlur={field.handleBlur}
+                    className='order-1 h-4 w-6 after:absolute after:inset-0 [&_span]:size-3 data-[state=checked]:[&_span]:translate-x-2 data-[state=checked]:[&_span]:rtl:-translate-x-2'
+                  />
+                  <div className='grid grow gap-2'>
+                    <Label htmlFor={field.name}>Available for Rent</Label>
+                    <p className='text-xs text-muted-foreground'>Show this car in the available section.</p>
+                  </div>
+                </div>
+              )}
+            />
+
+            <form.Field
+              name='featured'
+              children={(field) => (
+                <div className='relative flex w-full items-start gap-2 rounded-md border border-input p-4 shadow-xs outline-none has-data-[state=checked]:border-primary/50'>
+                  <Switch
+                    id={field.name}
+                    checked={field.state.value || false}
+                    onCheckedChange={(checked) => field.handleChange(checked)}
+                    onBlur={field.handleBlur}
+                    className='order-1 h-4 w-6 after:absolute after:inset-0 [&_span]:size-3 data-[state=checked]:[&_span]:translate-x-2 data-[state=checked]:[&_span]:rtl:-translate-x-2'
+                  />
+                  <div className='grid grow gap-2'>
+                    <Label htmlFor={field.name}>Featured</Label>
+                    <p className='text-xs text-muted-foreground'>Show this car in the featured section.</p>
+                  </div>
+                </div>
+              )}
+            />
+          </FieldGroup>
+        </FieldGroup>
 
         {/* Submit Button */}
         <form.Subscribe

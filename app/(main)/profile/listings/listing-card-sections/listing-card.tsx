@@ -19,7 +19,11 @@ export default function ListingCard({ listing }: ListingCardProps) {
     >
       <div className='flex flex-col lg:flex-row'>
         {/* Car Image */}
-        <ListingCardImage available={listing.available} />
+        <ListingCardImage
+          status={listing.status}
+          imageUrl={listing.primaryImageUrl}
+          name={`${listing.brand} ${listing.model}`}
+        />
 
         {/* Car Details */}
         <div className='flex-1 p-6'>
@@ -42,13 +46,18 @@ export default function ListingCard({ listing }: ListingCardProps) {
           <ListingCardPricing currency={listing.currency} pricePerDay={listing.pricePerDay} />
 
           {/* Performance Metrics */}
-          <ListingCardMetrics carId={listing.id} viewCount={listing.viewCount} />
+          <ListingCardMetrics
+            averageRating={listing.averageRating}
+            reviewCount={listing.reviewCount}
+            favoriteCount={listing.favoritesCount}
+            viewCount={listing.viewCount}
+          />
 
           {/* Status Info */}
-          <ListingCardStatusInfo status={listing.available ? 'active' : 'rented'} availability={'20 Mar'} />
+          <ListingCardStatusInfo status={listing.status || null} />
 
           {/* Action Buttons */}
-          <ListingCardActions id={listing.id} status={listing.available ? 'active' : 'rented'} />
+          <ListingCardActions id={listing.id} />
         </div>
       </div>
     </div>

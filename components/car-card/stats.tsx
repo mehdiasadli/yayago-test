@@ -3,8 +3,8 @@ import { Eye, Heart, Star } from 'lucide-react';
 interface StatsProps {
   viewCount?: number | null;
   favoriteCount?: number | null;
-  rating?: number | null;
-  reviewCount?: number | null;
+  rating: number;
+  reviewCount: number;
 }
 
 export default function Stats({ viewCount, favoriteCount, rating, reviewCount }: StatsProps) {
@@ -20,8 +20,14 @@ export default function Stats({ viewCount, favoriteCount, rating, reviewCount }:
       </div>
       <div className='flex items-center gap-1'>
         <Star className='w-3 h-3 fill-yellow-500 text-yellow-500' strokeWidth={2.5} />
-        <span>{rating || 0}</span>
-        <span>({reviewCount || 0} reviews)</span>
+        {reviewCount === 0 ? (
+          <span>No reviews yet</span>
+        ) : (
+          <>
+            <span>{rating.toFixed(1) || 0}</span>
+            <span>({reviewCount || 0} reviews)</span>
+          </>
+        )}
       </div>
     </div>
   );

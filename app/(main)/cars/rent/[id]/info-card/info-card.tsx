@@ -5,47 +5,45 @@ import InfoCardTitle from './info-card-title';
 import InfoCardMetrics from './info-card-metrics';
 import InfoCardSpecs from './info-card-specs';
 import InfoCardHostInfo from './info-card-location';
+import { TGetCarByIdResponse } from '@/features/cars/cars.types';
 
 interface InfoCardProps {
-  id: string;
-  name: string;
-  pricePerDay: number;
-  currency: string;
-  location: string;
-  viewCount: number;
-  hostName: string;
+  car: TGetCarByIdResponse;
   features: { Icon: LucideIcon; label: string; value: string | number }[];
+  locationName: string;
 }
 
-export default function InfoCard({
-  id,
-  name,
-  pricePerDay,
-  currency,
-  location,
-  viewCount,
-  hostName,
-  features,
-}: InfoCardProps) {
+export default function InfoCard({ car, features, locationName }: InfoCardProps) {
   return (
     <div className='bg-white border-2 border-gray-200 p-6'>
       {/* Title */}
-      <InfoCardTitle name={name} />
+      <InfoCardTitle name={`${car.brand} ${car.model} ${car.year}`} />
 
       {/* Metrics */}
-      <InfoCardMetrics id={id} viewCount={viewCount} favoriteCount={0} averageRating={3.4} reviewCount={10} />
+      <InfoCardMetrics
+        id={car.id.toString()}
+        viewCount={car.viewCount || 0}
+        favoriteCount={car.favoritesCount || 0}
+        averageRating={car.averageRating || 0}
+        reviewCount={car.reviewCount || 0}
+      />
 
       {/* Price */}
-      <InfoCardPricing pricePerDay={pricePerDay} currency={currency} />
+      <InfoCardPricing
+        pricePerDay={car.pricePerDay}
+        pricePerWeek={car.pricePerWeek || undefined}
+        pricePerMonth={car.pricePerMonth || undefined}
+        currency={car.currency}
+      />
 
       {/* Quick Specs */}
-      <InfoCardSpecs features={features} />
+      <InfoCardSpecs car={car} features={features} />
 
       {/* Location */}
-      <InfoCardHostInfo hostName={hostName} location={location} />
+      <InfoCardHostInfo hostName={car.createdByFullName || 'Unknown Host'} location={locationName} />
 
       {/* Contact Buttons */}
-      <ContactSection name={name} />
+      <ContactSection name={`${car.brand} ${car.model} ${car.year}`} />
     </div>
   );
 }

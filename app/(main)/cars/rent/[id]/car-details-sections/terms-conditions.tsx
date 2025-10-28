@@ -1,10 +1,7 @@
-import { Shield } from 'lucide-react';
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -23,8 +20,7 @@ export default function TermsConditions() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant='outline'>
-          <Shield className='w-4 h-4 text-blue-200' strokeWidth={2} />
+        <Button variant='link'>
           <h2 className='font-bold'>Terms & Conditions</h2>
         </Button>
       </DialogTrigger>
@@ -45,11 +41,6 @@ export default function TermsConditions() {
                 </ul>
               </div>
             </DialogDescription>
-            <DialogFooter className='px-6 pb-6 sm:justify-start'>
-              <DialogClose asChild>
-                <Button type='button'>Close</Button>
-              </DialogClose>
-            </DialogFooter>
           </div>
         </DialogHeader>
       </DialogContent>
