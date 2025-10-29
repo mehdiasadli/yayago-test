@@ -9,7 +9,7 @@ export default function FavoritesGrid({ favorites }: { favorites: TGetUserFavori
 
       <div className='grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6'>
         {favorites.map((car) => (
-          <CarCard key={car.id} car={car} favoritePage />
+          <CarCard key={car.id} car={car} />
         ))}
       </div>
     </>

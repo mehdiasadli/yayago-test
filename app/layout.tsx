@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Montserrat } from 'next/font/google';
 import './globals.css';
 import ConditionalFooter from '@/components/conditional-footer';
+import { Toaster } from '@/components/ui/sonner';
 import Providers from '@/components/providers';
 
 const montserrat = Montserrat({
@@ -44,6 +45,7 @@ export default function RootLayout({
         <Providers>
           {children}
           <ConditionalFooter />
+          <Toaster richColors position='top-center' />
         </Providers>
       </body>
     </html>

@@ -7,7 +7,9 @@ export const AdminCreateUserRequestDto = CreateUserRequestDto.extend({
 
 export const AdminCreateUserResponseDto = CreateUserResponseDto.omit({
   role: true,
+  email: true,
 }).extend({
+  email: z.string(),
   active: z.boolean(),
   lastLoginAt: z.coerce.date(),
   totalBookings: z.number().int().nonnegative(),
@@ -23,13 +25,16 @@ export const AdminUpdateUserStatusRequestDto = z.object({
   reason: z.string().min(1).max(500).optional(),
 });
 
-export const AdminGetUsersResponseDto = AdminCreateUserResponseDto.array();
+export const AdminGetUsersResponseDto = AdminCreateUserResponseDto.extend({
+  avatarName: z.string().nullish(),
+  avatarUrl: z.string().url().nullish(),
+}).array();
 
 export const AdminGetUsersQueryDto = z.object({
   searchTerm: z.string().min(1).max(100).optional(),
-  active: z.boolean().optional(),
-  page: z.number().int().positive().optional(),
-  size: z.number().int().positive().optional(),
+  active: z.union([z.literal('true'), z.literal('false'), z.literal('all')]).optional(),
+  page: z.coerce.number().int().nonnegative().optional(),
+  size: z.coerce.number().int().positive().optional(),
 });
 
 export const AdminGetUserByIdParamsDto = z.object({

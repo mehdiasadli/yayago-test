@@ -1,15 +1,6 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AdminDashboardApi } from '@/features/admin-dashboard/admin-dashboard.api';
-import { Users, Car, DollarSign, Calendar, LucideIcon } from 'lucide-react';
-
-interface KeyStatCardProps {
-  value: number | string;
-  label: string;
-  Icon: LucideIcon;
-  description?: string;
-  valueSuffix?: string;
-  color?: string;
-}
+import { Users, Car, DollarSign, Calendar } from 'lucide-react';
+import AdminStatCard, { AdminStatCardProps } from '../admin-components/admin-stat-card';
 
 export default async function AdminPageKeyStats() {
   const stats = await AdminDashboardApi.getStats();
@@ -21,7 +12,7 @@ export default async function AdminPageKeyStats() {
   const { totalUsers, totalCars, totalBookings, activeBookings, availableCars, totalRevenue, monthlyRevenue } =
     stats.data;
 
-  const statItems: KeyStatCardProps[] = [
+  const statItems: AdminStatCardProps[] = [
     {
       label: 'Total Users',
       value: totalUsers,
@@ -57,28 +48,8 @@ export default async function AdminPageKeyStats() {
       {/* Total Users */}
 
       {statItems.map((item) => (
-        <KeyStatCard key={item.label} {...item} />
+        <AdminStatCard key={item.label} {...item} />
       ))}
     </div>
-  );
-}
-
-function KeyStatCard({ value, label, Icon, description, valueSuffix, color }: KeyStatCardProps) {
-  return (
-    <Card>
-      <CardHeader className='flex items-center gap-4'>
-        <Icon className={`w-7 h-7 text-${color}-600`} strokeWidth={2} />
-        <div>
-          <CardTitle className={`text-${color}-600 text-2xl`}>
-            {value}
-            {valueSuffix && <span className='text-sm text-gray-500'> {valueSuffix}</span>}
-          </CardTitle>
-          <CardDescription className={`text-${color}-700`}>{label}</CardDescription>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <p className={`text-${color}-700 text-xs`}>{description}</p>
-      </CardContent>
-    </Card>
   );
 }
