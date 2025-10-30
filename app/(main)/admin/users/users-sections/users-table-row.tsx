@@ -65,9 +65,6 @@ export default function UsersTableRow({ user }: { user: TAdminGetUserByIdRespons
       </td>
       <td className='px-6 py-4 whitespace-nowrap'>
         <div className='flex items-center gap-2'>
-          <button className='w-8 h-8 flex items-center justify-center text-gray-600 hover:text-primary hover:bg-gray-100 transition-colors'>
-            <Eye className='w-4 h-4' strokeWidth={2} />
-          </button>
           <UsersTableStatusChange userId={user.id} initialActive={user.active} />
           <UsersTableDelete userId={user.id} />
         </div>

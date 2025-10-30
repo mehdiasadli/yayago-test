@@ -26,7 +26,7 @@ export default function UsersTablePagination({ page }: { page?: number }) {
   }, [currentPage]);
 
   return (
-    <div className='border-t-2 border-gray-200 px-6 py-4 flex items-center justify-between'>
+    <div className='border-t-2 border-gray-200 px-6 py-4 flex items-center justify-end'>
       <div className='flex gap-2'>
         <Button
           variant='outline'

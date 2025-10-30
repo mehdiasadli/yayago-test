@@ -18,6 +18,7 @@ export default function AdminSidebar() {
       <nav className='p-4 space-y-1'>
         {adminNavigation.map((item) => {
           const Icon = item.icon;
+
           return (
             <Link
               key={item.name}
