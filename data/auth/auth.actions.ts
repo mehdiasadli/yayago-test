@@ -41,8 +41,6 @@ export async function register(data: RegisterSchemaType) {
   // Validate data
   const validated = RegisterSchema.safeParse(data);
 
-  console.log(validated);
-
   if (!validated.success) {
     return {
       success: false,

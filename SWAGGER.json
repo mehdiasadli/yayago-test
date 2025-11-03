@@ -30,6 +30,10 @@
       "description": "Admin endpoints for car management"
     },
     {
+      "name": "Favorites",
+      "description": "Endpoints for managing favorite cars"
+    },
+    {
       "name": "Admin Dashboard",
       "description": "Admin dashboard statistics and analytics"
     },
@@ -50,11 +54,156 @@
       "description": "Endpoints for managing car inventory"
     },
     {
+      "name": "Reviews",
+      "description": "Endpoints for managing car reviews"
+    },
+    {
       "name": "Booking",
       "description": "Endpoints for managing bookings"
     }
   ],
   "paths": {
+    "/api/users/{id}/profile": {
+      "put": {
+        "tags": ["User"],
+        "description": "Update user profile",
+        "operationId": "updateProfile",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProfileRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateProfileResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{id}/change-password": {
+      "put": {
+        "tags": ["User"],
+        "description": "Change user password",
+        "operationId": "changePassword",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangePasswordResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reviews/{reviewId}": {
+      "put": {
+        "tags": ["Reviews"],
+        "description": "Update a review",
+        "operationId": "updateReview",
+        "parameters": [
+          {
+            "name": "reviewId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Reviews"],
+        "description": "Delete a review",
+        "operationId": "deleteReview",
+        "parameters": [
+          {
+            "name": "reviewId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/cars/{id}": {
       "get": {
         "tags": ["Cars"],
@@ -175,6 +324,54 @@
         }
       }
     },
+    "/api/cars/admin/images/{imageId}/reject": {
+      "put": {
+        "tags": ["Car Images"],
+        "description": "Reject an image (Admin only)",
+        "operationId": "rejectImage",
+        "parameters": [
+          {
+            "name": "imageId",
+            "in": "path",
+            "description": "Image ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/cars/admin/images/{imageId}/approve": {
+      "put": {
+        "tags": ["Car Images"],
+        "description": "Approve an image (Admin only)",
+        "operationId": "approveImage",
+        "parameters": [
+          {
+            "name": "imageId",
+            "in": "path",
+            "description": "Image ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/admin/users/{userId}/status": {
       "put": {
         "tags": ["Admin User Management"],
@@ -209,45 +406,19 @@
         }
       }
     },
-    "/api/admin/cars/{carId}": {
-      "get": {
-        "tags": ["Admin Car Management"],
-        "description": "Get car details by ID",
-        "operationId": "getCarById_1",
+    "/api/admin/cars/{carId}": {},
+    "/api/admin/cars/{carId}/status": {},
+    "/api/admin/cars/{carId}/price": {},
+    "/api/users/{id}/avatar": {
+      "post": {
+        "tags": ["User"],
+        "description": "Upload user avatar image",
+        "operationId": "uploadAvatar",
         "parameters": [
           {
-            "name": "carId",
+            "name": "id",
             "in": "path",
-            "description": "Car ID",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/AdminCarDto"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": ["Admin Car Management"],
-        "description": "Update car details",
-        "operationId": "updateCar_1",
-        "parameters": [
-          {
-            "name": "carId",
-            "in": "path",
-            "description": "Car ID",
+            "description": "User ID",
             "required": true,
             "schema": {
               "type": "integer",
@@ -257,13 +428,20 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/AdminCarDto"
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Avatar image file"
+                  }
+                },
+                "required": ["file"]
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -271,7 +449,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/AdminCarDto"
+                  "type": "string"
                 }
               }
             }
@@ -279,106 +457,39 @@
         }
       },
       "delete": {
-        "tags": ["Admin Car Management"],
-        "description": "Delete car (soft delete)",
-        "operationId": "deleteCar_1",
-        "parameters": [
-          {
-            "name": "carId",
-            "in": "path",
-            "description": "Car ID",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/admin/cars/{carId}/status": {
-      "put": {
-        "tags": ["Admin Car Management"],
-        "description": "Update car availability status",
-        "operationId": "updateCarStatus",
-        "parameters": [
-          {
-            "name": "carId",
-            "in": "path",
-            "description": "Car ID",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CarStatusUpdateRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/admin/cars/{carId}/price": {
-      "put": {
-        "tags": ["Admin Car Management"],
-        "description": "Update car price per day",
-        "operationId": "updateCarPrice",
-        "parameters": [
-          {
-            "name": "carId",
-            "in": "path",
-            "description": "Car ID",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CarPriceUpdateRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/user/register": {
-      "post": {
         "tags": ["User"],
-        "description": "Register a new user",
-        "operationId": "register",
+        "description": "Delete user avatar",
+        "operationId": "deleteAvatar",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/users/register": {},
+    "/api/reviews": {
+      "post": {
+        "tags": ["Reviews"],
+        "description": "Add a new review for a car",
+        "operationId": "addReview",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegisterRequest"
+                "$ref": "#/components/schemas/ReviewRequest"
               }
             }
           },
@@ -390,7 +501,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/RegisterResponse"
+                  "$ref": "#/components/schemas/ReviewResponse"
                 }
               }
             }
@@ -451,21 +562,98 @@
         }
       }
     },
-    "/api/cars": {
-      "get": {
-        "tags": ["Cars"],
-        "description": "Retrieve a list of all cars",
-        "operationId": "getAllCars",
+    "/api/favorites/{carId}": {
+      "post": {
+        "tags": ["Favorites"],
+        "description": "Add a car to favorites",
+        "operationId": "addToFavorites",
+        "parameters": [
+          {
+            "name": "carId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CarDetailsResponseDto"
-                  }
+                  "$ref": "#/components/schemas/FavoriteResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Favorites"],
+        "description": "Remove a car from favorites",
+        "operationId": "removeFromFavorites",
+        "parameters": [
+          {
+            "name": "carId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/cars": {
+      "get": {
+        "tags": ["Cars"],
+        "description": "Retrieve a paginated list of all approved cars",
+        "operationId": "getAllCars",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number (0-based)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0,
+              "minimum": 0
+            },
+            "example": 0
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Items per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "example": 20
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarListResponseDto"
                 }
               }
             }
@@ -865,6 +1053,77 @@
         }
       }
     },
+    "/api/admin/cars/{carId}/reject": {
+      "post": {
+        "tags": ["Admin Car Management"],
+        "description": "Reject a pending car with reason",
+        "operationId": "rejectCar",
+        "parameters": [
+          {
+            "name": "carId",
+            "in": "path",
+            "description": "Car ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "reason",
+            "in": "query",
+            "description": "Rejection reason",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminCarDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/cars/{carId}/approve": {
+      "post": {
+        "tags": ["Admin Car Management"],
+        "description": "Approve a pending car",
+        "operationId": "approveCar",
+        "parameters": [
+          {
+            "name": "carId",
+            "in": "path",
+            "description": "Car ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminCarDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/bookings/{bookingId}/status": {
       "patch": {
         "tags": ["Booking"],
@@ -904,7 +1163,7 @@
         }
       }
     },
-    "/api/user/{id}": {
+    "/api/users/{id}": {
       "get": {
         "tags": ["User"],
         "description": "Get user details by ID",
@@ -927,6 +1186,123 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reviews/my-reviews": {
+      "get": {
+        "tags": ["Reviews"],
+        "description": "Get all reviews by the current user",
+        "operationId": "getMyReviews",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reviews/cars/{carId}": {
+      "get": {
+        "tags": ["Reviews"],
+        "description": "Get all reviews for a specific car",
+        "operationId": "getReviewsByCarId",
+        "parameters": [
+          {
+            "name": "carId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reviews/cars/{carId}/count": {
+      "get": {
+        "tags": ["Reviews"],
+        "description": "Get review count for a car",
+        "operationId": "getReviewCount",
+        "parameters": [
+          {
+            "name": "carId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reviews/cars/{carId}/average-rating": {
+      "get": {
+        "tags": ["Reviews"],
+        "description": "Get average rating for a car",
+        "operationId": "getAverageRating",
+        "parameters": [
+          {
+            "name": "carId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "number",
+                  "format": "double"
                 }
               }
             }
@@ -997,6 +1373,91 @@
         }
       }
     },
+    "/api/favorites": {
+      "get": {
+        "tags": ["Favorites"],
+        "description": "Get all favorite cars of the current user",
+        "operationId": "getMyFavorites",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FavoriteResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/favorites/{carId}/check": {
+      "get": {
+        "tags": ["Favorites"],
+        "description": "Check if a car is in favorites",
+        "operationId": "isFavorite",
+        "parameters": [
+          {
+            "name": "carId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cars/{id}/reviews": {
+      "get": {
+        "tags": ["Cars"],
+        "description": "Get all reviews for a specific car",
+        "operationId": "getCarReviews",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/cars/{carId}/images/primary": {
       "get": {
         "tags": ["Car Images"],
@@ -1021,6 +1482,364 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/ImageResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cars/search": {
+      "get": {
+        "tags": ["Cars"],
+        "description": "Search cars with filters and pagination",
+        "operationId": "searchCars",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Search query for brand, model, year",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "BMW"
+          },
+          {
+            "name": "minPrice",
+            "in": "query",
+            "description": "Minimum price per day",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "example": 50
+          },
+          {
+            "name": "maxPrice",
+            "in": "query",
+            "description": "Maximum price per day",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "example": 2000
+          },
+          {
+            "name": "minYear",
+            "in": "query",
+            "description": "Minimum year",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "example": 2018
+          },
+          {
+            "name": "maxYear",
+            "in": "query",
+            "description": "Maximum year",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "example": 2025
+          },
+          {
+            "name": "transmissions",
+            "in": "query",
+            "description": "Transmission types",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": "Automatic"
+          },
+          {
+            "name": "seats",
+            "in": "query",
+            "description": "Number of seats",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "example": 5
+          },
+          {
+            "name": "doors",
+            "in": "query",
+            "description": "Number of doors",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "example": 4
+          },
+          {
+            "name": "fuelTypes",
+            "in": "query",
+            "description": "Fuel types",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": "Gasoline,Diesel,Benzine"
+          },
+          {
+            "name": "driveTypes",
+            "in": "query",
+            "description": "Drive types",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["FRONT", "REAR", "ALL"]
+              }
+            },
+            "example": "FRONT,REAR,ALL"
+          },
+          {
+            "name": "featured",
+            "in": "query",
+            "description": "Featured cars only",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "example": true
+          },
+          {
+            "name": "brands",
+            "in": "query",
+            "description": "Car brands",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": "BMW,Audi,Mercedes"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "Sort by",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "price_low_to_high"
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "description": "Sort direction",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "asc"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number (0-based)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0,
+              "minimum": 0
+            },
+            "example": 0
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Items per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "example": 20
+          },
+          {
+            "name": "latitude",
+            "in": "query",
+            "description": "Latitude for location-based search",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "longitude",
+            "in": "query",
+            "description": "Longitude for location-based search",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "radiusKm",
+            "in": "query",
+            "description": "Search radius in kilometers",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarListResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cars/filters/transmissions": {
+      "get": {
+        "tags": ["Cars"],
+        "summary": "Get all available transmission types",
+        "description": "Get distinct transmissions for filter options",
+        "operationId": "getDistinctTransmissions",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cars/filters/seat-counts": {
+      "get": {
+        "tags": ["Cars"],
+        "summary": "Get all available seat counts",
+        "description": "Get distinct seat counts for filter options",
+        "operationId": "getDistinctSeatCounts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cars/filters/fuel-types": {
+      "get": {
+        "tags": ["Cars"],
+        "summary": "Get all available fuel types",
+        "description": "Get distinct fuel types for filter options",
+        "operationId": "getDistinctFuelTypes",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cars/filters/door-counts": {
+      "get": {
+        "tags": ["Cars"],
+        "summary": "Get all available door counts",
+        "description": "Get distinct door counts for filter options",
+        "operationId": "getDistinctDoorCounts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cars/filters/brands": {
+      "get": {
+        "tags": ["Cars"],
+        "summary": "Get all available car brands",
+        "description": "Get distinct brands for filter options",
+        "operationId": "getDistinctBrands",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 }
               }
             }
@@ -1576,6 +2395,62 @@
         }
       }
     },
+    "/api/admin/cars/status/{status}": {
+      "get": {
+        "tags": ["Admin Car Management"],
+        "description": "Get cars by status",
+        "operationId": "getCarsByStatus",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "path",
+            "description": "Car status",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["PENDING", "APPROVED", "REJECTED", "AVAILABLE", "BLOCKED", "INACTIVE", "OCCUPIED", "DISABLED"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AdminCarDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/cars/pending": {
+      "get": {
+        "tags": ["Admin Car Management"],
+        "description": "Get all pending cars",
+        "operationId": "getPendingCars",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AdminCarDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/admin/cars/analytics/revenue": {
       "get": {
         "tags": ["Admin Car Management"],
@@ -1647,6 +2522,111 @@
   },
   "components": {
     "schemas": {
+      "UpdateProfileRequest": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          }
+        }
+      },
+      "UpdateProfileResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "email": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ChangePasswordRequest": {
+        "type": "object",
+        "properties": {
+          "oldPassword": {
+            "type": "string"
+          },
+          "newPassword": {
+            "type": "string"
+          }
+        }
+      },
+      "ChangePasswordResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ReviewRequest": {
+        "type": "object",
+        "properties": {
+          "carId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "rating": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 5,
+            "minimum": 1
+          },
+          "comment": {
+            "type": "string"
+          }
+        },
+        "required": ["carId", "rating"]
+      },
+      "ReviewResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "carId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userFullName": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
       "CarDetailsDto": {
         "type": "object",
         "properties": {
@@ -1684,6 +2664,109 @@
           },
           "color": {
             "type": "string"
+          },
+          "featured": {
+            "type": "boolean"
+          },
+          "deposit": {
+            "type": "number"
+          },
+          "discountPercentage": {
+            "type": "number",
+            "format": "double"
+          },
+          "transmission": {
+            "type": "string"
+          },
+          "seatCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pricePerWeek": {
+            "type": "number"
+          },
+          "pricePerMonth": {
+            "type": "number"
+          },
+          "minimumRentalDays": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxMileagePerDay": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxMileagePerWeek": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxMileagePerMonth": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fuelPolicy": {
+            "type": "string",
+            "enum": ["SAME_TO_SAME", "PRE_PURCHASE", "PAY_FOR_USAGE", "QUARTER_TANK", "SAME_LEVEL", "FREE_TANK"]
+          },
+          "minimumAge": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "minimumDrivingExperience": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "driveType": {
+            "type": "string",
+            "enum": ["FRONT", "REAR", "ALL"]
+          },
+          "horsepower": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "torque": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxSpeed": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "freeCancellationPolicy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "favoritesCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "isFavorite": {
+            "type": "boolean"
+          },
+          "reviewCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "averageRating": {
+            "type": "number",
+            "format": "double"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "APPROVED", "REJECTED", "AVAILABLE", "BLOCKED", "INACTIVE", "OCCUPIED", "DISABLED"]
+          },
+          "rejectionReason": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
           }
         }
       },
@@ -1729,6 +2812,27 @@
           "color": {
             "type": "string"
           },
+          "featured": {
+            "type": "boolean"
+          },
+          "deposit": {
+            "type": "number"
+          },
+          "discountPercentage": {
+            "type": "number",
+            "format": "double"
+          },
+          "viewCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "transmission": {
+            "type": "string"
+          },
+          "seatCount": {
+            "type": "integer",
+            "format": "int32"
+          },
           "createdByFullName": {
             "type": "string"
           },
@@ -1740,6 +2844,92 @@
             "items": {
               "$ref": "#/components/schemas/ImageResponseDto"
             }
+          },
+          "pricePerWeek": {
+            "type": "number"
+          },
+          "pricePerMonth": {
+            "type": "number"
+          },
+          "minimumRentalDays": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxMileagePerDay": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxMileagePerWeek": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxMileagePerMonth": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fuelPolicy": {
+            "type": "string",
+            "enum": ["SAME_TO_SAME", "PRE_PURCHASE", "PAY_FOR_USAGE", "QUARTER_TANK", "SAME_LEVEL", "FREE_TANK"]
+          },
+          "minimumAge": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "minimumDrivingExperience": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "driveType": {
+            "type": "string",
+            "enum": ["FRONT", "REAR", "ALL"]
+          },
+          "horsepower": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "torque": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxSpeed": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "freeCancellationPolicy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "favoritesCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "isFavorite": {
+            "type": "boolean"
+          },
+          "reviewCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "averageRating": {
+            "type": "number",
+            "format": "double"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "APPROVED", "REJECTED", "AVAILABLE", "BLOCKED", "INACTIVE", "OCCUPIED", "DISABLED"]
+          },
+          "rejectionReason": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
           }
         }
       },
@@ -1835,6 +3025,108 @@
           },
           "totalRevenue": {
             "type": "number"
+          },
+          "fuelType": {
+            "type": "string"
+          },
+          "doorCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "carType": {
+            "type": "string"
+          },
+          "engineVolume": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          },
+          "featured": {
+            "type": "boolean"
+          },
+          "deposit": {
+            "type": "number"
+          },
+          "discountPercentage": {
+            "type": "number",
+            "format": "double"
+          },
+          "pricePerWeek": {
+            "type": "number"
+          },
+          "pricePerMonth": {
+            "type": "number"
+          },
+          "minimumRentalDays": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxMileagePerDay": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxMileagePerWeek": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxMileagePerMonth": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fuelPolicy": {
+            "type": "string",
+            "enum": ["SAME_TO_SAME", "PRE_PURCHASE", "PAY_FOR_USAGE", "QUARTER_TANK", "SAME_LEVEL", "FREE_TANK"]
+          },
+          "minimumAge": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "minimumDrivingExperience": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "driveType": {
+            "type": "string",
+            "enum": ["FRONT", "REAR", "ALL"]
+          },
+          "horsepower": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "torque": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxSpeed": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "freeCancellationPolicy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "favoritesCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "isFavorite": {
+            "type": "boolean"
+          },
+          "reviewCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "averageRating": {
+            "type": "number",
+            "format": "double"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "APPROVED", "REJECTED", "AVAILABLE", "BLOCKED", "INACTIVE", "OCCUPIED", "DISABLED"]
+          },
+          "rejectionReason": {
+            "type": "string"
           }
         }
       },
@@ -1989,6 +3281,85 @@
           }
         }
       },
+      "FavoriteResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "carId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "brand": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pricePerDay": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "available": {
+            "type": "boolean"
+          },
+          "fuelType": {
+            "type": "string"
+          },
+          "doorCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "carType": {
+            "type": "string"
+          },
+          "engineVolume": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          },
+          "featured": {
+            "type": "boolean"
+          },
+          "deposit": {
+            "type": "number"
+          },
+          "discountPercentage": {
+            "type": "number",
+            "format": "double"
+          },
+          "viewCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdByFullName": {
+            "type": "string"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageResponseDto"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "favoriteCreatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
       "BookingRequest": {
         "type": "object",
         "properties": {
@@ -2012,31 +3383,14 @@
             "format": "date"
           },
           "pickupTime": {
-            "$ref": "#/components/schemas/LocalTime"
+            "type": "string",
+            "description": "Pickup time in HH:mm format",
+            "example": "10:00"
           },
           "returnTime": {
-            "$ref": "#/components/schemas/LocalTime"
-          }
-        }
-      },
-      "LocalTime": {
-        "type": "object",
-        "properties": {
-          "hour": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "minute": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "second": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "nano": {
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "description": "Return time in HH:mm format",
+            "example": "18:00"
           }
         }
       },
@@ -2086,6 +3440,27 @@
           },
           "returnTime": {
             "$ref": "#/components/schemas/LocalTime"
+          }
+        }
+      },
+      "LocalTime": {
+        "type": "object",
+        "properties": {
+          "hour": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "minute": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "second": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nano": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -2192,6 +3567,12 @@
           "activeBookings": {
             "type": "integer",
             "format": "int64"
+          },
+          "avatarUrl": {
+            "type": "string"
+          },
+          "avatarName": {
+            "type": "string"
           }
         }
       },
@@ -2230,6 +3611,53 @@
             "items": {
               "$ref": "#/components/schemas/BookingDetails"
             }
+          },
+          "avatarUrl": {
+            "type": "string"
+          },
+          "avatarName": {
+            "type": "string"
+          }
+        }
+      },
+      "CarListResponseDto": {
+        "type": "object",
+        "properties": {
+          "cars": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CarDetailsResponseDto"
+            }
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PaginationMetadata"
+          }
+        }
+      },
+      "PaginationMetadata": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalItems": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasNextPage": {
+            "type": "boolean"
+          },
+          "hasPreviousPage": {
+            "type": "boolean"
           }
         }
       },

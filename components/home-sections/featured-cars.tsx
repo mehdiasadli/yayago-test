@@ -1,11 +1,11 @@
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import CarCarousel from './car-carousel';
 import ViewAllButton from './view-all-button';
-import { createGetCarsQueryOptions } from '@/features/cars/cars.queries';
+import { createGetFeaturedCarsQueryOptions } from '@/features/cars/cars.queries';
 
 export default async function FeaturedCars() {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery(createGetCarsQueryOptions());
+  await queryClient.prefetchQuery(createGetFeaturedCarsQueryOptions());
 
   return (
     <section

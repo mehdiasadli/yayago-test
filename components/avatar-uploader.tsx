@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowLeftIcon, CircleUserRoundIcon, Trash2, XIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
+import { ArrowLeftIcon, CircleUserRoundIcon, Loader2, Trash2, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
 
 import { useFileUpload } from '@/hooks/use-file-upload';
 import { Button } from '@/components/ui/button';
@@ -16,6 +16,9 @@ import {
 } from '@/components/ui/dialog';
 import { Slider } from '@/components/ui/slider';
 import NextImage from 'next/image';
+import { UsersApi } from '@/features/users/users.api';
+import { useSession } from 'next-auth/react';
+import { toast } from 'sonner';
 
 // Define type for pixel crop area
 type Area = { x: number; y: number; width: number; height: number };
@@ -74,7 +77,14 @@ async function getCroppedImg(
   }
 }
 
-export default function AvatarUploader() {
+interface AvatarUploaderProps {
+  userId: number;
+  initialAvatarUrl?: string | null;
+}
+
+export default function AvatarUploader({ userId, initialAvatarUrl }: AvatarUploaderProps) {
+  const { data: session, update: updateSession } = useSession();
+
   const [
     { files, isDragging },
     { handleDragEnter, handleDragLeave, handleDragOver, handleDrop, openFileDialog, removeFile, getInputProps },
@@ -85,8 +95,10 @@ export default function AvatarUploader() {
   const previewUrl = files[0]?.preview || null;
   const fileId = files[0]?.id;
 
-  const [finalImageUrl, setFinalImageUrl] = useState<string | null>(null);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(initialAvatarUrl || null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [isRemoving, setIsRemoving] = useState(false);
 
   // Ref to track the previous file ID to detect new uploads
   const previousFileIdRef = useRef<string | undefined | null>(null);
@@ -118,50 +130,85 @@ export default function AvatarUploader() {
       return;
     }
 
+    setIsUploading(true);
+
     try {
       // 1. Get the cropped image blob using the helper
-      const croppedBlob = await getCroppedImg(previewUrl, croppedAreaPixels);
+      const croppedBlob = await getCroppedImg(previewUrl, croppedAreaPixels, 400, 400); // Output 400x400
 
       if (!croppedBlob) {
         throw new Error('Failed to generate cropped image blob.');
       }
 
-      // 2. Create a NEW object URL from the cropped blob
-      const newFinalUrl = URL.createObjectURL(croppedBlob);
+      // 2. Convert blob to File
+      const croppedFile = new File([croppedBlob], `avatar-${userId}.jpg`, {
+        type: 'image/jpeg',
+      });
 
-      // 3. Revoke the OLD finalImageUrl if it exists
-      if (finalImageUrl) {
-        URL.revokeObjectURL(finalImageUrl);
+      // 3. Upload to server
+      const response = await UsersApi.uploadUserAvatar({ id: userId }, { file: croppedFile });
+
+      if (response.success) {
+        const newAvatarUrl = response.data;
+
+        // 4. Update local state with the server URL
+        setAvatarUrl(newAvatarUrl);
+
+        // 5. Update session with the new avatar URL directly
+        await updateSession({ avatarUrl: newAvatarUrl });
+
+        toast.success('Avatar uploaded successfully');
+
+        // 6. Clean up file preview
+        if (fileId) {
+          removeFile(fileId);
+        }
+
+        // 7. Close the dialog
+        setIsDialogOpen(false);
+        setCroppedAreaPixels(null);
+        setZoom(1);
+      } else {
+        throw new Error(response.message || 'Failed to upload avatar');
       }
-
-      // 4. Set the final avatar state to the NEW URL
-      setFinalImageUrl(newFinalUrl);
-
-      // 5. Close the dialog (don't remove the file yet)
-      setIsDialogOpen(false);
     } catch (error) {
-      console.error('Error during apply:', error);
-      // Close the dialog even if cropping fails
-      setIsDialogOpen(false);
+      console.error('Error during avatar upload:', error);
+      toast.error(error instanceof Error ? error.message : 'Failed to upload avatar');
+    } finally {
+      setIsUploading(false);
     }
   };
 
-  const handleRemoveFinalImage = () => {
-    if (finalImageUrl) {
-      URL.revokeObjectURL(finalImageUrl);
-    }
-    setFinalImageUrl(null);
-  };
+  const handleRemoveAvatar = async () => {
+    if (!avatarUrl) return;
 
-  useEffect(() => {
-    const currentFinalUrl = finalImageUrl;
-    // Cleanup function
-    return () => {
-      if (currentFinalUrl && currentFinalUrl.startsWith('blob:')) {
-        URL.revokeObjectURL(currentFinalUrl);
+    setIsRemoving(true);
+
+    try {
+      const response = await UsersApi.removeUserAvatar({ id: userId });
+
+      if (response.success) {
+        setAvatarUrl(null);
+
+        // Update session to reflect removed avatar
+        await updateSession({ avatarUrl: null });
+
+        toast.success('Avatar removed successfully');
+      } else {
+        throw new Error(response.message || 'Failed to remove avatar');
       }
-    };
-  }, [finalImageUrl]);
+    } catch (error) {
+      console.error('Error removing avatar:', error);
+      toast.error(error instanceof Error ? error.message : 'Failed to remove avatar');
+    } finally {
+      setIsRemoving(false);
+    }
+  };
+
+  // Sync initial avatar URL with prop changes
+  useEffect(() => {
+    setAvatarUrl(initialAvatarUrl || null);
+  }, [initialAvatarUrl]);
 
   // Effect to open dialog when a *new* file is ready
   useEffect(() => {
@@ -178,7 +225,7 @@ export default function AvatarUploader() {
   return (
     <div className='flex flex-col items-center gap-2'>
       <div className='relative inline-flex group'>
-        {/* Drop area - uses finalImageUrl */}
+        {/* Drop area */}
         <button
           className='relative flex size-20 items-center justify-center overflow-hidden border border-dashed border-input transition-colors outline-none bg-primary/40 hover:bg-primary/60 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 has-disabled:pointer-events-none has-disabled:opacity-50 has-[img]:border-none data-[dragging=true]:bg-accent/50'
           onClick={openFileDialog}
@@ -187,29 +234,33 @@ export default function AvatarUploader() {
           onDragOver={handleDragOver}
           onDrop={handleDrop}
           data-dragging={isDragging || undefined}
-          aria-label={finalImageUrl ? 'Change image' : 'Upload image'}
+          aria-label={avatarUrl ? 'Change image' : 'Upload image'}
+          disabled={isUploading || isRemoving}
         >
-          {finalImageUrl ? (
+          {isRemoving ? (
+            <Loader2 className='size-6 text-white animate-spin' />
+          ) : avatarUrl ? (
             <NextImage
               className='size-full object-cover'
-              src={finalImageUrl}
+              src={avatarUrl}
               alt='User avatar'
-              width={64}
-              height={64}
+              width={80}
+              height={80}
               style={{ objectFit: 'cover' }}
               priority
             />
           ) : (
             <div aria-hidden='true'>
-              <CircleUserRoundIcon className='size-4 text-white' />
+              <CircleUserRoundIcon className='size-6 text-white' />
             </div>
           )}
         </button>
-        {/* Remove button - depends on finalImageUrl */}
-        {finalImageUrl && (
+        {/* Remove button */}
+        {avatarUrl && !isRemoving && (
           <Button
-            onClick={handleRemoveFinalImage}
+            onClick={handleRemoveAvatar}
             size='icon'
+            disabled={isRemoving}
             className='absolute lg:hidden group-hover:flex -top-1 -right-1 size-6 border-2 border-background shadow-none focus-visible:border-background hover:bg-red-500 hover:text-white'
             aria-label='Remove image'
           >
@@ -238,8 +289,15 @@ export default function AvatarUploader() {
                 </Button>
                 <span>Crop image</span>
               </div>
-              <Button className='-my-1' onClick={handleApply} disabled={!previewUrl} autoFocus>
-                Apply
+              <Button className='-my-1' onClick={handleApply} disabled={!previewUrl || isUploading} autoFocus>
+                {isUploading ? (
+                  <>
+                    <Loader2 className='size-4 mr-2 animate-spin' />
+                    Uploading...
+                  </>
+                ) : (
+                  'Apply'
+                )}
               </Button>
             </DialogTitle>
           </DialogHeader>

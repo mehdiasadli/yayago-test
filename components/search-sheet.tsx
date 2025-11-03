@@ -1,13 +1,13 @@
 'use client';
 
 import { InputGroup, InputGroupAddon, InputGroupInput } from './ui/input-group';
-import { MapPin, Car } from 'lucide-react';
+import { Car } from 'lucide-react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import SearchFilters from './search-filters';
+// import SearchFilters from './search-filters';
 import { FilterState } from './filters-dialog';
 
-export default function SearchSheet() {
+export default function SearchSheet({ close }: { close: () => void }) {
   const router = useRouter();
   const [location, setLocation] = useState('');
   const [carQuery, setCarQuery] = useState('');
@@ -58,6 +58,7 @@ export default function SearchSheet() {
     const url = queryString ? `/cars/rent?${queryString}` : '/cars/rent';
 
     router.push(url);
+    close();
   };
 
   return (
@@ -65,7 +66,7 @@ export default function SearchSheet() {
       {/* Search Form */}
       <form id='search-form' onSubmit={handleSearch} className='space-y-6'>
         {/* Location Input */}
-        <div className='relative group'>
+        {/* <div className='relative group'>
           <label htmlFor='location' className='block text-xs font-semibold text-white/80 mb-2 tracking-wider uppercase'>
             Location
           </label>
@@ -81,7 +82,7 @@ export default function SearchSheet() {
               <MapPin className='text-white/60 group-focus-within:text-primary transition-colors' />
             </InputGroupAddon>
           </InputGroup>
-        </div>
+        </div> */}
 
         {/* Car Search Input */}
         <div className='relative group'>
@@ -106,9 +107,9 @@ export default function SearchSheet() {
         </div>
 
         {/* Advanced Filters */}
-        <div className='pt-2'>
+        {/* <div className='pt-2'>
           <SearchFilters filters={filters} setFilters={setFilters} onReset={handleReset} />
-        </div>
+        </div> */}
       </form>
     </div>
   );

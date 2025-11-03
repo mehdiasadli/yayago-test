@@ -4,6 +4,7 @@ import './globals.css';
 import ConditionalFooter from '@/components/conditional-footer';
 import { Toaster } from '@/components/ui/sonner';
 import Providers from '@/components/providers';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 const montserrat = Montserrat({
   variable: '--font-montserrat',
@@ -43,7 +44,7 @@ export default function RootLayout({
     <html lang='en'>
       <body className={`${montserrat.variable} antialiased`}>
         <Providers>
-          {children}
+          <NuqsAdapter>{children}</NuqsAdapter>
           <ConditionalFooter />
           <Toaster richColors position='top-center' />
         </Providers>

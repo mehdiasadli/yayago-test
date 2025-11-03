@@ -3,7 +3,6 @@ import { carsService } from '@/lib/api/services';
 import { CarsApi } from '@/features/cars/cars.api';
 import Overview from './car-details-sections/overview';
 import Pricing from './car-details-sections/pricing';
-import TermsConditions from './car-details-sections/terms-conditions';
 
 // Make this page dynamic to avoid build-time API calls
 export const dynamic = 'force-dynamic';

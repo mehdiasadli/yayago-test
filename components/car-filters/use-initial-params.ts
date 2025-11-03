@@ -1,8 +1,8 @@
-import { TGetCarsQuery } from '@/features/cars/cars.types';
+import { TGetCarsQuery, TSearchCarsQuery } from '@/features/cars/cars.types';
 import { useSearchParams } from 'next/navigation';
 import qs from 'qs';
 
-export function useInitialParams(): TGetCarsQuery {
+export function useInitialParams(): TSearchCarsQuery {
   const searchParams = useSearchParams();
   const object = qs.parse(searchParams.toString());
 
@@ -18,5 +18,7 @@ export function useInitialParams(): TGetCarsQuery {
     featuredOnly: object.featuredOnly === 'true',
     noDepositOnly: object.noDepositOnly === 'true',
     sortBy: object.sortBy,
+    page: object.page || 0,
+    limit: object.limit || 20,
   } as TGetCarsQuery;
 }

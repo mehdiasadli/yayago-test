@@ -32,8 +32,6 @@ export async function createCar(data: unknown) {
     // Validate input data
     const validationResult = CarDetailsSchema.safeParse(data);
 
-    console.log('VALIDATION RESULT', validationResult);
-
     if (!validationResult.success) {
       return {
         success: false,
@@ -52,7 +50,6 @@ export async function createCar(data: unknown) {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => null);
-      console.log('ERROR ON RESPONSE', errorData);
 
       // After token refresh attempt, if still 401, user needs to re-login
       if (response.status === 401) {
@@ -69,8 +66,6 @@ export async function createCar(data: unknown) {
     }
 
     const carData = await response.json();
-
-    console.log('CAR DATA', carData);
 
     return {
       success: true,

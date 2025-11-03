@@ -11,9 +11,10 @@ interface InfoCardProps {
   car: TGetCarByIdResponse;
   features: { Icon: LucideIcon; label: string; value: string | number }[];
   locationName: string;
+  admin?: boolean;
 }
 
-export default function InfoCard({ car, features, locationName }: InfoCardProps) {
+export default function InfoCard({ car, features, locationName, admin }: InfoCardProps) {
   return (
     <div className='bg-white border-2 border-gray-200 p-6'>
       {/* Title */}
@@ -26,6 +27,7 @@ export default function InfoCard({ car, features, locationName }: InfoCardProps)
         favoriteCount={car.favoritesCount || 0}
         averageRating={car.averageRating || 0}
         reviewCount={car.reviewCount || 0}
+        admin={admin}
       />
 
       {/* Price */}
@@ -43,7 +45,7 @@ export default function InfoCard({ car, features, locationName }: InfoCardProps)
       <InfoCardHostInfo hostName={car.createdByFullName || 'Unknown Host'} location={locationName} />
 
       {/* Contact Buttons */}
-      <ContactSection name={`${car.brand} ${car.model} ${car.year}`} />
+      {!admin && <ContactSection name={`${car.brand} ${car.model} ${car.year}`} />}
     </div>
   );
 }

@@ -4,17 +4,16 @@ import { Calendar } from 'lucide-react';
 interface UserPanelProps {
   name: string;
   createdAt: string;
+  userId: number;
+  avatarUrl?: string | null;
 }
 
-export default function UserPanel({ name, createdAt }: UserPanelProps) {
+export default function UserPanel({ name, createdAt, userId, avatarUrl }: UserPanelProps) {
   return (
     <>
       {/* Avatar */}
       <div className='relative group flex-shrink-0'>
-        {/* <div className='w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center text-white text-3xl sm:text-4xl font-bold border-4 border-white shadow-xl'>
-          {name.charAt(0)}
-        </div> */}
-        <AvatarUploader />
+        <AvatarUploader userId={userId} initialAvatarUrl={avatarUrl} />
       </div>
 
       {/* User Details */}

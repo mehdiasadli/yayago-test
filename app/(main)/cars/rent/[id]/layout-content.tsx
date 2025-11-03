@@ -11,9 +11,10 @@ interface CarDetailsLayoutContentProps {
   car: TGetCarByIdResponse;
   locationName: string;
   children: React.ReactNode;
+  admin?: boolean;
 }
 
-export default function CarDetailsLayoutContent({ car, locationName, children }: CarDetailsLayoutContentProps) {
+export default function CarDetailsLayoutContent({ car, locationName, children, admin }: CarDetailsLayoutContentProps) {
   const features = [
     { Icon: Users, label: 'Seats', value: car.seatCount ?? 0 },
     { Icon: DoorOpen, label: 'Doors', value: car.doorCount ?? 0 },
@@ -41,20 +42,22 @@ export default function CarDetailsLayoutContent({ car, locationName, children }:
 
           {/* Car Info Card */}
           <div ref={infoCardRef}>
-            <InfoCard car={car} locationName={locationName} features={features} />
+            <InfoCard admin={admin} car={car} locationName={locationName} features={features} />
           </div>
         </div>
       </div>
 
       {children}
 
-      <FixedContactButton
-        name={`${car.brand} ${car.model} ${car.year}`}
-        pricePerDay={car.pricePerDay}
-        currency={car.currency}
-        visible={isFixedContactButtonVisible}
-        primaryImageUrl={car.primaryImageUrl}
-      />
+      {!admin && (
+        <FixedContactButton
+          name={`${car.brand} ${car.model} ${car.year}`}
+          pricePerDay={car.pricePerDay}
+          currency={car.currency}
+          visible={isFixedContactButtonVisible}
+          primaryImageUrl={car.primaryImageUrl}
+        />
+      )}
     </div>
   );
 }

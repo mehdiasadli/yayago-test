@@ -13,22 +13,25 @@ import TransmissionType from './transmission-type';
 import YearRange from './year-range';
 import qs from 'qs';
 import { useRouter } from 'next/navigation';
+import { UseQueryStatesReturn } from 'nuqs';
+import { SearchCarsQueryDto } from '@/features/cars/cars.dto';
 
 interface CarFiltersProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   query: TGetCarsQuery;
   setQuery: (query: TGetCarsQuery) => void;
+  filters: UseQueryStatesReturn<any>[0];
+  setFilters: UseQueryStatesReturn<any>[1];
 }
 
-export default function CarFilters({ open, onOpenChange, query, setQuery }: CarFiltersProps) {
+export default function CarFilters({ open, onOpenChange, query, setQuery, filters, setFilters }: CarFiltersProps) {
   const router = useRouter();
 
   const handleApply = () => {
     const queryString = qs.stringify(query);
     const url = queryString ? `/cars/rent?${queryString}` : '/cars/rent';
     onOpenChange(false);
-    console.log(decodeURIComponent(url));
     router.push(url, { scroll: false });
   };
 
@@ -50,39 +53,39 @@ export default function CarFilters({ open, onOpenChange, query, setQuery }: CarF
         <div className='flex-1 overflow-y-auto p-6'>
           <div className='space-y-6'>
             <div className='flex flex-col gap-4'>
-              <BrandSelect brand={query.brand} setBrand={(brand) => setQuery({ ...query, brand })} />
-              <LocationSelect location={query.location} setLocation={(location) => setQuery({ ...query, location })} />
-              <Separator />
-              <CarFiltersToggles
+              {/* <BrandSelect brand={query.brand} setBrand={(brand) => setQuery({ ...query, brand })} /> */}
+              {/* <LocationSelect location={query.location} setLocation={(location) => setQuery({ ...query, location })} /> */}
+              {/* <Separator /> */}
+              {/* <CarFiltersToggles
                 featuredOnly={query.featuredOnly}
                 setFeaturedOnly={(featuredOnly) => setQuery({ ...query, featuredOnly })}
                 noDepositOnly={query.noDepositOnly}
                 setNoDepositOnly={(noDepositOnly) => setQuery({ ...query, noDepositOnly })}
-              />
-              <Separator />
+              /> */}
+              {/* <Separator /> */}
               <PriceRange
-                priceRange={query.priceRange ?? ([0, 2000] as [number, number])}
-                setPriceRange={(priceRange) => setQuery({ ...query, priceRange })}
+                priceRange={[filters.minPrice ?? 0, filters.maxPrice ?? 5000]}
+                setPriceRange={(priceRange) => setFilters([{ minPrice: priceRange[0], maxPrice: priceRange[1] }])}
                 minPrice={0}
-                maxPrice={2000}
+                maxPrice={5000}
                 currency='AED'
               />
               <Separator />
-              <CarType carTypes={query.carTypes} setCarTypes={(carTypes) => setQuery({ ...query, carTypes })} />
-              <Separator />
-              <FuelType fuelTypes={query.fuelTypes} setFuelTypes={(fuelTypes) => setQuery({ ...query, fuelTypes })} />
+              {/* <CarType carTypes={query.carTypes} setCarTypes={(carTypes) => setQuery({ ...query, carTypes })} /> */}
+              {/* <Separator /> */}
+              {/* <FuelType fuelTypes={query.fuelTypes} setFuelTypes={(fuelTypes) => setQuery({ ...query, fuelTypes })} /> */}
               <Separator />
               <TransmissionType
-                transmissions={query.transmissions}
-                setTransmissions={(transmissions) => setQuery({ ...query, transmissions })}
+                transmissions={filters.transmissions}
+                setTransmissions={(transmissions) => setFilters([{ transmission: transmissions }])}
               />
-              <Separator />
-              <YearRange
-                yearRange={query.yearRange ?? [2020, 2025]}
-                setYearRange={(yearRange) => setQuery({ ...query, yearRange })}
+              {/* <Separator /> */}
+              {/* <YearRange
+                yearRange={[filters.minYear ?? 2020, filters.maxYear ?? 2025]}
+                setYearRange={(yearRange) => setFilters([{ minYear: yearRange[0], maxYear: yearRange[1] }])}
                 minYear={2020}
                 maxYear={2024}
-              />
+              /> */}
             </div>
           </div>
         </div>

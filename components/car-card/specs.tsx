@@ -25,11 +25,15 @@ export default function Specs({ seatCount, doorCount, fuelType, engineVolume }: 
       </div>
       <div className='flex items-center gap-1.5'>
         <Fuel className='w-3.5 h-3.5 text-gray-500' strokeWidth={2.5} />
-        <span className='text-xs text-gray-600 capitalize'>{mapEnumLabel(fuelType, 'Unknown Fuel')}</span>
+        <span className='text-xs text-gray-600 capitalize'>
+          {mapEnumLabel(fuelType, { defaultValue: 'Unknown Fuel' })}
+        </span>
       </div>
       <div className='flex items-center gap-1.5'>
         <Fuel className='w-3.5 h-3.5 text-gray-500' strokeWidth={2.5} />
-        <span className='text-xs text-gray-600 capitalize'>{mapEnumLabel(engineVolume, 'Unknown Volume')}</span>
+        <span className='text-xs text-gray-600 capitalize'>
+          {mapEnumLabel(engineVolume, { defaultValue: 'Unknown Volume' })}
+        </span>
       </div>
     </div>
   );

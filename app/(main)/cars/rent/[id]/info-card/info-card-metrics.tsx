@@ -15,9 +15,10 @@ interface InfoCardMetricsProps {
   favoriteCount: number;
   averageRating: number;
   reviewCount: number;
+  admin?: boolean;
 }
 
-export default function InfoCardMetrics({ id, viewCount, favoriteCount }: InfoCardMetricsProps) {
+export default function InfoCardMetrics({ id, viewCount, favoriteCount, admin }: InfoCardMetricsProps) {
   const { status } = useSession();
 
   const { data: reviewsCount } = useQuery(createGetReviewsCountQueryOptions(id));
@@ -48,7 +49,7 @@ export default function InfoCardMetrics({ id, viewCount, favoriteCount }: InfoCa
         <Heart className='w-4 h-4' strokeWidth={2} />
         <span>{favoriteCount} favorites</span>
       </div>
-      {status === 'authenticated' ? (
+      {status === 'authenticated' && !admin ? (
         <Link href={`/cars/rent/${id}/reviews#reviews-section`}>{container}</Link>
       ) : (
         container

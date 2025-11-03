@@ -15,6 +15,7 @@ import {
   DialogTrigger,
 } from '../ui/dialog';
 import { X } from 'lucide-react';
+import { useState } from 'react';
 
 interface NavigationSearchProps {
   show: boolean;
@@ -22,9 +23,10 @@ interface NavigationSearchProps {
 
 export default function NavigationSearch({ show }: NavigationSearchProps) {
   if (!show) return null;
+  const [open, setOpen] = useState(false);
 
   return (
-    <Dialog modal={true}>
+    <Dialog modal={true} open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <AnimateIcon animateOnHover className='h-full'>
           <Button variant='ghost' className='h-full hover:text-white hover:bg-white/20 transition-colors duration-300'>
@@ -33,7 +35,7 @@ export default function NavigationSearch({ show }: NavigationSearchProps) {
           </Button>
         </AnimateIcon>
       </DialogTrigger>
-      <DialogContent className='flex flex-col gap-0 p-0 h-[90vh] !w-[95vw] !max-w-7xl border-none bg-gray-900/80 backdrop-blur-3xl [&>button:last-child]:hidden'>
+      <DialogContent className='flex flex-col gap-0 p-0 h-[90vh] max-w-3xl border-none bg-gray-900/80 backdrop-blur-3xl [&>button:last-child]:hidden'>
         {/* Background Pattern */}
         <div className='absolute inset-0 opacity-5 pointer-events-none'>
           <div
@@ -54,7 +56,7 @@ export default function NavigationSearch({ show }: NavigationSearchProps) {
               </h2>
             </DialogTitle>
             <DialogDescription asChild>
-              <SearchSheet />
+              <SearchSheet close={() => setOpen(false)} />
             </DialogDescription>
           </DialogHeader>
         </div>

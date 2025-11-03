@@ -15,8 +15,6 @@ export const metadata = {
 export default async function FavoritesPage() {
   const favoritesData = await FavoritesApi.getUserFavorites();
 
-  console.log('favoritesData', favoritesData);
-
   if (!favoritesData.success) {
     redirect('/profile');
   }

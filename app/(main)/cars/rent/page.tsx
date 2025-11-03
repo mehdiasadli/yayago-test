@@ -1,8 +1,4 @@
-import { Suspense } from 'react';
 import CarsRentContent from '@/components/cars-rent-content/cars-rent-content';
-import { createGetCarsQueryOptions } from '@/features/cars/cars.queries';
-import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { TGetCarsQuery } from '@/features/cars/cars.types';
 
 export const metadata = {
   title: 'Rent a Car in Dubai',
@@ -10,36 +6,7 @@ export const metadata = {
     'Browse our extensive collection of rental cars in Dubai. From economy to luxury, find the perfect vehicle for your needs. Compare prices, features, and book instantly.',
 };
 
-const initialQuery: TGetCarsQuery = {
-  q: '',
-  brand: undefined,
-  location: undefined,
-  carTypes: [],
-  transmissions: [],
-  fuelTypes: [],
-  priceRange: [0, 2000],
-  yearRange: [2020, 2024],
-  featuredOnly: false,
-  noDepositOnly: false,
-};
-
-function LoadingFallback() {
-  return (
-    <div className='max-w-[1920px] mx-auto px-6 lg:px-8 py-8'>
-      <div className='flex items-center justify-center min-h-[400px]'>
-        <div className='text-center'>
-          <div className='w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4'></div>
-          <p className='text-gray-600'>Loading cars...</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default async function CarsRentPage() {
-  const queryClient = new QueryClient();
-  await queryClient.prefetchQuery(createGetCarsQueryOptions(initialQuery));
-
   return (
     <div className='min-h-screen bg-gray-50'>
       {/* Header */}
@@ -56,11 +23,7 @@ export default async function CarsRentPage() {
       </section>
 
       {/* Main Content */}
-      <Suspense fallback={<LoadingFallback />}>
-        <HydrationBoundary state={dehydrate(queryClient)}>
-          <CarsRentContent />
-        </HydrationBoundary>
-      </Suspense>
+      <CarsRentContent />
     </div>
   );
 }

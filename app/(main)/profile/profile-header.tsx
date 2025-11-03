@@ -2,7 +2,7 @@ import ProfileNavigation, { NavigationItem } from '@/components/profile-navigati
 import UserPanel from './profile-header-sections/user-panel';
 import ActionButtons from './profile-header-sections/action-buttons';
 
-const getNavigation = (isAdmin: boolean): NavigationItem[] => {
+const getNavigation = (isAdmin: boolean, dashboardUrl?: string): NavigationItem[] => {
   const baseNavigation: NavigationItem[] = [
     { name: 'Profile', href: '/profile', icon: 'User', exact: true },
     // { name: 'Dashboard', href: '/profile/dashboard', icon: 'LayoutDashboard' },
@@ -12,8 +12,8 @@ const getNavigation = (isAdmin: boolean): NavigationItem[] => {
     // { name: 'Settings', href: '/profile/settings', icon: 'Settings' },
   ];
 
-  if (isAdmin) {
-    baseNavigation.push({ name: 'Admin', href: '/admin', icon: 'ShieldAlert' });
+  if (isAdmin && dashboardUrl) {
+    baseNavigation.push({ name: 'Admin', href: dashboardUrl, icon: 'BarChart3', external: true });
   }
 
   return baseNavigation;
@@ -23,10 +23,15 @@ interface ProfileHeaderProps {
   name: string;
   createdAt: string;
   isAdmin: boolean;
+  userId: number;
+  avatarUrl?: string | null;
 }
 
-export default async function ProfileHeader({ name, createdAt, isAdmin }: ProfileHeaderProps) {
-  const navigation = getNavigation(isAdmin);
+export default async function ProfileHeader({ name, createdAt, isAdmin, userId, avatarUrl }: ProfileHeaderProps) {
+  // Access server-side env variable (won't be exposed to client)
+  const dashboardUrl = process.env.DASHBOARD_URL;
+
+  const navigation = getNavigation(isAdmin, dashboardUrl);
 
   return (
     <div className='bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border-b border-gray-700 pt-20'>
@@ -35,7 +40,7 @@ export default async function ProfileHeader({ name, createdAt, isAdmin }: Profil
         <div className='flex flex-col gap-6 mb-6 lg:mb-8'>
           {/* Top Row: Avatar, User Info, and Action Buttons */}
           <div className='flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6'>
-            <UserPanel name={name} createdAt={createdAt} />
+            <UserPanel name={name} createdAt={createdAt} userId={userId} avatarUrl={avatarUrl} />
 
             {/* Action Buttons */}
             <ActionButtons />

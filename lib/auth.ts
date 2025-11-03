@@ -83,6 +83,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           const loginData = loginValidation.data;
           const { token, refreshToken, userId } = loginData;
 
+          console.log(`Requesting: ${API_URL}/api/users/${userId} with token: ${token}`);
+
           // Fetch user details using the token we just received
           const userResponse = await fetch(`${API_URL}/api/users/${userId}`, {
             headers: {
@@ -143,7 +145,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     maxAge: REFRESH_TOKEN_TTL,
   },
   callbacks: {
-    async jwt({ token, user, trigger }) {
+    async jwt({ token, user, trigger, session }) {
       // Initial sign-in: populate token with user data
       if (user) {
         return {
@@ -157,6 +159,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           refreshToken: user.refreshToken,
           createdAt: user.createdAt,
           expiresAt: Math.floor(Date.now() / 1000) + ACCESS_TOKEN_TTL,
+        };
+      }
+
+      // If update is called with data, use that data directly
+      if (trigger === 'update' && session) {
+        return {
+          ...token,
+          ...session,
         };
       }
 

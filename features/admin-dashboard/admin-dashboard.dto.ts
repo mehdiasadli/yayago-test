@@ -1,6 +1,7 @@
 import z from 'zod';
 
-export const AdminDashboardStatsResponseDto = z.object({
+// GET /api/admin/dashboard/stats - Get dashboard statistics
+export const AdminGetDashboardStatsResponseDto = z.object({
   totalUsers: z.number().int().nonnegative(),
   totalCars: z.number().int().nonnegative(),
   totalBookings: z.number().int().nonnegative(),
@@ -16,19 +17,29 @@ export const AdminDashboardStatsResponseDto = z.object({
   cancelledBookings: z.number().int().nonnegative(),
 });
 
-export const AdminDashboardRevenueQueryDto = z.object({
-  startDate: z.string().datetime(),
-  endDate: z.string().datetime(),
+// GET /api/admin/dashboard/revenue - Get revenue statistics for date range
+export const AdminGetRevenueStatsQueryDto = z.object({
+  startDate: z.coerce.date(),
+  endDate: z.coerce.date(),
 });
 
-export const AdminDashboardRevenueResponseDto = z.object({
-  date: z.string().datetime(),
-  dailyRevenue: z.number().nonnegative(),
-  cumulativeRevenue: z.number().nonnegative(),
-  bookingsCount: z.number().int().nonnegative(),
-});
+export const AdminGetRevenueStatsResponseDto = z
+  .object({
+    date: z.coerce.date(),
+    dailyRevenue: z.number().nonnegative(),
+    cumulativeRevenue: z.number().nonnegative(),
+    bookingsCount: z.number().int().nonnegative(),
+  })
+  .array();
 
-export const AdminDashboardRevenueTotalResponseDto = z.number().nonnegative();
-export const AdminDashboardRevenueMonthlyResponseDto = z.number().nonnegative();
-export const AdminDashboardRevenueDailyResponseDto = z.number().nonnegative();
-export const AdminDashboardOccupancyRateResponseDto = z.number().min(0).max(100);
+// GET /api/admin/dashboard/revenue/total - Get total revenue
+export const AdminGetTotalRevenueResponseDto = z.number().nonnegative();
+
+// GET /api/admin/dashboard/revenue/monthly - Get monthly revenue
+export const AdminGetMonthlyRevenueResponseDto = z.number().nonnegative();
+
+// GET /api/admin/dashboard/revenue/daily - Get daily revenue
+export const AdminGetDailyRevenueResponseDto = z.number().nonnegative();
+
+// GET /api/admin/dashboard/occupancy-rate - Get occupancy rate
+export const AdminGetOccupancyRateResponseDto = z.number().min(0).max(100);

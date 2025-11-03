@@ -12,8 +12,6 @@ export default function RecoverPasswordForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Recover password for:', email);
-    // Handle password recovery logic here
     setSubmitted(true);
   };
 

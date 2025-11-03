@@ -2,6 +2,7 @@
 
 import { Label } from '../ui/label';
 import { Slider } from '../ui/slider';
+import { useMemo } from 'react';
 
 interface YearRangeProps {
   yearRange: [number, number];
@@ -11,6 +12,11 @@ interface YearRangeProps {
 }
 
 export default function YearRange({ yearRange, setYearRange, minYear, maxYear }: YearRangeProps) {
+  const value = useMemo(() => {
+    if (!yearRange) return [minYear, maxYear];
+    return [yearRange[0], yearRange[1]];
+  }, [yearRange]);
+
   return (
     <div className='*:not-first:mt-3'>
       <Label className='tabular-nums text-md'>
@@ -18,7 +24,7 @@ export default function YearRange({ yearRange, setYearRange, minYear, maxYear }:
       </Label>
       <div className='flex items-center gap-4'>
         <Slider
-          value={yearRange ?? [minYear, maxYear]}
+          value={value}
           onValueChange={(value) => setYearRange(value as [number, number])}
           min={minYear}
           max={maxYear}

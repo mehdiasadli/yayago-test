@@ -31,9 +31,9 @@ export default function InfoCardSpecs({ features, car }: InfoCardSpecsProps) {
       <Badge>
         {car.doorCount} Door{car.doorCount === 1 ? '' : 's'}
       </Badge>
-      <Badge>{mapEnumLabel(car.transmission, 'Unknown Transmission')}</Badge>
-      <Badge>{mapEnumLabel(car.fuelType, 'Unknown Fuel Type')}</Badge>
-      <Badge>{mapEnumLabel(car.carType, 'Unknown Body Type')}</Badge>
+      <Badge>{mapEnumLabel(car.transmission, { defaultValue: 'Unknown Transmission' })}</Badge>
+      <Badge>{mapEnumLabel(car.fuelType, { defaultValue: 'Unknown Fuel Type' })}</Badge>
+      <Badge>{mapEnumLabel(car.carType, { defaultValue: 'Unknown Body Type' })}</Badge>
       {typeof car.engineVolume === 'string' && car.engineVolume !== '' && <Badge>{car.engineVolume}</Badge>}
       {typeof car.horsePower === 'number' && car.horsePower !== 0 && <Badge>{car.horsePower} HP</Badge>}
       {typeof car.torque === 'number' && car.torque !== 0 && <Badge>{car.torque} Nm</Badge>}

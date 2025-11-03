@@ -5,10 +5,11 @@ import Autoplay from 'embla-carousel-autoplay';
 import { useCallback, useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import CarCard from '../car-card/car-card';
-import { useCars } from '@/features/cars/cars.queries';
+import { createGetFeaturedCarsQueryOptions } from '@/features/cars/cars.queries';
+import { useQuery } from '@tanstack/react-query';
 
 export default function CarCarousel() {
-  const { data } = useCars();
+  const { data } = useQuery(createGetFeaturedCarsQueryOptions());
   const [emblaRef, emblaApi] = useEmblaCarousel(
     {
       loop: false,

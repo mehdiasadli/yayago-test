@@ -18,7 +18,8 @@ export default function Title({ carId, brand, model, year, carType, transmission
         {year} {brand} {model}
       </CardTitle>
       <CardDescription className='text-gray-500'>
-        {mapEnumLabel(carType, 'Unknown Type')} • {mapEnumLabel(transmission, 'Unknown Transmission')}
+        {mapEnumLabel(carType, { defaultValue: 'Unknown Type' })} •{' '}
+        {mapEnumLabel(transmission, { defaultValue: 'Unknown Transmission' })}
       </CardDescription>
     </Link>
   );

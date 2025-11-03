@@ -31,12 +31,51 @@ export function getInitials(name?: string | null, count: 1 | 2 | 3 = 2) {
     .join('');
 }
 
-export function mapEnumLabel(enumValue?: string | null, defaultValue = 'Unknown') {
-  if (!enumValue || !enumValue.trim()) {
+interface MapEnumOptions {
+  capitalization?: {
+    first?: ['u' | 'l' | null, ('u' | 'l' | null)?];
+    rest?: ['u' | 'l' | null, ('u' | 'l' | null)?];
+  };
+  splitBy?: string;
+  joinWith?: string;
+  defaultValue?: string;
+}
+
+export function mapEnumLabel(value?: string | null, options: MapEnumOptions = {}) {
+  const { capitalization, splitBy = '_', joinWith = ' ', defaultValue = 'Unknown' } = options;
+
+  if (!value || !value.trim()) {
     return defaultValue;
   }
 
-  return enumValue.replace(/_/g, ' ').charAt(0).toUpperCase() + enumValue.slice(1).toLowerCase();
+  const capitalize = (word: string, index: number) => {
+    if (index === 0) {
+      // first word
+      const config = [capitalization?.first?.[0] ?? 'u', capitalization?.first?.[1] ?? 'l'] as const;
+
+      const firstLetter =
+        config[0] === 'u' ? word[0].toUpperCase() : config[0] === 'l' ? word[0].toLowerCase() : word[0];
+      const restLetters =
+        config[1] === 'u'
+          ? word.slice(1).toUpperCase()
+          : config[1] === 'l'
+            ? word.slice(1).toLowerCase()
+            : word.slice(1);
+
+      return `${firstLetter}${restLetters}`;
+    }
+
+    // rest of the words
+    const config = [capitalization?.rest?.[0] ?? 'u', capitalization?.rest?.[1] ?? 'l'] as const;
+
+    const firstLetter = config[0] === 'u' ? word[0].toUpperCase() : config[0] === 'l' ? word[0].toLowerCase() : word[0];
+    const restLetters =
+      config[1] === 'u' ? word.slice(1).toUpperCase() : config[1] === 'l' ? word.slice(1).toLowerCase() : word.slice(1);
+
+    return `${firstLetter}${restLetters}`;
+  };
+
+  return value.split(splitBy).map(capitalize).join(joinWith);
 }
 
 export function createMutationFn<Fn extends (...args: any[]) => Promise<any>>(fn: Fn) {

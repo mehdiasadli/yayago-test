@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import { Label } from '../ui/label';
 import { Slider } from '../ui/slider';
 
@@ -16,6 +17,11 @@ export default function PriceRange({ priceRange, setPriceRange, minPrice, maxPri
     return price === maxPrice ? `${currency} ${price.toLocaleString()}+` : `${currency} ${price.toLocaleString()}`;
   };
 
+  const value = useMemo(() => {
+    if (!priceRange) return [minPrice, maxPrice];
+    return [priceRange[0], priceRange[1]];
+  }, [priceRange]);
+
   return (
     <div className='*:not-first:mt-3'>
       <Label className='tabular-nums text-md'>
@@ -23,7 +29,7 @@ export default function PriceRange({ priceRange, setPriceRange, minPrice, maxPri
       </Label>
       <div className='flex items-center gap-4'>
         <Slider
-          value={priceRange}
+          value={value}
           onValueChange={(value) => setPriceRange(value as [number, number])}
           min={minPrice}
           max={maxPrice}
