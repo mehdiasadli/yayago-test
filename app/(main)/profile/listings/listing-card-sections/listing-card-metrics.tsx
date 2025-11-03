@@ -54,7 +54,7 @@ export default async function ListingCardMetrics({
                 <DollarSign className='w-4 h-4 text-gray-500' strokeWidth={2} />
                 <span className='text-xs text-gray-600'>Earnings</span>
               </div>
-              <div className='text-lg font-bold text-gray-900'>₼{listing.totalEarnings}</div>
+              <div className='text-lg font-bold text-gray-900'>{listing.totalEarnings} AED</div>
             </div> */}
     </div>
   );

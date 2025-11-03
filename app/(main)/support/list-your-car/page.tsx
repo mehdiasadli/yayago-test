@@ -158,17 +158,17 @@ export default function ListYourCarPage() {
                 <p className='text-gray-600'>Toyota Corolla, Hyundai Elantra</p>
               </div>
               <div className='text-center mb-6'>
-                <div className='text-4xl font-bold text-primary mb-2'>₼40-60</div>
+                <div className='text-4xl font-bold text-primary mb-2'>40-60 AED</div>
                 <div className='text-gray-600'>per day</div>
               </div>
               <ul className='space-y-3 mb-6'>
                 <li className='flex items-start gap-2'>
                   <CheckCircle className='w-5 h-5 text-primary flex-shrink-0 mt-0.5' strokeWidth={2} />
-                  <span className='text-gray-700'>₼1,200-1,800/month (rented 30 days)</span>
+                  <span className='text-gray-700'>1,200-1,800 AED/month (rented 30 days)</span>
                 </li>
                 <li className='flex items-start gap-2'>
                   <CheckCircle className='w-5 h-5 text-primary flex-shrink-0 mt-0.5' strokeWidth={2} />
-                  <span className='text-gray-700'>₼600-900/month (rented 15 days)</span>
+                  <span className='text-gray-700'>600-900 AED/month (rented 15 days)</span>
                 </li>
                 <li className='flex items-start gap-2'>
                   <CheckCircle className='w-5 h-5 text-primary flex-shrink-0 mt-0.5' strokeWidth={2} />
@@ -176,7 +176,7 @@ export default function ListYourCarPage() {
                 </li>
               </ul>
               <div className='bg-gray-50 p-4 rounded text-sm text-gray-600'>
-                <strong>Annual potential:</strong> ₼7,200-10,800 at 50% utilization
+                <strong>Annual potential:</strong> 7,200-10,800 AED at 50% utilization
               </div>
             </div>
 
@@ -189,17 +189,17 @@ export default function ListYourCarPage() {
                 <p className='text-gray-600'>Camry, Accord, Passat</p>
               </div>
               <div className='text-center mb-6'>
-                <div className='text-4xl font-bold text-primary mb-2'>₼70-100</div>
+                <div className='text-4xl font-bold text-primary mb-2'>70-100 AED</div>
                 <div className='text-gray-600'>per day</div>
               </div>
               <ul className='space-y-3 mb-6'>
                 <li className='flex items-start gap-2'>
                   <CheckCircle className='w-5 h-5 text-primary flex-shrink-0 mt-0.5' strokeWidth={2} />
-                  <span className='text-gray-700'>₼2,100-3,000/month (rented 30 days)</span>
+                  <span className='text-gray-700'>2,100-3,000 AED/month (rented 30 days)</span>
                 </li>
                 <li className='flex items-start gap-2'>
                   <CheckCircle className='w-5 h-5 text-primary flex-shrink-0 mt-0.5' strokeWidth={2} />
-                  <span className='text-gray-700'>₼1,050-1,500/month (rented 15 days)</span>
+                  <span className='text-gray-700'>1,050-1,500 AED/month (rented 15 days)</span>
                 </li>
                 <li className='flex items-start gap-2'>
                   <CheckCircle className='w-5 h-5 text-primary flex-shrink-0 mt-0.5' strokeWidth={2} />
@@ -207,7 +207,7 @@ export default function ListYourCarPage() {
                 </li>
               </ul>
               <div className='bg-primary/5 p-4 rounded text-sm text-gray-600'>
-                <strong>Annual potential:</strong> ₼12,600-18,000 at 50% utilization
+                <strong>Annual potential:</strong> 12,600-18,000 AED at 50% utilization
               </div>
             </div>
 
@@ -217,17 +217,17 @@ export default function ListYourCarPage() {
                 <p className='text-gray-600'>Mercedes, BMW, Lexus</p>
               </div>
               <div className='text-center mb-6'>
-                <div className='text-4xl font-bold text-primary mb-2'>₼120-200+</div>
+                <div className='text-4xl font-bold text-primary mb-2'>120-200+ AED</div>
                 <div className='text-gray-600'>per day</div>
               </div>
               <ul className='space-y-3 mb-6'>
                 <li className='flex items-start gap-2'>
                   <CheckCircle className='w-5 h-5 text-primary flex-shrink-0 mt-0.5' strokeWidth={2} />
-                  <span className='text-gray-700'>₼3,600-6,000/month (rented 30 days)</span>
+                  <span className='text-gray-700'>3,600-6,000 AED/month (rented 30 days)</span>
                 </li>
                 <li className='flex items-start gap-2'>
                   <CheckCircle className='w-5 h-5 text-primary flex-shrink-0 mt-0.5' strokeWidth={2} />
-                  <span className='text-gray-700'>₼1,800-3,000/month (rented 15 days)</span>
+                  <span className='text-gray-700'>1,800-3,000 AED/month (rented 15 days)</span>
                 </li>
                 <li className='flex items-start gap-2'>
                   <CheckCircle className='w-5 h-5 text-primary flex-shrink-0 mt-0.5' strokeWidth={2} />
@@ -235,7 +235,7 @@ export default function ListYourCarPage() {
                 </li>
               </ul>
               <div className='bg-gray-50 p-4 rounded text-sm text-gray-600'>
-                <strong>Annual potential:</strong> ₼21,600-36,000 at 50% utilization
+                <strong>Annual potential:</strong> 21,600-36,000 AED at 50% utilization
               </div>
             </div>
           </div>
@@ -482,7 +482,7 @@ export default function ListYourCarPage() {
               <h3 className='text-xl font-bold text-gray-900 mb-3'>How much does it cost to list my car?</h3>
               <p className='text-gray-600 leading-relaxed'>
                 YayaGo operates on a simple monthly membership model. Pricing depends on how many cars you want to list,
-                starting from ₼29/month for one vehicle. We never take commission from your rentals—you keep 100% of
+                starting from 29 AED/month for one vehicle. We never take commission from your rentals—you keep 100% of
                 what you earn. Check our{' '}
                 <Link href='/pricing' className='text-primary hover:underline font-medium'>
                   pricing page

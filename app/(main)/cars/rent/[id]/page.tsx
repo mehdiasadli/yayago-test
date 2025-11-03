@@ -27,10 +27,10 @@ export async function generateMetadata({ params }: CarDetailsPageProps) {
 
     return {
       title: `${car.year} ${car.brand} ${car.model} - Rent in Dubai | YayaGo`,
-      description: `Rent ${car.year} ${car.brand} ${car.model} for ₼${car.pricePerDay}/day. 4 seats, Automatic transmission, Petrol engine. Available in Dubai.`,
+      description: `Rent ${car.year} ${car.brand} ${car.model} for ${car.pricePerDay} ${car.currency}/day. 4 seats, Automatic transmission, Petrol engine. Available in Dubai.`,
       openGraph: {
         title: `${car.year} ${car.brand} ${car.model} - Rent in Dubai | YayaGo`,
-        description: `Rent ${car.year} ${car.brand} ${car.model} for ₼${car.pricePerDay}/day. 4 seats, Automatic transmission, Petrol engine. Available in Dubai.`,
+        description: `Rent ${car.year} ${car.brand} ${car.model} for ${car.pricePerDay} ${car.currency}/day. 4 seats, Automatic transmission, Petrol engine. Available in Dubai.`,
       },
     };
   } catch (error) {

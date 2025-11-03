@@ -22,7 +22,7 @@ export default function EarningsCalculator() {
   const [selectedCar, setSelectedCar] = useState(carTypes[2]); // Default to Midsize Sedan
   const [dailyRate, setDailyRate] = useState(selectedCar.dailyRate);
   const [utilization, setUtilization] = useState(50); // 50% utilization
-  const [monthlyExpenses, setMonthlyExpenses] = useState(200); // ₼200 default expenses
+  const [monthlyExpenses, setMonthlyExpenses] = useState(200); // 200 AED default expenses
 
   // Calculate earnings
   const daysPerMonth = 30;
@@ -64,7 +64,7 @@ export default function EarningsCalculator() {
             <TrendingUp className='w-8 h-8' strokeWidth={2} />
             <h3 className='text-2xl md:text-3xl font-bold'>Your Monthly Net Profit</h3>
           </div>
-          <div className='text-6xl md:text-7xl font-bold mb-2'>₼{monthlyNetProfit.toLocaleString()}</div>
+          <div className='text-6xl md:text-7xl font-bold mb-2'>{monthlyNetProfit.toLocaleString()} AED</div>
           <p className='text-white/80 text-lg'>Based on {rentalDays} rental days per month</p>
         </div>
 
@@ -80,7 +80,7 @@ export default function EarningsCalculator() {
             >
               {carTypes.map((car) => (
                 <option key={car.id} value={car.id}>
-                  {car.name} - {car.example} (₼{car.dailyRate}/day suggested)
+                  {car.name} - {car.example} ({car.dailyRate} AED/day suggested)
                 </option>
               ))}
             </select>
@@ -93,7 +93,7 @@ export default function EarningsCalculator() {
                 <DollarSign className='w-5 h-5 text-primary' strokeWidth={2} />
                 Daily Rental Rate
               </label>
-              <span className='text-2xl font-bold text-primary'>₼{dailyRate}</span>
+              <span className='text-2xl font-bold text-primary'>{dailyRate} AED</span>
             </div>
             <input
               type='range'
@@ -105,8 +105,8 @@ export default function EarningsCalculator() {
               className='w-full h-3 bg-gray-200 appearance-none cursor-pointer accent-primary'
             />
             <div className='flex justify-between text-sm text-gray-500 mt-2'>
-              <span>₼20</span>
-              <span>₼600</span>
+              <span>20 AED</span>
+              <span>600 AED</span>
             </div>
           </div>
 
@@ -147,7 +147,7 @@ export default function EarningsCalculator() {
                 <Percent className='w-5 h-5 text-primary' strokeWidth={2} />
                 Monthly Expenses
               </label>
-              <span className='text-2xl font-bold text-primary'>₼{monthlyExpenses}</span>
+              <span className='text-2xl font-bold text-primary'>{monthlyExpenses} AED</span>
             </div>
             <input
               type='range'
@@ -159,8 +159,8 @@ export default function EarningsCalculator() {
               className='w-full h-3 bg-gray-200 appearance-none cursor-pointer accent-primary'
             />
             <div className='flex justify-between text-sm text-gray-500 mt-2'>
-              <span>₼50</span>
-              <span>₼1,000</span>
+              <span>50 AED</span>
+              <span>1,000 AED</span>
             </div>
             <div className='mt-2 p-3 bg-yellow-50 border border-yellow-200 text-yellow-800 text-sm flex items-start gap-2'>
               <Info className='w-4 h-4 flex-shrink-0 mt-0.5' strokeWidth={2} />
@@ -182,11 +182,11 @@ export default function EarningsCalculator() {
                 <div>
                   <div className='font-semibold text-gray-900'>Monthly Revenue</div>
                   <div className='text-sm text-gray-600'>
-                    ₼{dailyRate} × {rentalDays} days
+                    {dailyRate} AED × {rentalDays} days
                   </div>
                 </div>
               </div>
-              <div className='text-2xl font-bold text-green-600'>+₼{monthlyRevenue.toLocaleString()}</div>
+              <div className='text-2xl font-bold text-green-600'>+{monthlyRevenue.toLocaleString()} AED</div>
             </div>
 
             {/* Monthly Expenses */}
@@ -200,7 +200,7 @@ export default function EarningsCalculator() {
                   <div className='text-sm text-gray-600'>Insurance, maintenance, etc.</div>
                 </div>
               </div>
-              <div className='text-2xl font-bold text-orange-600'>-₼{monthlyExpenses.toLocaleString()}</div>
+              <div className='text-2xl font-bold text-orange-600'>-{monthlyExpenses.toLocaleString()} AED</div>
             </div>
 
             {/* Platform Commission */}
@@ -214,13 +214,13 @@ export default function EarningsCalculator() {
                   <div className='text-sm text-gray-600'>YayaGo takes 0% commission!</div>
                 </div>
               </div>
-              <div className='text-2xl font-bold text-primary'>₼0</div>
+              <div className='text-2xl font-bold text-primary'>0 AED</div>
             </div>
 
             {/* Net Profit */}
             <div className='flex items-center justify-between py-4 bg-gradient-to-r from-primary/10 to-primary/5 px-4 mt-4'>
               <div className='font-bold text-xl text-gray-900'>Your Monthly Net Profit</div>
-              <div className='text-3xl font-bold text-primary'>₼{monthlyNetProfit.toLocaleString()}</div>
+              <div className='text-3xl font-bold text-primary'>{monthlyNetProfit.toLocaleString()} AED</div>
             </div>
           </div>
 
@@ -228,9 +228,9 @@ export default function EarningsCalculator() {
           <div className='mt-8 p-6 bg-white border-2 border-primary/30'>
             <div className='text-center'>
               <div className='text-sm font-semibold text-gray-600 mb-2'>Projected Yearly Earnings</div>
-              <div className='text-4xl font-bold text-primary mb-2'>₼{(monthlyNetProfit * 12).toLocaleString()}</div>
+              <div className='text-4xl font-bold text-primary mb-2'>{(monthlyNetProfit * 12).toLocaleString()} AED</div>
               <div className='text-sm text-gray-600'>
-                That's <span className='font-bold text-primary'>₼{monthlyNetProfit.toLocaleString()}</span> per month
+                That's <span className='font-bold text-primary'>{monthlyNetProfit.toLocaleString()} AED</span> per month
                 for 12 months
               </div>
             </div>

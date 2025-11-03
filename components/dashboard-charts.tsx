@@ -45,7 +45,7 @@ export function EarningsChart() {
           }}
         />
         <Legend wrapperStyle={{ fontSize: '12px' }} />
-        <Line type='monotone' dataKey='earnings' stroke='hsl(var(--primary))' strokeWidth={3} name='Earnings (₼)' />
+        <Line type='monotone' dataKey='earnings' stroke='hsl(var(--primary))' strokeWidth={3} name='Earnings (AED)' />
         <Line type='monotone' dataKey='rentals' stroke='#10b981' strokeWidth={3} name='Rentals' />
       </LineChart>
     </ResponsiveContainer>
@@ -108,7 +108,7 @@ export function CarPerformanceChart() {
         />
         <Legend wrapperStyle={{ fontSize: '12px' }} />
         <Bar dataKey='rentals' fill='hsl(var(--primary))' name='Rentals' />
-        <Bar dataKey='earnings' fill='#10b981' name='Earnings (₼)' />
+        <Bar dataKey='earnings' fill='#10b981' name='Earnings (AED)' />
       </BarChart>
     </ResponsiveContainer>
   );

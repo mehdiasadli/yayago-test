@@ -72,9 +72,9 @@ export default function DashboardPage() {
               18%
             </div>
           </div>
-          <div className='text-3xl font-bold text-gray-900 mb-1'>₼12,450</div>
+          <div className='text-3xl font-bold text-gray-900 mb-1'>12,450 AED</div>
           <div className='text-sm text-gray-600'>Total Earnings</div>
-          <div className='text-xs text-gray-500 mt-2'>+₼2,156 this month</div>
+          <div className='text-xs text-gray-500 mt-2'>+2,156 AED this month</div>
         </div>
 
         {/* Active Rentals */}
@@ -194,15 +194,15 @@ export default function DashboardPage() {
             <div className='grid grid-cols-3 gap-6 mt-6 pt-6 border-t-2 border-gray-100'>
               <div>
                 <div className='text-sm text-gray-600 mb-1'>Total (7 months)</div>
-                <div className='text-2xl font-bold text-gray-900'>₼15,150</div>
+                <div className='text-2xl font-bold text-gray-900'>15,150 AED</div>
               </div>
               <div>
                 <div className='text-sm text-gray-600 mb-1'>Average/month</div>
-                <div className='text-2xl font-bold text-gray-900'>₼2,164</div>
+                <div className='text-2xl font-bold text-gray-900'>2,164 AED</div>
               </div>
               <div>
                 <div className='text-sm text-gray-600 mb-1'>Best month</div>
-                <div className='text-2xl font-bold text-gray-900'>₼2,600</div>
+                <div className='text-2xl font-bold text-gray-900'>2,600 AED</div>
               </div>
             </div>
           </div>
@@ -274,7 +274,7 @@ export default function DashboardPage() {
                 <div className='h-2 bg-gray-200'>
                   <div className='h-full bg-primary' style={{ width: '80%' }} />
                 </div>
-                <div className='text-xs text-gray-600 mt-1'>₼2,400 / ₼3,000</div>
+                <div className='text-xs text-gray-600 mt-1'>2,400 AED / 3,000 AED</div>
               </div>
 
               <div>
@@ -410,7 +410,7 @@ export default function DashboardPage() {
           <div className='grid grid-cols-2 md:grid-cols-4 gap-6 mt-6 pt-6 border-t-2 border-gray-100'>
             <div>
               <div className='text-sm text-gray-600 mb-1'>2025 Total</div>
-              <div className='text-2xl font-bold text-gray-900'>₼13,500</div>
+              <div className='text-2xl font-bold text-gray-900'>13,500 AED</div>
               <div className='text-xs text-green-600 font-semibold mt-1 flex items-center gap-1'>
                 <TrendingUp className='w-3 h-3' />
                 +23% vs 2024
@@ -418,16 +418,16 @@ export default function DashboardPage() {
             </div>
             <div>
               <div className='text-sm text-gray-600 mb-1'>2024 Total</div>
-              <div className='text-2xl font-bold text-gray-400'>₼11,000</div>
+              <div className='text-2xl font-bold text-gray-400'>11,000 AED</div>
             </div>
             <div>
               <div className='text-sm text-gray-600 mb-1'>Growth</div>
-              <div className='text-2xl font-bold text-green-600'>+₼2,500</div>
+              <div className='text-2xl font-bold text-green-600'>+2,500 AED</div>
             </div>
             <div>
               <div className='text-sm text-gray-600 mb-1'>Best Month</div>
               <div className='text-2xl font-bold text-gray-900'>Feb</div>
-              <div className='text-xs text-gray-600 mt-1'>₼2,600</div>
+              <div className='text-xs text-gray-600 mt-1'>2,600 AED</div>
             </div>
           </div>
         </div>
@@ -478,7 +478,7 @@ export default function DashboardPage() {
                 <div className='grid grid-cols-2 md:grid-cols-4 gap-4 mt-4'>
                   <div>
                     <div className='text-sm text-gray-600 mb-1'>Daily Rate</div>
-                    <div className='text-lg font-bold text-gray-900'>₼70</div>
+                    <div className='text-lg font-bold text-gray-900'>70 AED</div>
                   </div>
                   <div>
                     <div className='text-sm text-gray-600 mb-1'>Total Views</div>
@@ -537,7 +537,7 @@ export default function DashboardPage() {
                 <div className='grid grid-cols-2 md:grid-cols-4 gap-4 mt-4'>
                   <div>
                     <div className='text-sm text-gray-600 mb-1'>Daily Rate</div>
-                    <div className='text-lg font-bold text-gray-900'>₼120</div>
+                    <div className='text-lg font-bold text-gray-900'>120 AED</div>
                   </div>
                   <div>
                     <div className='text-sm text-gray-600 mb-1'>Total Views</div>
@@ -588,7 +588,7 @@ export default function DashboardPage() {
                 <div className='grid grid-cols-2 md:grid-cols-4 gap-4 mt-4'>
                   <div>
                     <div className='text-sm text-gray-600 mb-1'>Daily Rate</div>
-                    <div className='text-lg font-bold text-gray-900'>₼100</div>
+                    <div className='text-lg font-bold text-gray-900'>100 AED</div>
                   </div>
                   <div>
                     <div className='text-sm text-gray-600 mb-1'>Total Views</div>

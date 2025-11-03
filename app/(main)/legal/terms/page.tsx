@@ -327,7 +327,7 @@ export default function TermsPage() {
             </ul>
             <p className='text-gray-700 leading-relaxed mb-4'>
               OUR TOTAL LIABILITY FOR ANY CLAIMS ARISING FROM YOUR USE OF THE PLATFORM SHALL NOT EXCEED THE AMOUNT YOU
-              PAID TO US IN THE TWELVE (12) MONTHS PRECEDING THE CLAIM, OR ₼100, WHICHEVER IS GREATER.
+              PAID TO US IN THE TWELVE (12) MONTHS PRECEDING THE CLAIM, OR 100 AED, WHICHEVER IS GREATER.
             </p>
           </section>
 

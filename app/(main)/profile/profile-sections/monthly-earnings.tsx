@@ -12,7 +12,7 @@ export default function MonthlyEarnings() {
             <DollarSign className='w-5 h-5 text-primary' strokeWidth={2} />
             <span className='text-sm font-semibold text-gray-600'>Earnings</span>
           </div>
-          <span className='text-2xl font-bold text-gray-900'>₼2,400</span>
+          <span className='text-2xl font-bold text-gray-900'>2,400 AED</span>
         </div>
 
         <div className='space-y-3'>
@@ -22,7 +22,7 @@ export default function MonthlyEarnings() {
           </div>
           <div className='flex items-center justify-between text-sm'>
             <span className='text-gray-600'>Avg per rental</span>
-            <span className='font-semibold text-gray-900'>₼200</span>
+            <span className='font-semibold text-gray-900'>200 AED</span>
           </div>
           <div className='flex items-center justify-between text-sm'>
             <span className='text-gray-600'>Days rented</span>
@@ -38,7 +38,7 @@ export default function MonthlyEarnings() {
           <div className='h-2 bg-gray-200'>
             <div className='h-full bg-primary' style={{ width: '80%' }} />
           </div>
-          <div className='text-xs text-gray-500 mt-2'>₼600 to reach ₼3,000 goal</div>
+          <div className='text-xs text-gray-500 mt-2'>600 AED to reach 3,000 AED goal</div>
         </div>
       </div>
     </div>

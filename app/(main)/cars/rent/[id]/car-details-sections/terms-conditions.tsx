@@ -9,9 +9,9 @@ import {
 import { Button } from '@/components/ui/button';
 
 const termsConditions = [
-  'Daily Mileage: 100km per day included. Additional kilometers charged at ₼1.50/km.',
+  'Daily Mileage: 100km per day included. Additional kilometers charged at 1.50/km AED.',
   'Fuel Policy: The vehicle is provided with a full tank and must be returned with a full tank.',
-  'Insurance: Comprehensive insurance included with an excess of ₼1,500 per incident.',
+  'Insurance: Comprehensive insurance included with an excess of 1,500 AED per incident.',
   'Late Return: A grace period of 1 hour is provided. After that, late returns are charged at hourly rates.',
   'Cancellation: Free cancellation up to 48 hours before rental start. Cancellations within 48 hours incur a 25% fee.',
 ];

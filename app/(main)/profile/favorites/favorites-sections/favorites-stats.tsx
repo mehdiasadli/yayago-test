@@ -59,7 +59,7 @@ export default function FavoritesStats({
               <DollarSign className='w-5 h-5 text-primary' strokeWidth={2} />
             </div>
             <div>
-              <div className='text-2xl font-bold text-gray-900'>₼{startingFromPrice}</div>
+              <div className='text-2xl font-bold text-gray-900'>{startingFromPrice} AED</div>
               <div className='text-xs text-gray-600'>Starting From</div>
             </div>
           </div>

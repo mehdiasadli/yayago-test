@@ -16,7 +16,7 @@ export default function PerformanceStats({ addedCars }: PerformanceStatsProps) {
             <TrendingUp className='w-5 h-5 text-green-600' strokeWidth={2} />
           </div>
         </div>
-        <div className='text-2xl md:text-3xl font-bold text-gray-900 mb-1'>₼12,450</div>
+        <div className='text-2xl md:text-3xl font-bold text-gray-900 mb-1'>12,450 AED</div>
         <div className='text-sm text-gray-600 mb-2'>Total Earnings</div>
         <div className='text-xs text-green-600 font-semibold'>+18% this month</div>
       </div> */}

@@ -41,7 +41,7 @@ export default function BillingSettingsPage() {
                 </div>
               </div>
               <div className='text-right'>
-                <div className='text-3xl font-bold text-gray-900'>₼499</div>
+                <div className='text-3xl font-bold text-gray-900'>499 AED</div>
                 <div className='text-gray-700'>per month</div>
               </div>
             </div>
@@ -52,7 +52,7 @@ export default function BillingSettingsPage() {
                 <div className='text-sm text-gray-700'>Active listings</div>
               </div>
               <div className='bg-white/50 p-4 border border-primary/20'>
-                <div className='text-2xl font-bold text-gray-900'>₼99</div>
+                <div className='text-2xl font-bold text-gray-900'>99 AED</div>
                 <div className='text-sm text-gray-700'>Per extra car</div>
               </div>
               <div className='bg-white/50 p-4 border border-primary/20'>
@@ -237,10 +237,10 @@ export default function BillingSettingsPage() {
           <div className='space-y-3'>
             {/* Invoice Item */}
             {[
-              { date: 'Dec 15, 2024', amount: '₼499.00', status: 'Paid', invoice: '#INV-2024-12' },
-              { date: 'Nov 15, 2024', amount: '₼499.00', status: 'Paid', invoice: '#INV-2024-11' },
-              { date: 'Oct 15, 2024', amount: '₼499.00', status: 'Paid', invoice: '#INV-2024-10' },
-              { date: 'Sep 15, 2024', amount: '₼499.00', status: 'Paid', invoice: '#INV-2024-09' },
+              { date: 'Dec 15, 2024', amount: '499.00 AED', status: 'Paid', invoice: '#INV-2024-12' },
+              { date: 'Nov 15, 2024', amount: '499.00 AED', status: 'Paid', invoice: '#INV-2024-11' },
+              { date: 'Oct 15, 2024', amount: '499.00 AED', status: 'Paid', invoice: '#INV-2024-10' },
+              { date: 'Sep 15, 2024', amount: '499.00 AED', status: 'Paid', invoice: '#INV-2024-09' },
             ].map((item, index) => (
               <div
                 key={index}
@@ -295,7 +295,7 @@ export default function BillingSettingsPage() {
               <div className='font-semibold text-gray-900 mb-2'>Enable Auto-Renewal</div>
               <div className='text-sm text-gray-600'>
                 Your subscription will automatically renew on <strong>January 15, 2026</strong> for{' '}
-                <strong>₼499.00</strong>. You'll receive a reminder 7 days before the renewal date.
+                <strong>499.00 AED</strong>. You'll receive a reminder 7 days before the renewal date.
               </div>
             </div>
           </label>
