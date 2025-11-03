@@ -13,10 +13,10 @@ export default function Home() {
     <div>
       <Hero />
       <FeaturedCars />
-      <TopLocations />
-      <WhyYayaGo />
-      <Stats />
       <BrowseCategories />
+      <WhyYayaGo />
+      <TopLocations />
+      <Stats />
       <ListYourCarCTA />
       <BlogSection />
       <FAQs />
