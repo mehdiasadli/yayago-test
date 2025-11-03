@@ -1,4 +1,6 @@
+import CarListSkeleton from '@/components/car-list/car-list-skeleton';
 import CarsRentContent from '@/components/cars-rent-content/cars-rent-content';
+import { Suspense } from 'react';
 
 export const metadata = {
   title: 'Rent a Car in Dubai',
@@ -23,7 +25,9 @@ export default async function CarsRentPage() {
       </section>
 
       {/* Main Content */}
-      <CarsRentContent />
+      <Suspense fallback={<CarListSkeleton />}>
+        <CarsRentContent />
+      </Suspense>
     </div>
   );
 }
