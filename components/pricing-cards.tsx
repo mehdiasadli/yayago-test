@@ -1,8 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Check, X, Star, Zap, Crown, Infinity } from 'lucide-react';
+import { Check, X, Star, Zap, Crown, Infinity, Mail } from 'lucide-react';
 import Link from 'next/link';
 
 const iconMap = {
@@ -15,185 +14,164 @@ const iconMap = {
 interface PricingPlan {
   name: string;
   icon: 'Zap' | 'Star' | 'Crown' | 'Infinity';
-  price: number;
+  price: number | null;
   currency: string;
   period: string;
   description: string;
   cars: number | string;
-  extraCarPrice: number;
+  bonus?: string;
+  extraCarPrice?: number;
   features: string[];
   unavailable: string[];
   popular: boolean;
   color: string;
+  isCorporate?: boolean;
 }
 
 interface PricingCardsProps {
   plans: PricingPlan[];
+  isYearly?: boolean;
 }
 
-export function PricingCards({ plans }: PricingCardsProps) {
-  const [isYearly, setIsYearly] = useState(false);
-
-  // Calculate yearly price with 20% discount
-  const calculateYearlyPrice = (monthlyPrice: number) => {
-    const yearlyTotal = monthlyPrice * 12;
-    const discountedYearly = yearlyTotal * 0.8; // 20% discount
-    return Math.round(discountedYearly);
-  };
-
-  const getDisplayPrice = (monthlyPrice: number) => {
-    if (isYearly) {
-      return calculateYearlyPrice(monthlyPrice);
-    }
-    return monthlyPrice;
-  };
-
-  const getOriginalYearlyPrice = (monthlyPrice: number) => {
-    return monthlyPrice * 12;
-  };
-
+export function PricingCards({ plans, isYearly = false }: PricingCardsProps) {
   return (
     <div>
-      {/* Billing Period Switcher */}
-      <div className='flex justify-center mb-16'>
-        <div className='relative inline-flex items-center bg-white border-2 border-gray-200 p-1.5 shadow-lg'>
-          {/* Animated Background */}
-          <div
-            className={`absolute top-1.5 h-[calc(100%-12px)] bg-primary transition-all duration-300 ease-in-out shadow-md ${
-              isYearly ? 'left-[calc(50%+3px)] w-[calc(50%-9px)]' : 'left-1.5 w-[calc(50%-9px)]'
-            }`}
-          />
-
-          {/* Monthly Button */}
-          <button
-            onClick={() => setIsYearly(false)}
-            className={`relative z-10 px-8 py-3 text-sm font-semibold transition-colors duration-300 ${
-              !isYearly ? 'text-white' : 'text-gray-700 hover:text-gray-900'
-            }`}
-          >
-            Monthly
-          </button>
-
-          {/* Yearly Button */}
-          <button
-            onClick={() => setIsYearly(true)}
-            className={`relative z-10 px-8 py-3 text-sm font-semibold transition-colors duration-300 flex items-center gap-2 ${
-              isYearly ? 'text-white' : 'text-gray-700 hover:text-gray-900'
-            }`}
-          >
-            Yearly
-            <span className='inline-flex items-center px-2 py-0.5 bg-green-500 text-white text-xs font-bold'>-20%</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Save Message */}
-      {isYearly && (
-        <div className='text-center mb-12 animate-in fade-in duration-300'>
-          <p className='text-lg font-semibold text-green-600'>
-            🎉 Save 20% with yearly billing — That's 2 months free!
-          </p>
-        </div>
-      )}
-
       {/* Pricing Cards Grid */}
       <div className='grid lg:grid-cols-4 gap-8'>
         {plans.map((plan) => {
           const Icon = iconMap[plan.icon];
-          const displayPrice = getDisplayPrice(plan.price);
-          const originalYearlyPrice = getOriginalYearlyPrice(plan.price);
 
           return (
             <div
               key={plan.name}
-              className={`relative bg-white border-2 ${
-                plan.popular ? 'border-primary shadow-2xl scale-105' : 'border-gray-200 shadow-lg'
+              className={`relative bg-white border-2 rounded-2xl ${
+                plan.popular ? 'border-primary shadow-2xl scale-[1.05]' : 'border-gray-200 shadow-lg'
               } overflow-hidden transition-all duration-300 hover:shadow-2xl ${
-                plan.popular ? '' : 'hover:border-primary/50'
+                plan.popular ? '' : 'hover:border-primary/50 hover:-translate-y-1'
               }`}
             >
               {/* Popular Badge */}
               {plan.popular && (
-                <div className='absolute top-0 right-0 bg-primary text-primary-foreground px-4 py-1 text-xs font-bold uppercase tracking-wider z-10'>
+                <div className='absolute top-6 -right-10 rotate-45 bg-primary text-primary-foreground px-12 py-1.5 text-xs font-bold uppercase tracking-wider z-10 shadow-lg'>
                   Most Popular
                 </div>
               )}
 
               {/* Header */}
-              <div className={`bg-gradient-to-br ${plan.color} text-white p-8`}>
-                <div className='flex items-center gap-3 mb-4'>
-                  <div className='w-12 h-12 bg-white/20 backdrop-blur-sm flex items-center justify-center'>
-                    <Icon className='w-6 h-6' strokeWidth={2} />
-                  </div>
-                  <h3 className='text-2xl font-bold'>{plan.name}</h3>
-                </div>
-                <p className='text-white/90 text-sm mb-6 leading-relaxed'>{plan.description}</p>
+              <div className={`bg-gradient-to-br ${plan.color} text-white p-8 relative overflow-hidden`}>
+                {/* Decorative Pattern */}
+                <div className='absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-16 translate-x-16' />
+                <div className='absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-12 -translate-x-12' />
 
-                {/* Pricing */}
-                <div className='space-y-2'>
-                  {isYearly && (
-                    <div className='flex items-center gap-2'>
-                      <span className='text-lg text-white/60 line-through'>{originalYearlyPrice}</span>
-                      <span className='px-2 py-0.5 bg-green-500 text-white text-xs font-bold'>SAVE 20%</span>
+                <div className='relative z-10'>
+                  <div className='flex items-center gap-3 mb-4'>
+                    <div className='w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg'>
+                      <Icon className='w-7 h-7' strokeWidth={2} />
+                    </div>
+                    <h3 className='text-2xl font-bold'>{plan.name}</h3>
+                  </div>
+                  <p className='text-white/90 text-sm mb-6 leading-relaxed min-h-[40px]'>{plan.description}</p>
+
+                  {/* Pricing */}
+                  {plan.isCorporate ? (
+                    <div className='space-y-2'>
+                      <div className='text-4xl font-bold'>Custom Pricing</div>
+                      <p className='text-sm text-white/80'>Tailored to your needs</p>
+                    </div>
+                  ) : (
+                    <div className='space-y-2'>
+                      <div className='flex items-baseline gap-2'>
+                        <span className='text-5xl font-bold'>{plan.price}</span>
+                        <div className='flex flex-col'>
+                          <span className='text-lg font-semibold'>{plan.currency}</span>
+                          <span className='text-sm text-white/80'>/{plan.period}</span>
+                        </div>
+                      </div>
+                      {isYearly && (
+                        <p className='text-xs text-white/70'>
+                          {Math.round((plan.price || 0) / 12)} AED/month billed annually
+                        </p>
+                      )}
                     </div>
                   )}
-                  <div className='flex items-baseline gap-2'>
-                    <span className='text-5xl font-bold'>{displayPrice}</span>
-                    <div className='flex flex-col'>
-                      <span className='text-lg font-semibold'>{plan.currency}</span>
-                      <span className='text-sm text-white/80'>/{isYearly ? 'year' : 'month'}</span>
-                    </div>
-                  </div>
-                  {isYearly && <p className='text-xs text-white/70'>{plan.price} AED/month billed annually</p>}
                 </div>
               </div>
 
               {/* Body */}
               <div className='p-8'>
                 {/* Cars Info */}
-                <div className='mb-6 pb-6 border-b border-gray-200'>
-                  <div className='text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2'>
+                <div className='mb-6 pb-6 border-b-2 border-gray-100'>
+                  <div className='text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2'>
                     Vehicle Capacity
                   </div>
                   <div className='text-2xl font-bold text-gray-900 mb-1'>
                     {typeof plan.cars === 'number' ? `Up to ${plan.cars} cars` : `${plan.cars} cars`}
                   </div>
-                  {typeof plan.cars === 'number' && (
-                    <div className='text-sm text-gray-600'>+{plan.extraCarPrice} AED per additional car</div>
+                  {plan.bonus && (
+                    <div className='mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-50 border border-green-200 rounded-full'>
+                      <span className='text-xs font-semibold text-green-700'>{plan.bonus}</span>
+                    </div>
+                  )}
+                  {plan.extraCarPrice && (
+                    <div className='text-sm text-gray-600 mt-2'>+{plan.extraCarPrice} AED per additional car</div>
                   )}
                 </div>
 
-                {/* CTA Button - Moved above features */}
-                <Link href='/auth/register' className='block mb-6'>
-                  <Button
-                    className={`w-full h-12 text-base font-semibold ${
-                      plan.popular
-                        ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl'
-                        : 'bg-gray-900 hover:bg-gray-800 text-white'
-                    } transition-all duration-300`}
-                  >
-                    Get Started
-                  </Button>
-                </Link>
+                {/* CTA Button */}
+                {plan.isCorporate ? (
+                  <Link href='/support/contact' className='block mb-6'>
+                    <Button
+                      variant='outline'
+                      className='w-full h-12 text-base font-semibold border-2 hover:bg-gray-50 transition-all duration-300'
+                    >
+                      <Mail className='w-5 h-5 mr-2' />
+                      Contact Us
+                    </Button>
+                  </Link>
+                ) : (
+                  <Link href='/auth/register' className='block mb-6'>
+                    <Button
+                      className={`w-full h-12 text-base font-semibold ${
+                        plan.popular
+                          ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl'
+                          : 'bg-gray-900 hover:bg-gray-800 text-white'
+                      } transition-all duration-300`}
+                    >
+                      Get Started
+                    </Button>
+                  </Link>
+                )}
 
                 {/* Features */}
                 <div className='space-y-3'>
+                  <div className='text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3'>
+                    What's included:
+                  </div>
                   {plan.features.map((feature) => (
                     <div key={feature} className='flex items-start gap-3'>
-                      <div className='w-5 h-5 bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5'>
+                      <div className='w-5 h-5 bg-primary/10 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5'>
                         <Check className='w-3.5 h-3.5 text-primary' strokeWidth={3} />
                       </div>
-                      <span className='text-sm text-gray-700'>{feature}</span>
+                      <span className='text-sm text-gray-700 leading-relaxed'>{feature}</span>
                     </div>
                   ))}
-                  {plan.unavailable.map((feature) => (
-                    <div key={feature} className='flex items-start gap-3 opacity-40'>
-                      <div className='w-5 h-5 bg-gray-100 flex items-center justify-center flex-shrink-0 mt-0.5'>
-                        <X className='w-3.5 h-3.5 text-gray-400' strokeWidth={3} />
+                  {plan.unavailable.length > 0 && (
+                    <>
+                      <div className='pt-2'>
+                        <div className='text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3'>
+                          Not included:
+                        </div>
                       </div>
-                      <span className='text-sm text-gray-500 line-through'>{feature}</span>
-                    </div>
-                  ))}
+                      {plan.unavailable.map((feature) => (
+                        <div key={feature} className='flex items-start gap-3 opacity-40'>
+                          <div className='w-5 h-5 bg-gray-100 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5'>
+                            <X className='w-3.5 h-3.5 text-gray-400' strokeWidth={3} />
+                          </div>
+                          <span className='text-sm text-gray-500 line-through leading-relaxed'>{feature}</span>
+                        </div>
+                      ))}
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -202,11 +180,15 @@ export function PricingCards({ plans }: PricingCardsProps) {
       </div>
 
       {/* Additional Info */}
-      <div className='mt-12 text-center space-y-2'>
-        <p className='text-gray-600 text-sm'>
-          All plans include a 14-day free trial. No credit card required.{' '}
+      <div className='mt-16 text-center space-y-3'>
+        <p className='text-gray-600 text-base'>
+          All plans include a <span className='font-semibold text-gray-900'>14-day free trial</span>. No credit card
+          required.
+        </p>
+        <p className='text-sm text-gray-500'>
+          Need a custom enterprise solution?{' '}
           <Link href='/support/contact' className='text-primary hover:underline font-semibold'>
-            Need a custom plan?
+            Contact our sales team
           </Link>
         </p>
         {isYearly && (

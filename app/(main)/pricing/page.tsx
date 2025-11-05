@@ -1,42 +1,45 @@
+'use client';
+
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { PricingCards } from '@/components/pricing-cards';
-
-export const metadata = {
-  title: 'Pricing Plans',
-  description:
-    'Choose the perfect plan for your car rental business. Flexible pricing plans with powerful features to help you grow.',
-};
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 
 type IconName = 'Zap' | 'Star' | 'Crown' | 'Infinity';
 
 interface PlanConfig {
   name: string;
   icon: IconName;
-  price: number;
+  price: number | null;
   currency: string;
   period: string;
   description: string;
   cars: number | string;
-  extraCarPrice: number;
+  bonus?: string;
+  extraCarPrice?: number;
   features: string[];
   unavailable: string[];
   popular: boolean;
   color: string;
+  isCorporate?: boolean;
 }
 
-const plans: PlanConfig[] = [
+const getPlans = (isYearly: boolean): PlanConfig[] => [
   {
     name: 'Basic',
     icon: 'Zap',
-    price: 249,
+    price: isYearly ? 9990 : 999,
     currency: 'AED',
-    period: 'month',
+    period: isYearly ? 'year' : 'month',
     description: 'Perfect for individuals starting their car rental journey',
-    cars: 5,
-    extraCarPrice: 49,
+    cars: 10,
+    bonus: isYearly ? '+5 bonus cars for yearly subscribers' : '+2 bonus cars for first joiners',
+    extraCarPrice: 99,
     features: [
-      'Up to 5 cars',
+      'Up to 10 cars',
+      isYearly ? '5 bonus cars included' : '2 bonus cars for first joiners',
       'Basic listing features',
       'Standard support',
       'Mobile app access',
@@ -47,19 +50,19 @@ const plans: PlanConfig[] = [
     ],
     unavailable: ['Priority support', 'Featured listings', 'Advanced analytics', 'Dedicated account manager'],
     popular: false,
-    color: 'from-gray-600 to-gray-800',
+    color: 'from-blue-600 to-blue-800',
   },
   {
     name: 'Premium',
     icon: 'Star',
-    price: 499,
+    price: isYearly ? 19990 : 1999,
     currency: 'AED',
-    period: 'month',
+    period: isYearly ? 'year' : 'month',
     description: 'Ideal for growing businesses with multiple vehicles',
-    cars: 12,
-    extraCarPrice: 39,
+    cars: 25,
+    extraCarPrice: 79,
     features: [
-      'Up to 12 cars',
+      'Up to 25 cars',
       'Advanced listing features',
       'Priority support',
       'Mobile app access',
@@ -69,6 +72,7 @@ const plans: PlanConfig[] = [
       'Premium insurance',
       'Calendar management',
       'Custom branding',
+      'Featured listings',
     ],
     unavailable: ['Dedicated account manager', 'API access'],
     popular: true,
@@ -77,14 +81,14 @@ const plans: PlanConfig[] = [
   {
     name: 'Elegant',
     icon: 'Crown',
-    price: 999,
+    price: isYearly ? 49990 : 4999,
     currency: 'AED',
-    period: 'month',
+    period: isYearly ? 'year' : 'month',
     description: 'For established businesses managing large fleets',
-    cars: 50,
-    extraCarPrice: 29,
+    cars: 60,
+    extraCarPrice: 69,
     features: [
-      'Up to 50 cars',
+      'Up to 60 cars',
       'Premium listing features',
       'Priority support 24/7',
       'Mobile & Web app access',
@@ -94,22 +98,23 @@ const plans: PlanConfig[] = [
       'Premium insurance',
       'Calendar management',
       'Custom branding',
+      'Featured listings',
       'API access',
       'Multi-location support',
+      'White-label options',
     ],
-    unavailable: ['Dedicated account manager'],
+    unavailable: [],
     popular: false,
     color: 'from-amber-600 to-amber-800',
   },
   {
-    name: 'Lord of Cars',
+    name: 'Corporate',
     icon: 'Infinity',
-    price: 2999,
+    price: null,
     currency: 'AED',
-    period: 'month',
-    description: 'Ultimate solution for enterprise-level operations',
+    period: 'custom',
+    description: 'Tailored solutions for enterprise-level operations',
     cars: 'unlimited',
-    extraCarPrice: 0,
     features: [
       'Unlimited cars',
       'Enterprise listing features',
@@ -122,14 +127,17 @@ const plans: PlanConfig[] = [
       'Premium insurance',
       'Calendar management',
       'Custom branding',
+      'Featured listings',
       'API access',
       'Multi-location support',
       'White-label solution',
       'Custom integrations',
+      'Tailored features',
     ],
     unavailable: [],
     popular: false,
     color: 'from-purple-600 to-purple-900',
+    isCorporate: true,
   },
 ];
 
@@ -185,6 +193,9 @@ const addons = [
 ];
 
 export default function PricingPage() {
+  const [isYearly, setIsYearly] = useState(false);
+  const plans = getPlans(isYearly);
+
   return (
     <div className='min-h-screen'>
       {/* Hero Section */}
@@ -208,22 +219,49 @@ export default function PricingPage() {
         <div className='relative max-w-4xl mx-auto text-center'>
           <div className='inline-block mb-6'>
             <span className='px-4 py-2 bg-primary/20 text-primary-foreground text-sm font-semibold tracking-wide uppercase backdrop-blur-sm border border-primary/30'>
-              Simple Pricing
+              Simple & Transparent Pricing
             </span>
           </div>
           <h1 className='text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 tracking-tight'>
             Choose Your Perfect Plan
           </h1>
-          <p className='text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed'>
+          <p className='text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8'>
             Flexible pricing plans designed to grow with your business. No hidden fees, cancel anytime.
           </p>
+
+          {/* Billing Toggle */}
+          <div className='flex items-center justify-center gap-4 mt-8'>
+            <Label
+              htmlFor='billing-toggle'
+              className={`text-base font-semibold transition-colors ${!isYearly ? 'text-white' : 'text-gray-400'}`}
+            >
+              Monthly
+            </Label>
+            <Switch
+              id='billing-toggle'
+              checked={isYearly}
+              onCheckedChange={setIsYearly}
+              className='data-[state=checked]:bg-primary'
+            />
+            <Label
+              htmlFor='billing-toggle'
+              className={`text-base font-semibold transition-colors ${isYearly ? 'text-white' : 'text-gray-400'}`}
+            >
+              Yearly
+            </Label>
+            {isYearly && (
+              <span className='ml-2 px-3 py-1 bg-green-500/20 text-green-400 text-sm font-semibold rounded-full border border-green-500/30'>
+                Save up to 17%
+              </span>
+            )}
+          </div>
         </div>
       </section>
 
       {/* Pricing Plans */}
       <section className='py-20 md:py-24 px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-white'>
         <div className='max-w-7xl mx-auto'>
-          <PricingCards plans={plans} />
+          <PricingCards plans={plans} isYearly={isYearly} />
         </div>
       </section>
 
@@ -246,10 +284,12 @@ export default function PricingPage() {
             {addons.map((addon) => (
               <div
                 key={addon.name}
-                className='bg-gradient-to-br from-gray-50 to-white border border-gray-200 p-6 hover:border-primary/30 hover:shadow-lg transition-all'
+                className='group bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 p-6 rounded-xl hover:border-primary/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1'
               >
                 <div className='flex items-start justify-between mb-4'>
-                  <h3 className='text-xl font-bold text-gray-900'>{addon.name}</h3>
+                  <h3 className='text-xl font-bold text-gray-900 group-hover:text-primary transition-colors'>
+                    {addon.name}
+                  </h3>
                   <div className='text-right'>
                     <div className='text-2xl font-bold text-primary'>{addon.price}</div>
                     <div className='text-xs text-gray-500 uppercase'>
@@ -297,6 +337,11 @@ export default function PricingPage() {
                   "Yes, you can cancel anytime. Your subscription remains active until the end of your billing period, and you won't be charged again.",
               },
               {
+                question: 'What are the benefits of yearly billing?',
+                answer:
+                  'Yearly billing saves you up to 17% compared to monthly billing. Plus, Basic plan subscribers get 5 bonus cars instead of 2!',
+              },
+              {
                 question: 'Do you offer refunds?',
                 answer:
                   "We offer a 14-day money-back guarantee. If you're not satisfied within the first 14 days, we'll refund your payment in full.",
@@ -307,7 +352,10 @@ export default function PricingPage() {
                   'We accept all major credit cards, debit cards, and bank transfers. All payments are processed securely.',
               },
             ].map((faq, index) => (
-              <div key={index} className='bg-white border border-gray-200 p-6 hover:border-primary/30 transition-all'>
+              <div
+                key={index}
+                className='bg-white border-2 border-gray-200 p-6 rounded-xl hover:border-primary/30 hover:shadow-lg transition-all duration-300'
+              >
                 <h3 className='text-lg font-bold text-gray-900 mb-3'>{faq.question}</h3>
                 <p className='text-gray-600 leading-relaxed'>{faq.answer}</p>
               </div>
