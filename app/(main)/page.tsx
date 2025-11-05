@@ -5,7 +5,7 @@ import WhyYayaGo from '@/components/home-sections/why-yayago';
 import BrowseCategories from '@/components/home-sections/browse-categories';
 import Stats from '@/components/home-sections/stats';
 import ListYourCarCTA from '@/components/home-sections/list-your-car-cta';
-import BlogSection from '@/components/home-sections/blog-section';
+// import BlogSection from '@/components/home-sections/blog-section';
 import FAQs from '@/components/home-sections/faqs';
 
 export default function Home() {
@@ -18,7 +18,7 @@ export default function Home() {
       <TopLocations />
       <Stats />
       <ListYourCarCTA />
-      <BlogSection />
+      {/* <BlogSection /> */}
       <FAQs />
     </div>
   );

@@ -1,20 +1,22 @@
 'use client';
 
+import { useState } from 'react';
 import { Users, Gauge, Fuel, Package, DoorOpen } from 'lucide-react';
 import { TGetCarByIdResponse } from '@/features/cars/cars.types';
 import FixedContactButton from './car-details-sections/fixed-contact-button';
 import { useFixedContactButtonInView } from './car-details-sections/use-fixed-contact-button-in-view';
 import ImageSection from './car-details-sections/image-section';
 import InfoCard from './info-card/info-card';
+import BookingDialog from '@/components/booking-dialog';
 
 interface CarDetailsLayoutContentProps {
   car: TGetCarByIdResponse;
   locationName: string;
   children: React.ReactNode;
-  admin?: boolean;
 }
 
-export default function CarDetailsLayoutContent({ car, locationName, children, admin }: CarDetailsLayoutContentProps) {
+export default function CarDetailsLayoutContent({ car, locationName, children }: CarDetailsLayoutContentProps) {
+  const [bookingDialogOpen, setBookingDialogOpen] = useState(false);
   const features = [
     { Icon: Users, label: 'Seats', value: car.seatCount ?? 0 },
     { Icon: DoorOpen, label: 'Doors', value: car.doorCount ?? 0 },
@@ -42,22 +44,27 @@ export default function CarDetailsLayoutContent({ car, locationName, children, a
 
           {/* Car Info Card */}
           <div ref={infoCardRef}>
-            <InfoCard admin={admin} car={car} locationName={locationName} features={features} />
+            <InfoCard
+              car={car}
+              locationName={locationName}
+              features={features}
+              onBookNow={() => setBookingDialogOpen(true)}
+            />
           </div>
         </div>
       </div>
 
       {children}
 
-      {!admin && (
-        <FixedContactButton
-          name={`${car.brand} ${car.model} ${car.year}`}
-          pricePerDay={car.pricePerDay}
-          currency={car.currency}
-          visible={isFixedContactButtonVisible}
-          primaryImageUrl={car.primaryImageUrl}
-        />
-      )}
+      <FixedContactButton
+        name={`${car.brand} ${car.model} ${car.year}`}
+        pricePerDay={car.pricePerDay}
+        currency={car.currency}
+        visible={isFixedContactButtonVisible}
+        primaryImageUrl={car.primaryImageUrl}
+        onBookNow={() => setBookingDialogOpen(true)}
+      />
+      <BookingDialog car={car} open={bookingDialogOpen} onOpenChange={setBookingDialogOpen} />
     </div>
   );
 }

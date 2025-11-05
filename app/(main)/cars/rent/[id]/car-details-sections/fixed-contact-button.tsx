@@ -12,6 +12,7 @@ interface FixedContactButtonProps {
   currency: string;
   visible: boolean;
   primaryImageUrl?: string | null;
+  onBookNow: () => void;
 }
 
 export default function FixedContactButton({
@@ -20,6 +21,7 @@ export default function FixedContactButton({
   currency,
   visible,
   primaryImageUrl,
+  onBookNow,
 }: FixedContactButtonProps) {
   const Img = primaryImageUrl ? <Image src={primaryImageUrl} alt={name} width={100} height={100} priority /> : null;
 
@@ -49,7 +51,7 @@ export default function FixedContactButton({
                 />
               </div>
             </div>
-            <ContactSection name={name} />
+            <ContactSection name={name} onBookNow={onBookNow} />
           </div>
         </motion.div>
       )}

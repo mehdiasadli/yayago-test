@@ -15,14 +15,19 @@ interface InfoCardMetricsProps {
   favoriteCount: number;
   averageRating: number;
   reviewCount: number;
-  admin?: boolean;
 }
 
-export default function InfoCardMetrics({ id, viewCount, favoriteCount, admin }: InfoCardMetricsProps) {
+export default function InfoCardMetrics({ id, viewCount, favoriteCount }: InfoCardMetricsProps) {
   const { status } = useSession();
 
-  const { data: reviewsCount } = useQuery(createGetReviewsCountQueryOptions(id));
-  const { data: averageRating } = useQuery(createGetAverageRatingQueryOptions(id));
+  const { data: reviewsCount } = useQuery({
+    ...createGetReviewsCountQueryOptions(id),
+    enabled: status === 'authenticated',
+  });
+  const { data: averageRating } = useQuery({
+    ...createGetAverageRatingQueryOptions(id),
+    enabled: status === 'authenticated',
+  });
 
   const container =
     typeof averageRating === 'number' && typeof reviewsCount === 'number' ? (
@@ -49,7 +54,7 @@ export default function InfoCardMetrics({ id, viewCount, favoriteCount, admin }:
         <Heart className='w-4 h-4' strokeWidth={2} />
         <span>{favoriteCount} favorites</span>
       </div>
-      {status === 'authenticated' && !admin ? (
+      {status === 'authenticated' ? (
         <Link href={`/cars/rent/${id}/reviews#reviews-section`}>{container}</Link>
       ) : (
         container

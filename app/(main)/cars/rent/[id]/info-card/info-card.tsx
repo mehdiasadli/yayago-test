@@ -1,3 +1,5 @@
+'use client';
+
 import { LucideIcon } from 'lucide-react';
 import ContactSection from '../car-details-sections/contact-section';
 import InfoCardPricing from './info-card-pricing';
@@ -11,10 +13,10 @@ interface InfoCardProps {
   car: TGetCarByIdResponse;
   features: { Icon: LucideIcon; label: string; value: string | number }[];
   locationName: string;
-  admin?: boolean;
+  onBookNow?: () => void;
 }
 
-export default function InfoCard({ car, features, locationName, admin }: InfoCardProps) {
+export default function InfoCard({ car, features, locationName, onBookNow }: InfoCardProps) {
   return (
     <div className='bg-white border-2 border-gray-200 p-6'>
       {/* Title */}
@@ -27,7 +29,6 @@ export default function InfoCard({ car, features, locationName, admin }: InfoCar
         favoriteCount={car.favoritesCount || 0}
         averageRating={car.averageRating || 0}
         reviewCount={car.reviewCount || 0}
-        admin={admin}
       />
 
       {/* Price */}
@@ -45,7 +46,7 @@ export default function InfoCard({ car, features, locationName, admin }: InfoCar
       <InfoCardHostInfo hostName={car.createdByFullName || 'Unknown Host'} location={locationName} />
 
       {/* Contact Buttons */}
-      {!admin && <ContactSection name={`${car.brand} ${car.model} ${car.year}`} />}
+      {onBookNow && <ContactSection name={`${car.brand} ${car.model} ${car.year}`} onBookNow={onBookNow} />}
     </div>
   );
 }
