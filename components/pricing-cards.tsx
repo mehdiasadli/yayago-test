@@ -128,14 +128,8 @@ export function PricingCards({ plans, isYearly = false }: PricingCardsProps) {
                     </Button>
                   </Link>
                 ) : (
-                  <Link href='/auth/register' className='block mb-6'>
-                    <Button
-                      className={`w-full h-12 text-base font-semibold ${
-                        plan.popular
-                          ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl'
-                          : 'bg-gray-900 hover:bg-gray-800 text-white'
-                      } transition-all duration-300`}
-                    >
+                  <Link href={`/auth/register?plan=${plan.name}`} className='block mb-6'>
+                    <Button className='w-full h-12 text-base font-semibold bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300'>
                       Get Started
                     </Button>
                   </Link>
