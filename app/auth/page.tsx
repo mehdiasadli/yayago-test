@@ -1,5 +1,13 @@
 import LoginForm from './login-form';
 
-export default function LoginPage() {
-  return <LoginForm />;
+interface AuthPageProps {
+  searchParams: Promise<{
+    callbackUrl?: string;
+  }>;
+}
+
+export default async function LoginPage({ searchParams }: AuthPageProps) {
+  const { callbackUrl = '/' } = await searchParams;
+
+  return <LoginForm callbackUrl={decodeURIComponent(callbackUrl)} />;
 }

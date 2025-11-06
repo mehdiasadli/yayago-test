@@ -1,30 +1,26 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Check, X, Star, Zap, Crown, Infinity, Mail } from 'lucide-react';
+import { PricingPlan } from '@/data/pricing';
+import { Check, Mail } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 
-const iconMap = {
-  Zap,
-  Star,
-  Crown,
-  Infinity,
-};
+function getCheckoutUrl(plan: PricingPlan, isYearly: boolean, userEmail?: string, userId?: string) {
+  if (!userEmail || !userId) {
+    return `/auth?callbackUrl=${encodeURIComponent(process.env.NEXT_PUBLIC_APP_URL + `/pricing`)}`;
+  }
 
-interface PricingPlan {
-  name: string;
-  icon: 'Zap' | 'Star' | 'Crown' | 'Infinity';
-  price: number | null;
-  currency: string;
-  period: string;
-  description: string;
-  cars: number | string;
-  bonus?: string;
-  extraCarPrice?: number;
-  features: string[];
-  popular: boolean;
-  color: string;
-  isCorporate?: boolean;
+  if (plan.isCorporate || !plan.tier) {
+    return '/support/contact';
+  }
+
+  const interval = isYearly ? 'year' : 'month';
+  const tier = plan.tier;
+  const emailParam = encodeURIComponent(userEmail);
+  const successRedirectUrl = encodeURIComponent(process.env.NEXT_PUBLIC_APP_URL + '/');
+
+  return `/checkout?tier=${tier}&interval=${interval}&email=${emailParam}&userId=${userId}&successRedirectUrl=${successRedirectUrl}`;
 }
 
 interface PricingCardsProps {
@@ -33,13 +29,13 @@ interface PricingCardsProps {
 }
 
 export function PricingCards({ plans, isYearly = false }: PricingCardsProps) {
+  const { data: session } = useSession();
+
   return (
     <div>
       {/* Pricing Cards Grid */}
       <div className='grid lg:grid-cols-4 gap-8'>
         {plans.map((plan) => {
-          const Icon = iconMap[plan.icon];
-
           return (
             <div
               key={plan.name}
@@ -65,7 +61,7 @@ export function PricingCards({ plans, isYearly = false }: PricingCardsProps) {
                 <div className='relative z-10'>
                   <div className='flex items-center gap-3 mb-4'>
                     <div className='w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg'>
-                      <Icon className='w-7 h-7' strokeWidth={2} />
+                      <plan.Icon className='w-7 h-7' strokeWidth={2} />
                     </div>
                     <h3 className='text-2xl font-bold'>{plan.name}</h3>
                   </div>
@@ -80,15 +76,15 @@ export function PricingCards({ plans, isYearly = false }: PricingCardsProps) {
                   ) : (
                     <div className='space-y-2'>
                       <div className='flex items-baseline gap-2'>
-                        <span className='text-5xl font-bold'>{plan.price}</span>
+                        <span className='text-5xl font-bold'>{isYearly ? plan.price?.year : plan.price?.month}</span>
                         <div className='flex flex-col'>
                           <span className='text-lg font-semibold'>{plan.currency}</span>
-                          <span className='text-sm text-white/80'>/{plan.period}</span>
+                          <span className='text-sm text-white/80'>/{isYearly ? 'year' : 'month'}</span>
                         </div>
                       </div>
                       {isYearly && (
                         <p className='text-xs text-white/70'>
-                          {Math.round((plan.price || 0) / 12)} AED/month billed annually
+                          {Math.round((plan.price?.year || 0) / 12)} AED/month billed annually
                         </p>
                       )}
                     </div>
@@ -106,11 +102,6 @@ export function PricingCards({ plans, isYearly = false }: PricingCardsProps) {
                   <div className='text-2xl font-bold text-gray-900 mb-1'>
                     {typeof plan.cars === 'number' ? `Up to ${plan.cars} cars` : `${plan.cars} cars`}
                   </div>
-                  {plan.bonus && (
-                    <div className='mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-50 border border-green-200 rounded-full'>
-                      <span className='text-xs font-semibold text-green-700'>{plan.bonus}</span>
-                    </div>
-                  )}
                   {plan.extraCarPrice && (
                     <div className='text-sm text-gray-600 mt-2'>+{plan.extraCarPrice} AED per additional car</div>
                   )}
@@ -128,7 +119,10 @@ export function PricingCards({ plans, isYearly = false }: PricingCardsProps) {
                     </Button>
                   </Link>
                 ) : (
-                  <Link href={`/auth/register?plan=${plan.name}`} className='block mb-6'>
+                  <Link
+                    href={getCheckoutUrl(plan, isYearly, session?.user?.email, session?.user?.id)}
+                    className='block mb-6'
+                  >
                     <Button className='w-full h-12 text-base font-semibold bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300'>
                       Get Started
                     </Button>

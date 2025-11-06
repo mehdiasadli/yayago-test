@@ -8,7 +8,11 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { register } from '@/data/auth/auth.actions';
 
-export default function RegisterForm() {
+interface RegisterFormProps {
+  callbackUrl: string;
+}
+
+export default function RegisterForm({ callbackUrl }: RegisterFormProps) {
   const router = useRouter();
   const [formData, setFormData] = useState({
     fullName: '',
@@ -33,7 +37,7 @@ export default function RegisterForm() {
         setSuccess(true);
         // Redirect to login page after 2 seconds
         setTimeout(() => {
-          router.push('/auth?registered=true');
+          router.push('/auth?registered=true&callbackUrl=' + encodeURIComponent(callbackUrl));
         }, 2000);
       } else {
         setError(result.error || 'Registration failed');
@@ -199,7 +203,10 @@ export default function RegisterForm() {
       <div className='mt-8 text-center'>
         <p className='text-gray-600'>
           Already have an account?{' '}
-          <Link href='/auth' className='text-primary hover:text-primary/80 font-semibold'>
+          <Link
+            href={`/auth?callbackUrl=${encodeURIComponent(callbackUrl)}`}
+            className='text-primary hover:text-primary/80 font-semibold'
+          >
             Sign in
           </Link>
         </p>

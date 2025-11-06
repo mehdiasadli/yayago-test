@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { login } from '@/features/auth/auth.actions';
 
-export default function LoginForm() {
+export default function LoginForm({ callbackUrl }: { callbackUrl: string }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -30,7 +30,7 @@ export default function LoginForm() {
       } else {
         // Update the session on the client side
         await update();
-        router.push('/');
+        router.push(callbackUrl);
         router.refresh();
       }
     } catch (err) {
@@ -121,7 +121,10 @@ export default function LoginForm() {
       <div className='mt-8 text-center'>
         <p className='text-gray-600'>
           Don't have an account?{' '}
-          <Link href='/auth/register' className='text-primary hover:text-primary/80 font-semibold'>
+          <Link
+            href={`/auth/register?callbackUrl=${encodeURIComponent(callbackUrl)}`}
+            className='text-primary hover:text-primary/80 font-semibold'
+          >
             Sign up
           </Link>
         </p>
