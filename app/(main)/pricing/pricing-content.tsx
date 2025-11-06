@@ -7,6 +7,7 @@ import { PricingCards } from '@/components/pricing-cards';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { plans } from '@/data/pricing';
+import { parseAsBoolean, useQueryState } from 'nuqs';
 
 const addons = [
   {
@@ -20,7 +21,13 @@ const addons = [
 ];
 
 export default function PricingContent() {
-  const [isYearly, setIsYearly] = useState(false);
+  const [isYearly, setIsYearly] = useQueryState(
+    'yearly',
+    parseAsBoolean.withDefault(false).withOptions({
+      clearOnDefault: true,
+      history: 'replace',
+    })
+  );
 
   return (
     <div className='min-h-screen'>
@@ -87,7 +94,7 @@ export default function PricingContent() {
       {/* Pricing Plans */}
       <section className='py-20 md:py-24 px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-white'>
         <div className='max-w-7xl mx-auto'>
-          <PricingCards plans={plans} isYearly={isYearly} />
+          <PricingCards plans={plans} />
         </div>
       </section>
 

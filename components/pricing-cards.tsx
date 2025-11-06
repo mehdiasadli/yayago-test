@@ -2,9 +2,11 @@
 
 import { Button } from '@/components/ui/button';
 import { PricingPlan } from '@/data/pricing';
+import { cn } from '@/lib/utils';
 import { Check, Mail } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { parseAsBoolean, useQueryState } from 'nuqs';
 
 function getCheckoutUrl(plan: PricingPlan, isYearly: boolean, userEmail?: string, userId?: string) {
   if (!userEmail || !userId) {
@@ -25,25 +27,33 @@ function getCheckoutUrl(plan: PricingPlan, isYearly: boolean, userEmail?: string
 
 interface PricingCardsProps {
   plans: PricingPlan[];
-  isYearly?: boolean;
 }
 
-export function PricingCards({ plans, isYearly = false }: PricingCardsProps) {
+export function PricingCards({ plans }: PricingCardsProps) {
   const { data: session } = useSession();
+  const [isYearly] = useQueryState(
+    'yearly',
+    parseAsBoolean.withDefault(false).withOptions({
+      clearOnDefault: true,
+      history: 'replace',
+    })
+  );
 
   return (
     <div>
       {/* Pricing Cards Grid */}
-      <div className='grid lg:grid-cols-4 gap-8'>
+      <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-8'>
         {plans.map((plan) => {
           return (
             <div
               key={plan.name}
-              className={`relative bg-white border-2 rounded-2xl ${
-                plan.popular ? 'border-primary shadow-2xl scale-[1.05]' : 'border-gray-200 shadow-lg'
-              } overflow-hidden transition-all duration-300 hover:shadow-2xl ${
-                plan.popular ? '' : 'hover:border-primary/50 hover:-translate-y-1'
-              }`}
+              className={cn(
+                'relative bg-white border-2 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl',
+                plan.popular
+                  ? 'border-primary shadow-2xl scale-[1.05]'
+                  : 'border-gray-200 shadow-lg hover:border-primary/50 hover:-translate-y-1',
+                plan.isCorporate ? 'md:col-span-1 lg:col-span-3' : 'md:col-span-1 lg:col-span-1'
+              )}
             >
               {/* Popular Badge */}
               {plan.popular && (
