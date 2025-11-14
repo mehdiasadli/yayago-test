@@ -15,9 +15,10 @@ interface InfoCardMetricsProps {
   favoriteCount: number;
   averageRating: number;
   reviewCount: number;
+  onOpenReviews?: () => void;
 }
 
-export default function InfoCardMetrics({ id, viewCount, favoriteCount }: InfoCardMetricsProps) {
+export default function InfoCardMetrics({ id, viewCount, favoriteCount, onOpenReviews }: InfoCardMetricsProps) {
   const { status } = useSession();
 
   const { data: reviewsCount } = useQuery({
@@ -29,35 +30,50 @@ export default function InfoCardMetrics({ id, viewCount, favoriteCount }: InfoCa
     enabled: status === 'authenticated',
   });
 
-  const container =
-    typeof averageRating === 'number' && typeof reviewsCount === 'number' ? (
-      <div className='flex items-center gap-1 text-yellow-600 hover:underline hover:text-yellow-500'>
-        <Star className='w-4 h-4' strokeWidth={2} />
-        {averageRating === 0 ? (
-          'No reviews yet'
-        ) : (
-          <span>
-            {averageRating.toFixed(1)} ({reviewsCount === 0 ? 'No' : reviewsCount}{' '}
-            {reviewsCount === 1 ? 'review' : 'reviews'})
-          </span>
-        )}
-      </div>
-    ) : null;
-
   return (
-    <div className='flex items-center gap-4 text-sm text-gray-600 mb-6 pb-6 border-b-2 border-gray-200'>
-      <div className='flex items-center gap-1 text-primary'>
+    <div className='flex flex-wrap items-center gap-4 text-xs sm:text-sm text-gray-600'>
+      <div className='flex items-center gap-1.5 text-primary/80'>
         <Eye className='w-4 h-4' strokeWidth={2} />
         <span>{viewCount} views</span>
       </div>
-      <div className='flex items-center gap-1 text-red-500'>
+      <div className='flex items-center gap-1.5 text-red-500/80'>
         <Heart className='w-4 h-4' strokeWidth={2} />
         <span>{favoriteCount} favorites</span>
       </div>
-      {status === 'authenticated' ? (
-        <Link href={`/cars/rent/${id}/reviews#reviews-section`}>{container}</Link>
-      ) : (
-        container
+
+      {typeof averageRating === 'number' && typeof reviewsCount === 'number' && (
+        <>
+          <span className='h-3 w-px bg-gray-200' />
+          {status === 'authenticated' && onOpenReviews ? (
+            <button
+              type='button'
+              onClick={onOpenReviews}
+              className='inline-flex items-center gap-1.5 text-yellow-600 hover:text-yellow-500 hover:underline'
+            >
+              <Star className='w-4 h-4' strokeWidth={2} />
+              {averageRating === 0 ? (
+                <span>No reviews yet</span>
+              ) : (
+                <span>
+                  {averageRating.toFixed(1)} ({reviewsCount === 0 ? 'No' : reviewsCount}{' '}
+                  {reviewsCount === 1 ? 'review' : 'reviews'})
+                </span>
+              )}
+            </button>
+          ) : (
+            <div className='inline-flex items-center gap-1.5 text-yellow-600'>
+              <Star className='w-4 h-4' strokeWidth={2} />
+              {averageRating === 0 ? (
+                <span>No reviews yet</span>
+              ) : (
+                <span>
+                  {averageRating.toFixed(1)} ({reviewsCount === 0 ? 'No' : reviewsCount}{' '}
+                  {reviewsCount === 1 ? 'review' : 'reviews'})
+                </span>
+              )}
+            </div>
+          )}
+        </>
       )}
     </div>
   );

@@ -16,7 +16,7 @@ export const reviewsQueryKeys = {
 
 export const createGetReviewsQueryOptions = (carId: string) =>
   queryOptions({
-    queryKey: reviewsQueryKeys.list(),
+    queryKey: reviewsQueryKeys.listById(carId),
     queryFn: async () => {
       const reviews = await ReviewsApi.getCarReviews({ carId: +carId });
 

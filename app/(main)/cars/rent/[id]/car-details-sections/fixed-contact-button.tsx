@@ -33,21 +33,22 @@ export default function FixedContactButton({
           initial={{ opacity: 0, y: 300 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 300 }}
-          transition={{ duration: 0.3 }}
-          className='md:hidden fixed bottom-0 left-0 right-0 p-4 bg-white border-t-2 border-gray-200 z-50'
+          transition={{ duration: 0.25 }}
+          className='md:hidden fixed bottom-0 left-0 right-0 p-4 bg-white/95 backdrop-blur border-t border-slate-200 shadow-[0_-8px_24px_rgba(15,23,42,0.08)] z-50'
         >
-          <div className='max-w-7xl mx-auto flex flex-col gap-2'>
-            <div className='flex items-center gap-2'>
-              {Img}
-              <div className='flex flex-col'>
-                <InfoCardTitle name={name} className='text-2xl' />
+          <div className='max-w-7xl mx-auto flex flex-col gap-3'>
+            <div className='flex items-center gap-3'>
+              {Img && (
+                <div className='overflow-hidden rounded-xl border border-slate-200 bg-slate-100'>
+                  {Img}
+                </div>
+              )}
+              <div className='flex-1 flex flex-col gap-1'>
+                <InfoCardTitle name={name} className='text-base' />
                 <InfoCardPricing
                   pricePerDay={pricePerDay}
                   currency={currency}
-                  className='mb-0 pb-0 border-b-0 text-sm'
-                  priceTextSize='2xl'
-                  currencyTextSize='md'
-                  dividerTextSize='xs'
+                  className='px-3 py-2 bg-slate-50/90 border border-slate-200 rounded-xl'
                 />
               </div>
             </div>

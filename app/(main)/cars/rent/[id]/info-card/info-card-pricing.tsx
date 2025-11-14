@@ -6,45 +6,60 @@ interface InfoCardPricingProps {
   pricePerMonth?: number;
   currency: string;
   className?: string;
-  priceTextSize?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | `${2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}xl`;
-  currencyTextSize?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | `${2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}xl`;
-  dividerTextSize?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | `${2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}xl`;
-  dividerTextColor?: string;
 }
 
 export default function InfoCardPricing({
   pricePerDay,
-  priceTextSize = '3xl',
-  currencyTextSize = 'xl',
-  dividerTextSize = 'sm',
-  dividerTextColor = 'gray-600',
   pricePerWeek,
   pricePerMonth,
   currency,
   className,
 }: InfoCardPricingProps) {
   return (
-    <div className={cn('mb-6 pb-3 border-b-2 border-gray-200', className)}>
-      <div className='flex items-baseline gap-2 mb-2'>
-        <span className={`text-${priceTextSize} font-bold text-primary`}>{pricePerDay}</span>
-        <span className={`text-${currencyTextSize} font-semibold text-${dividerTextColor}`}>
-          {currency} <span className={`text-${dividerTextSize} text-${dividerTextColor}`}>/ day</span>
-        </span>
-      </div>
-      {(pricePerWeek || pricePerMonth) && (
-        <div className='text-sm text-gray-600'>
-          {pricePerWeek && (
-            <div>
-              Weekly: <span className='font-bold text-primary'>{pricePerWeek}</span> {currency}
-            </div>
-          )}
-          {pricePerMonth && (
-            <div>
-              Monthly: <span className='font-bold text-primary'>{pricePerMonth}</span> {currency}
-            </div>
-          )}
-        </div>
+    <div
+      className={cn(
+        'rounded-xl border border-slate-200 bg-slate-50/80 px-4 py-4 sm:px-5 sm:py-5 flex flex-col gap-3',
+        className
       )}
+    >
+      <div className='flex items-baseline justify-between gap-3'>
+        <div>
+          <div className='text-xs uppercase tracking-wide text-slate-500'>From</div>
+          <div className='flex items-baseline gap-2'>
+            <span className='text-2xl sm:text-3xl font-bold text-primary'>{pricePerDay}</span>
+            <span className='text-sm sm:text-base font-semibold text-slate-700'>
+              {currency}{' '}
+              <span className='text-xs sm:text-sm font-normal text-slate-500'>
+                / day
+              </span>
+            </span>
+          </div>
+        </div>
+        {(pricePerWeek || pricePerMonth) && (
+          <div className='text-right space-y-1 text-xs sm:text-sm text-slate-600'>
+            {pricePerWeek && (
+              <div>
+                <span className='font-medium text-slate-700'>Weekly</span>{' '}
+                <span className='font-semibold text-primary'>
+                  {pricePerWeek} {currency}
+                </span>
+              </div>
+            )}
+            {pricePerMonth && (
+              <div>
+                <span className='font-medium text-slate-700'>Monthly</span>{' '}
+                <span className='font-semibold text-primary'>
+                  {pricePerMonth} {currency}
+                </span>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      <p className='text-[11px] sm:text-xs text-slate-500'>
+        No hidden fees. Final price confirmed before you pay.
+      </p>
     </div>
   );
 }

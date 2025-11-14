@@ -49,8 +49,15 @@ export default function AddReview({ userReview, userId, carId }: AddReviewFormPr
 
       return response.data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: reviewsQueryKeys.listById(carId.toString()) });
+    onSuccess: (created) => {
+      // Optimistically update list cache
+      queryClient.setQueryData<TGetCarReviewsResponse>(
+        reviewsQueryKeys.listById(carId.toString()),
+        (prev = []) => [...prev, created]
+      );
+      // Refresh aggregates
+      queryClient.invalidateQueries({ queryKey: reviewsQueryKeys.countByCarId(carId.toString()) });
+      queryClient.invalidateQueries({ queryKey: reviewsQueryKeys.averageRatingByCarId(carId.toString()) });
       router.refresh();
     },
   });
@@ -69,11 +76,14 @@ export default function AddReview({ userReview, userId, carId }: AddReviewFormPr
 
       return response.data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: reviewsQueryKeys.listById(carId.toString()) });
+    onSuccess: (updated) => {
+      // Optimistically update list cache
+      queryClient.setQueryData<TGetCarReviewsResponse>(
+        reviewsQueryKeys.listById(carId.toString()),
+        (prev = []) => prev.map((r) => (r.id === userReview?.id ? updated : r))
+      );
       queryClient.invalidateQueries({ queryKey: reviewsQueryKeys.countByCarId(carId.toString()) });
       queryClient.invalidateQueries({ queryKey: reviewsQueryKeys.averageRatingByCarId(carId.toString()) });
-
       router.refresh();
     },
   });
@@ -91,17 +101,19 @@ export default function AddReview({ userReview, userId, carId }: AddReviewFormPr
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: reviewsQueryKeys.listById(carId.toString()) });
-      queryClient.invalidateQueries({ queryKey: reviewsQueryKeys.listById(carId.toString()) });
+      // Optimistically remove from cache
+      queryClient.setQueryData<TGetCarReviewsResponse>(
+        reviewsQueryKeys.listById(carId.toString()),
+        (prev = []) => prev.filter((r) => r.id !== userReview?.id)
+      );
       queryClient.invalidateQueries({ queryKey: reviewsQueryKeys.countByCarId(carId.toString()) });
       queryClient.invalidateQueries({ queryKey: reviewsQueryKeys.averageRatingByCarId(carId.toString()) });
-
       form.reset();
       router.refresh();
     },
   });
 
-  const submitLabel = userReview ? 'Update Review' : 'Add Review';
+  const submitLabel = userReview ? 'Update review' : 'Add review';
   const submitPendingLabel = userReview ? 'Updating...' : 'Adding...';
 
   const onCreate = () => {
@@ -125,13 +137,13 @@ export default function AddReview({ userReview, userId, carId }: AddReviewFormPr
   };
 
   return (
-    <Card>
+    <Card className='border-slate-200 rounded-xl shadow-sm'>
       {userReview !== undefined && (
-        <CardHeader>
-          <CardTitle>Your Review</CardTitle>
+        <CardHeader className='pb-3'>
+          <CardTitle className='text-sm font-semibold text-slate-900'>Your review</CardTitle>
         </CardHeader>
       )}
-      <CardContent>
+      <CardContent className='pt-4'>
         <form
           onSubmit={(e) => {
             e.preventDefault();

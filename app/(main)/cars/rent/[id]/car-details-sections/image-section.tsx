@@ -21,7 +21,7 @@ export default function ImageSection({ images, name, featured, noDeposit }: Imag
     setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
   };
   return (
-    <div className='bg-white border-2 border-gray-200 overflow-hidden relative'>
+    <div className='relative overflow-hidden rounded-2xl border border-slate-200 bg-slate-950/5 shadow-md'>
       {/* Featured Badge */}
       {featured && (
         <div className='absolute top-4 left-4 z-10 flex items-center gap-1 px-3 py-1.5 bg-primary text-white font-semibold'>
@@ -42,9 +42,9 @@ export default function ImageSection({ images, name, featured, noDeposit }: Imag
           <Image
             src={images[currentImageIndex]}
             alt={name}
-            className='w-full h-full object-cover'
-            width={1000}
-            height={1000}
+            className='w-full h-full object-cover transition-transform duration-500 ease-out'
+            width={1200}
+            height={900}
             priority
           />
         ) : (
@@ -58,13 +58,15 @@ export default function ImageSection({ images, name, featured, noDeposit }: Imag
           <>
             <button
               onClick={prevImage}
-              className='absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition-colors'
+              className='absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/45 hover:bg-black/65 text-white flex items-center justify-center shadow-lg shadow-black/30 transition-all'
+              aria-label='Previous image'
             >
               <ChevronLeft className='w-6 h-6' strokeWidth={2} />
             </button>
             <button
               onClick={nextImage}
-              className='absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition-colors'
+              className='absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/45 hover:bg-black/65 text-white flex items-center justify-center shadow-lg shadow-black/30 transition-all'
+              aria-label='Next image'
             >
               <ChevronRight className='w-6 h-6' strokeWidth={2} />
             </button>
@@ -73,7 +75,7 @@ export default function ImageSection({ images, name, featured, noDeposit }: Imag
 
         {/* Image Counter */}
         {images.length > 1 && (
-          <div className='absolute bottom-4 right-4 px-3 py-1 bg-black/70 text-white text-sm font-medium'>
+          <div className='absolute bottom-3 right-3 px-3 py-1.5 rounded-full bg-black/65 text-white text-xs font-medium shadow-sm'>
             {currentImageIndex + 1} / {images.length}
           </div>
         )}
@@ -81,7 +83,7 @@ export default function ImageSection({ images, name, featured, noDeposit }: Imag
 
       {/* Thumbnails */}
       {images.length > 1 && (
-        <div className='flex gap-2 p-4 bg-gray-50 overflow-x-auto'>
+        <div className='flex gap-2 p-4 bg-slate-50/90 border-t border-slate-100 overflow-x-auto'>
           {images.map((image, index) => (
             <button
               key={index}

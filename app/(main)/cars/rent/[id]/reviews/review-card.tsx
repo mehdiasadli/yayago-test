@@ -10,13 +10,13 @@ interface ReviewCardProps {
 
 export default function ReviewCard({ review }: ReviewCardProps) {
   return (
-    <Card id={`review-${review.carId}-${review.id}`}>
-      <CardHeader>
+    <Card id={`review-${review.carId}-${review.id}`} className='border-slate-200 rounded-xl shadow-sm'>
+      <CardHeader className='pb-3'>
         <CardTitle>
           <div className='flex items-center justify-between gap-2'>
             <div>
-              <h3 className='text-lg font-bold'>{review.userFullName}</h3>
-              <div className='text-xs text-gray-500 font-medium'>
+              <h3 className='text-sm sm:text-base font-semibold text-slate-900'>{review.userFullName}</h3>
+              <div className='text-[11px] text-slate-500 font-medium'>
                 {formatDistanceToNow(review.createdAt, { addSuffix: true })}
               </div>
             </div>
@@ -24,8 +24,8 @@ export default function ReviewCard({ review }: ReviewCardProps) {
           </div>
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <p className='text-sm text-gray-500'>{review.comment}</p>
+      <CardContent className='pt-0'>
+        <p className='text-sm text-slate-700'>{review.comment}</p>
       </CardContent>
     </Card>
   );

@@ -5,10 +5,11 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { differenceInDays, addDays, startOfDay } from 'date-fns';
 import Image from 'next/image';
-import { CreditCard, MapPin, CheckCircle2, LogIn } from 'lucide-react';
+import { CreditCard, MapPin, CheckCircle2, LogIn, Shield, Baby, UserPlus, Plane, Clock } from 'lucide-react';
 import { TGetCarByIdResponse } from '@/features/cars/cars.types';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { toast } from 'sonner';
@@ -83,6 +84,11 @@ export default function BookingDialog({ car, open, onOpenChange }: BookingDialog
       startDateTime: addDays(startOfDay(new Date()), 1),
       endDateTime: addDays(startOfDay(new Date()), 2),
       carId: car.id,
+      childSeat: false,
+      additionalDriver: false,
+      fullInsurance: false,
+      airportPickup: false,
+      flexibleReturn: false,
     },
   });
 
@@ -164,7 +170,7 @@ export default function BookingDialog({ car, open, onOpenChange }: BookingDialog
           <div className='px-6 pb-6'>
             <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
               {/* Main Form - Left Side */}
-              <div className='lg:col-span-2'>
+              <div className='lg:col-span-2 space-y-6'>
                 <form
                   onSubmit={form.handleSubmit(onSubmit, (errors) => {
                     console.log(errors);
@@ -173,6 +179,95 @@ export default function BookingDialog({ car, open, onOpenChange }: BookingDialog
                 >
                   {/* Rental Period Section */}
                   <BookingRentalPeriod form={form} totalDays={totalDays} />
+
+                  {/* Extras Section */}
+                  <div className='border rounded-lg p-5 bg-white'>
+                    <h3 className='text-lg font-semibold mb-3 flex items-center gap-2'>
+                      <Shield className='w-5 h-5 text-primary' />
+                      Booking options
+                    </h3>
+                    <p className='text-xs text-gray-500 mb-4'>
+                      These options are visual for now and help your guests understand what&apos;s available. They
+                      won&apos;t affect the final price yet.
+                    </p>
+                    <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
+                      <label className='flex items-start gap-3 text-sm text-gray-700'>
+                        <Checkbox
+                          checked={form.watch('childSeat')}
+                          onCheckedChange={(val) => form.setValue('childSeat', Boolean(val))}
+                        />
+                        <span>
+                          <span className='font-medium flex items-center gap-1'>
+                            <Baby className='w-4 h-4 text-primary' />
+                            Child seat
+                          </span>
+                          <span className='block text-xs text-gray-500'>
+                            Add a comfortable seat for younger passengers.
+                          </span>
+                        </span>
+                      </label>
+
+                      <label className='flex items-start gap-3 text-sm text-gray-700'>
+                        <Checkbox
+                          checked={form.watch('additionalDriver')}
+                          onCheckedChange={(val) => form.setValue('additionalDriver', Boolean(val))}
+                        />
+                        <span>
+                          <span className='font-medium flex items-center gap-1'>
+                            <UserPlus className='w-4 h-4 text-primary' />
+                            Additional driver
+                          </span>
+                          <span className='block text-xs text-gray-500'>Allow a second driver on your rental.</span>
+                        </span>
+                      </label>
+
+                      <label className='flex items-start gap-3 text-sm text-gray-700'>
+                        <Checkbox
+                          checked={form.watch('fullInsurance')}
+                          onCheckedChange={(val) => form.setValue('fullInsurance', Boolean(val))}
+                        />
+                        <span>
+                          <span className='font-medium flex items-center gap-1'>
+                            <Shield className='w-4 h-4 text-primary' />
+                            Full insurance
+                          </span>
+                          <span className='block text-xs text-gray-500'>Extra peace of mind for your journey.</span>
+                        </span>
+                      </label>
+
+                      <label className='flex items-start gap-3 text-sm text-gray-700'>
+                        <Checkbox
+                          checked={form.watch('airportPickup')}
+                          onCheckedChange={(val) => form.setValue('airportPickup', Boolean(val))}
+                        />
+                        <span>
+                          <span className='font-medium flex items-center gap-1'>
+                            <Plane className='w-4 h-4 text-primary' />
+                            Airport pickup
+                          </span>
+                          <span className='block text-xs text-gray-500'>
+                            Pick up or drop off at the airport (subject to availability).
+                          </span>
+                        </span>
+                      </label>
+
+                      <label className='flex items-start gap-3 text-sm text-gray-700'>
+                        <Checkbox
+                          checked={form.watch('flexibleReturn')}
+                          onCheckedChange={(val) => form.setValue('flexibleReturn', Boolean(val))}
+                        />
+                        <span>
+                          <span className='font-medium flex items-center gap-1'>
+                            <Clock className='w-4 h-4 text-primary' />
+                            Flexible return time
+                          </span>
+                          <span className='block text-xs text-gray-500'>
+                            Extra flexibility around your return schedule.
+                          </span>
+                        </span>
+                      </label>
+                    </div>
+                  </div>
 
                   {/* Submit Button - Mobile Only */}
                   <div className='lg:hidden'>
@@ -186,12 +281,12 @@ export default function BookingDialog({ car, open, onOpenChange }: BookingDialog
 
               {/* Booking Summary - Right Side */}
               <div className='lg:col-span-1'>
-                <div className='border rounded-lg p-5 bg-white sticky top-0'>
-                  <h3 className='text-lg font-semibold mb-4'>Booking Summary</h3>
+                <div className='border rounded-2xl p-5 bg-white sticky top-0 shadow-sm'>
+                  <h3 className='text-lg font-semibold mb-4'>Booking summary</h3>
 
                   {/* Car Info */}
-                  <div className='mb-4'>
-                    <div className='relative h-40 rounded-lg overflow-hidden mb-3'>
+                  <div className='mb-5'>
+                    <div className='relative h-40 rounded-xl overflow-hidden mb-3'>
                       <Image
                         src={car.primaryImageUrl || '/placeholder-car.jpg'}
                         alt={`${car.brand} ${car.model}`}

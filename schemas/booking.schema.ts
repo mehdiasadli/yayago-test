@@ -79,6 +79,11 @@ export const CreateBookingFormInputSchema = CreateBookingInputSchema.omit({
 }).extend({
   startDateTime: z.date({ required_error: 'Start date and time is required' }),
   endDateTime: z.date({ required_error: 'End date and time is required' }),
+  childSeat: z.boolean().optional(),
+  additionalDriver: z.boolean().optional(),
+  fullInsurance: z.boolean().optional(),
+  airportPickup: z.boolean().optional(),
+  flexibleReturn: z.boolean().optional(),
 });
 
 export type TCreateBookingFormInput = z.infer<typeof CreateBookingFormInputSchema>;

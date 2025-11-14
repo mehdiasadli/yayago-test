@@ -2,7 +2,8 @@ import { notFound } from 'next/navigation';
 import { carsService } from '@/lib/api/services';
 import { CarsApi } from '@/features/cars/cars.api';
 import Overview from './car-details-sections/overview';
-import Pricing from './car-details-sections/pricing';
+import Specifications from './car-details-sections/specifications';
+import ReviewsSection from './car-details-sections/reviews-section';
 
 // Make this page dynamic to avoid build-time API calls
 export const dynamic = 'force-dynamic';
@@ -52,16 +53,10 @@ export default async function CarDetailsPage({ params }: CarDetailsPageProps) {
 
   return (
     <div className='space-y-6'>
+      <Specifications car={car} />
       {/* Overview */}
-      <Overview name={`${car.brand} ${car.model} ${car.year}`} />
-
-      {/* Pricing Breakdown */}
-      <Pricing
-        pricePerDay={car.pricePerDay}
-        pricePerWeek={car.pricePerWeek || undefined}
-        pricePerMonth={car.pricePerMonth || undefined}
-        currency={car.currency}
-      />
+      <Overview carId={car.id} name={`${car.brand} ${car.model} ${car.year}`} />
+      <ReviewsSection carId={car.id} carName={`${car.brand} ${car.model} ${car.year}`} />
     </div>
   );
 }
