@@ -51,10 +51,10 @@ export default function AddReview({ userReview, userId, carId }: AddReviewFormPr
     },
     onSuccess: (created) => {
       // Optimistically update list cache
-      queryClient.setQueryData<TGetCarReviewsResponse>(
-        reviewsQueryKeys.listById(carId.toString()),
-        (prev = []) => [...prev, created]
-      );
+      queryClient.setQueryData<TGetCarReviewsResponse>(reviewsQueryKeys.listById(carId.toString()), (prev = []) => [
+        ...prev,
+        created,
+      ]);
       // Refresh aggregates
       queryClient.invalidateQueries({ queryKey: reviewsQueryKeys.countByCarId(carId.toString()) });
       queryClient.invalidateQueries({ queryKey: reviewsQueryKeys.averageRatingByCarId(carId.toString()) });
@@ -77,10 +77,13 @@ export default function AddReview({ userReview, userId, carId }: AddReviewFormPr
       return response.data;
     },
     onSuccess: (updated) => {
+      if (!updated) {
+        return;
+      }
+
       // Optimistically update list cache
-      queryClient.setQueryData<TGetCarReviewsResponse>(
-        reviewsQueryKeys.listById(carId.toString()),
-        (prev = []) => prev.map((r) => (r.id === userReview?.id ? updated : r))
+      queryClient.setQueryData<TGetCarReviewsResponse>(reviewsQueryKeys.listById(carId.toString()), (prev = []) =>
+        prev.map((r) => (r.id === updated.id ? updated : r))
       );
       queryClient.invalidateQueries({ queryKey: reviewsQueryKeys.countByCarId(carId.toString()) });
       queryClient.invalidateQueries({ queryKey: reviewsQueryKeys.averageRatingByCarId(carId.toString()) });
@@ -101,10 +104,13 @@ export default function AddReview({ userReview, userId, carId }: AddReviewFormPr
       }
     },
     onSuccess: () => {
+      if (!userReview) {
+        return;
+      }
+
       // Optimistically remove from cache
-      queryClient.setQueryData<TGetCarReviewsResponse>(
-        reviewsQueryKeys.listById(carId.toString()),
-        (prev = []) => prev.filter((r) => r.id !== userReview?.id)
+      queryClient.setQueryData<TGetCarReviewsResponse>(reviewsQueryKeys.listById(carId.toString()), (prev = []) =>
+        prev.filter((r) => r.id !== userReview.id)
       );
       queryClient.invalidateQueries({ queryKey: reviewsQueryKeys.countByCarId(carId.toString()) });
       queryClient.invalidateQueries({ queryKey: reviewsQueryKeys.averageRatingByCarId(carId.toString()) });
