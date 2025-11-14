@@ -8,8 +8,20 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { login } from '@/features/auth/auth.actions';
+import { parseAsString, parseAsStringLiteral, useQueryState } from 'nuqs';
 
-export default function LoginForm({ callbackUrl }: { callbackUrl: string }) {
+export default function LoginForm() {
+  const [tier] = useQueryState('tier', parseAsStringLiteral(['basic', 'premium', 'elegant']));
+  const [interval] = useQueryState('interval', parseAsStringLiteral(['month', 'year']));
+  const [payment_success_redirect_url] = useQueryState(
+    'payment_success_redirect_url',
+    parseAsString.withDefault(process.env.NEXT_PUBLIC_APP_URL + '/')
+  );
+  const [callback_url] = useQueryState(
+    'callback_url',
+    parseAsString.withDefault(process.env.NEXT_PUBLIC_APP_URL + '/')
+  );
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -30,7 +42,16 @@ export default function LoginForm({ callbackUrl }: { callbackUrl: string }) {
       } else {
         // Update the session on the client side
         await update();
-        router.push(callbackUrl);
+
+        // if there are tier and interval, it means the user has payment
+        if (tier && interval) {
+          router.push(
+            `/checkout?tier=${tier}&interval=${interval}&successRedirectUrl=${encodeURIComponent(payment_success_redirect_url)}&email=${encodeURIComponent(email)}`
+          );
+        } else {
+          router.push(decodeURIComponent(callback_url));
+        }
+
         router.refresh();
       }
     } catch (err) {
@@ -122,7 +143,7 @@ export default function LoginForm({ callbackUrl }: { callbackUrl: string }) {
         <p className='text-gray-600'>
           Don't have an account?{' '}
           <Link
-            href={`/auth/register?callbackUrl=${encodeURIComponent(callbackUrl)}`}
+            href={`/auth/register?tier=${tier}&interval=${interval}&payment_success_redirect_url=${payment_success_redirect_url}&callback_url=${callback_url}`}
             className='text-primary hover:text-primary/80 font-semibold'
           >
             Sign up

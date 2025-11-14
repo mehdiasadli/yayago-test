@@ -1,30 +1,28 @@
-import { getStripeSession } from '@/features/stripe/stripe.actions';
 import { notFound } from 'next/navigation';
 import ResultContent from './result-content';
 
 interface CheckoutResultPageProps {
   searchParams: Promise<{
-    session_id?: string;
+    intent_id?: string;
+    payment_intent?: string; // Stripe's default param name when redirecting back
+    type?: 'booking' | 'subscription';
+    booking_id?: string;
     redirect_url?: string;
   }>;
 }
 
 export default async function CheckoutResultPage({ searchParams }: CheckoutResultPageProps) {
-  const { session_id, redirect_url = '/' } = await searchParams;
+  const params = await searchParams;
 
-  if (!session_id) {
+  // Support both our custom intent_id and Stripe's payment_intent parameter
+  const intentId = params.intent_id || params.payment_intent;
+  const type = params.type;
+  const bookingId = params.booking_id;
+  const redirectUrl = params.redirect_url || '/';
+
+  if (!intentId || !type) {
     notFound();
   }
 
-  const session = await getStripeSession(session_id);
-
-  if (!session) {
-    notFound();
-  }
-
-  if (!session.status || !session.payment_status) {
-    notFound();
-  }
-
-  return <ResultContent status={session.status} paymentStatus={session.payment_status} redirectUrl={redirect_url} />;
+  return <ResultContent intentId={intentId} type={type} bookingId={bookingId} redirectUrl={redirectUrl} />;
 }

@@ -19,30 +19,87 @@ export async function POST(req: NextRequest) {
 
   try {
     switch (event.type) {
-      case 'checkout.session.completed': {
-        const session = event.data.object as any;
-        // If mode=subscription → session.subscription contains sub id
-        // If mode=payment → session.payment_intent contains PI id
-        // Read session.metadata & subscription_data.metadata you set earlier.
-        // TODO: mark subscription active in your DB / mark booking paid, etc.
-        break;
-      }
-      case 'invoice.payment_succeeded':
-      case 'customer.subscription.created':
-      case 'customer.subscription.updated':
-      case 'customer.subscription.deleted': {
-        // Sync subscription status & item quantities into your DB
-        break;
-      }
       case 'payment_intent.succeeded': {
-        // For one-time bookings if you used mode=payment without Checkout Session
+        const paymentIntent = event.data.object as any;
+        // Payment was successful
+        // You can access metadata via paymentIntent.metadata
+        // Example: paymentIntent.metadata.type (booking or subscription)
+        // Example: paymentIntent.metadata.userId
+        // Example: paymentIntent.metadata.bookingId
+
+        console.log('Payment succeeded:', paymentIntent.id);
+        console.log('Amount:', paymentIntent.amount);
+        console.log('Metadata:', paymentIntent.metadata);
+
+        // TODO: Update your database based on payment type
+        // if (paymentIntent.metadata.type === 'booking') {
+        //   // Mark booking as paid
+        // } else if (paymentIntent.metadata.type === 'subscription') {
+        //   // Activate subscription
+        // }
+        break;
+      }
+      case 'payment_intent.payment_failed': {
+        const paymentIntent = event.data.object as any;
+        // Payment failed
+        console.log('Payment failed:', paymentIntent.id);
+        console.log('Failure reason:', paymentIntent.last_payment_error?.message);
+
+        // TODO: Notify user or take appropriate action
+        break;
+      }
+      case 'payment_intent.canceled': {
+        const paymentIntent = event.data.object as any;
+        // Payment was canceled
+        console.log('Payment canceled:', paymentIntent.id);
+
+        // TODO: Clean up any pending bookings or subscriptions
+        break;
+      }
+      case 'payment_intent.processing': {
+        const paymentIntent = event.data.object as any;
+        // Payment is being processed (e.g., bank transfer)
+        console.log('Payment processing:', paymentIntent.id);
+        break;
+      }
+      case 'payment_intent.requires_action': {
+        const paymentIntent = event.data.object as any;
+        // Payment requires additional action (e.g., 3D Secure)
+        console.log('Payment requires action:', paymentIntent.id);
+        break;
+      }
+      // Subscription-related events (if you implement recurring subscriptions later)
+      case 'customer.subscription.created':
+      case 'customer.subscription.updated': {
+        const subscription = event.data.object as any;
+        console.log('Subscription updated:', subscription.id);
+        // TODO: Sync subscription status into your DB
+        break;
+      }
+      case 'customer.subscription.deleted': {
+        const subscription = event.data.object as any;
+        console.log('Subscription deleted:', subscription.id);
+        // TODO: Deactivate subscription in your DB
+        break;
+      }
+      case 'invoice.payment_succeeded': {
+        const invoice = event.data.object as any;
+        console.log('Invoice payment succeeded:', invoice.id);
+        // TODO: Handle recurring subscription payment
+        break;
+      }
+      case 'invoice.payment_failed': {
+        const invoice = event.data.object as any;
+        console.log('Invoice payment failed:', invoice.id);
+        // TODO: Notify user about failed recurring payment
         break;
       }
       default:
-        // no-op
+        console.log(`Unhandled event type: ${event.type}`);
         break;
     }
   } catch (e) {
+    console.error('Webhook handler error:', e);
     return NextResponse.json({ error: 'Handler error' }, { status: 500 });
   }
 

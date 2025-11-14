@@ -69,6 +69,20 @@ export const CreateBookingInputSchema = z.object({
   returnTime: LocalTimeSchema.optional(),
 });
 
+export const CreateBookingFormInputSchema = CreateBookingInputSchema.omit({
+  startDate: true,
+  endDate: true,
+  pickupTime: true,
+  returnTime: true,
+  userId: true,
+  fullName: true,
+}).extend({
+  startDateTime: z.date({ required_error: 'Start date and time is required' }),
+  endDateTime: z.date({ required_error: 'End date and time is required' }),
+});
+
+export type TCreateBookingFormInput = z.infer<typeof CreateBookingFormInputSchema>;
+
 // Add custom validation for date range
 export const CreateBookingInputWithValidationSchema = CreateBookingInputSchema.refine(
   (data) => {

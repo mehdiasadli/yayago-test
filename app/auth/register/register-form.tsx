@@ -7,12 +7,21 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { register } from '@/data/auth/auth.actions';
+import { parseAsString, parseAsStringLiteral } from 'nuqs';
+import { useQueryState } from 'nuqs';
 
-interface RegisterFormProps {
-  callbackUrl: string;
-}
+export default function RegisterForm() {
+  const [tier] = useQueryState('tier', parseAsStringLiteral(['basic', 'premium', 'elegant']));
+  const [interval] = useQueryState('interval', parseAsStringLiteral(['month', 'year']));
+  const [payment_success_redirect_url] = useQueryState(
+    'payment_success_redirect_url',
+    parseAsString.withDefault(process.env.NEXT_PUBLIC_APP_URL + '/')
+  );
+  const [callback_url] = useQueryState(
+    'callback_url',
+    parseAsString.withDefault(process.env.NEXT_PUBLIC_APP_URL + '/')
+  );
 
-export default function RegisterForm({ callbackUrl }: RegisterFormProps) {
   const router = useRouter();
   const [formData, setFormData] = useState({
     fullName: '',
@@ -37,7 +46,13 @@ export default function RegisterForm({ callbackUrl }: RegisterFormProps) {
         setSuccess(true);
         // Redirect to login page after 2 seconds
         setTimeout(() => {
-          router.push('/auth?registered=true&callbackUrl=' + encodeURIComponent(callbackUrl));
+          if (tier && interval) {
+            router.push(
+              `/auth?registered=true&tier=${tier}&interval=${interval}&payment_success_redirect_url=${encodeURIComponent(payment_success_redirect_url)}&callback_url=${encodeURIComponent(callback_url)}`
+            );
+          } else {
+            router.push(`/auth?registered=true&callback_url=${encodeURIComponent(callback_url)}`);
+          }
         }, 2000);
       } else {
         setError(result.error || 'Registration failed');
@@ -204,7 +219,7 @@ export default function RegisterForm({ callbackUrl }: RegisterFormProps) {
         <p className='text-gray-600'>
           Already have an account?{' '}
           <Link
-            href={`/auth?callbackUrl=${encodeURIComponent(callbackUrl)}`}
+            href={`/auth?tier=${tier}&interval=${interval}&payment_success_redirect_url=${payment_success_redirect_url}&callback_url=${callback_url}`}
             className='text-primary hover:text-primary/80 font-semibold'
           >
             Sign in

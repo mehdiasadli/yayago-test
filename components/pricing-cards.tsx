@@ -9,20 +9,22 @@ import Link from 'next/link';
 import { parseAsBoolean, useQueryState } from 'nuqs';
 
 function getCheckoutUrl(plan: PricingPlan, isYearly: boolean, userEmail?: string, userId?: string) {
-  if (!userEmail || !userId) {
-    return `/auth?callbackUrl=${encodeURIComponent(process.env.NEXT_PUBLIC_APP_URL + `/pricing`)}`;
-  }
-
   if (plan.isCorporate || !plan.tier) {
     return '/support/contact';
   }
 
   const interval = isYearly ? 'year' : 'month';
   const tier = plan.tier;
-  const emailParam = encodeURIComponent(userEmail);
-  const successRedirectUrl = encodeURIComponent(process.env.NEXT_PUBLIC_APP_URL + '/');
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+  const successRedirectUrl = encodeURIComponent(`${baseUrl}/profile`);
 
-  return `/checkout?tier=${tier}&interval=${interval}&email=${emailParam}&userId=${userId}&successRedirectUrl=${successRedirectUrl}`;
+  if (!userEmail || !userId) {
+    return `/auth?tier=${tier}&interval=${interval}&payment_success_redirect_url=${successRedirectUrl}`;
+  }
+
+  const emailParam = encodeURIComponent(userEmail);
+
+  return `/checkout/subscription?tier=${tier}&interval=${interval}&email=${emailParam}&userId=${userId}&successRedirectUrl=${successRedirectUrl}`;
 }
 
 interface PricingCardsProps {

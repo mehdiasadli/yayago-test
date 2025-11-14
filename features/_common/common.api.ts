@@ -145,7 +145,6 @@ export class Api {
       method = 'GET',
       headers: customHeaders,
       successMessage = 'Request successful',
-      outputSchema,
       body,
       isUpload = false,
     } = options;
@@ -196,6 +195,14 @@ export class Api {
           return {};
         });
 
+        if (isApiError(errorData)) {
+          return {
+            success: false,
+            message: errorData.errorMessage,
+            error: errorData,
+          };
+        }
+
         throw new Error(errorData.message || `HTTP ${response.status}`);
       }
 
@@ -225,6 +232,15 @@ export class Api {
         }
       } catch (parseError) {
         console.error('Failed to parse response:', parseError);
+
+        if (isApiError(parseError)) {
+          return {
+            success: false,
+            message: parseError.errorMessage,
+            error: parseError,
+          };
+        }
+
         return {
           success: false,
           message: 'Invalid response from server',
@@ -256,6 +272,15 @@ export class Api {
       // };
     } catch (error) {
       console.error('API request failed:', error);
+
+      if (isApiError(error)) {
+        return {
+          success: false,
+          message: error.errorMessage,
+          error: error,
+        };
+      }
+
       return {
         success: false,
         message: error instanceof Error ? error.message : 'An unexpected error occurred',
@@ -263,4 +288,16 @@ export class Api {
       };
     }
   }
+}
+
+type ApiError = {
+  errorCode: number;
+  status: string;
+  errorMessage: string;
+  path: string;
+  errorDate: string;
+};
+
+function isApiError(error: unknown): error is ApiError {
+  return typeof error === 'object' && error !== null && 'errorMessage' in error;
 }

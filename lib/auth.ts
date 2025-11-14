@@ -37,7 +37,7 @@ declare module '@auth/core/jwt' {
   }
 }
 
-const REFRESH_THRESHOLD = 60; // Refresh 1 minute before expiry
+const REFRESH_THRESHOLD = 60 * 10; // Refresh 10 minutes before expiry
 
 // Import your existing DTOs instead of defining new schemas
 import { LoginResponseDto, RefreshTokenResponseDto } from '@/features/auth/auth.dto';
@@ -171,10 +171,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
 
       // Check if token needs refresh
-      const timeUntilExpiry = token.expiresAt - Math.floor(Date.now() / 1000);
+      const currentTime = Math.floor(Date.now() / 1000);
+      const timeUntilExpiry = token.expiresAt - currentTime;
       const shouldRefresh = timeUntilExpiry < REFRESH_THRESHOLD;
 
       if (shouldRefresh) {
+        // If refresh is already in progress, wait for it
+
         try {
           console.log('Refreshing token...');
 
@@ -192,7 +195,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             console.error('Token refresh failed:', refreshResponse.status);
             // Return null to force re-login
             return null as any;
-            return { ...token, error: 'RefreshTokenError' } as any;
           }
 
           const refreshData = await refreshResponse.json();
@@ -202,7 +204,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           if (!refreshValidation.success) {
             console.error('Invalid refresh response:', refreshValidation.error);
             return null as any;
-            return { ...token, error: 'RefreshTokenError' } as any;
           }
 
           const refreshTokenData = refreshValidation.data;
@@ -217,7 +218,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           console.error('Error refreshing token:', error);
           // Return token with error flag instead of throwing
           return null as any;
-          return { ...token, error: 'RefreshTokenError' } as any;
         }
       }
 

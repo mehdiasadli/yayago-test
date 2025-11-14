@@ -1,6 +1,14 @@
+import { auth } from '@/lib/auth';
 import Image from 'next/image';
+import { redirect } from 'next/navigation';
 
-export default function AuthLayout({ children }: { children: React.ReactNode }) {
+export default async function AuthLayout({ children }: { children: React.ReactNode }) {
+  const session = await auth();
+
+  if (session?.user) {
+    redirect('/');
+  }
+
   return (
     <div className='flex min-h-screen'>
       {/* Left Side - Form */}

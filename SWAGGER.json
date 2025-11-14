@@ -18,12 +18,32 @@
   ],
   "tags": [
     {
-      "name": "Login",
-      "description": "Endpoint for login and token generation"
-    },
-    {
       "name": "Car Images",
       "description": "Endpoints for managing car images"
+    },
+    {
+      "name": "Admin Booking Management",
+      "description": "Admin endpoints for booking management"
+    },
+    {
+      "name": "Admin User Management",
+      "description": "Admin endpoints for user management"
+    },
+    {
+      "name": "User",
+      "description": "Endpoints for registering and retrieving user details"
+    },
+    {
+      "name": "Cars",
+      "description": "Endpoints for managing car inventory"
+    },
+    {
+      "name": "Admin Image Management",
+      "description": "Admin endpoints for image moderation"
+    },
+    {
+      "name": "Login",
+      "description": "Endpoint for login and token generation"
     },
     {
       "name": "Admin Car Management",
@@ -42,24 +62,16 @@
       "description": "Endpoints for managing user notifications"
     },
     {
-      "name": "Admin User Management",
-      "description": "Admin endpoints for user management"
-    },
-    {
-      "name": "User",
-      "description": "Endpoints for registering and retrieving user details"
-    },
-    {
-      "name": "Cars",
-      "description": "Endpoints for managing car inventory"
-    },
-    {
       "name": "Reviews",
       "description": "Endpoints for managing car reviews"
     },
     {
       "name": "Booking",
       "description": "Endpoints for managing bookings"
+    },
+    {
+      "name": "Stripe Payments",
+      "description": "Endpoints for creating and tracking Stripe payments (AED currency)"
     }
   ],
   "paths": {
@@ -406,9 +418,195 @@
         }
       }
     },
-    "/api/admin/cars/{carId}": {},
-    "/api/admin/cars/{carId}/status": {},
-    "/api/admin/cars/{carId}/price": {},
+    "/api/admin/cars/{carId}": {
+      "get": {
+        "tags": ["Admin Car Management"],
+        "description": "Get car details by ID",
+        "operationId": "getCarById_1",
+        "parameters": [
+          {
+            "name": "carId",
+            "in": "path",
+            "description": "Car ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminCarDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Admin Car Management"],
+        "description": "Update car details",
+        "operationId": "updateCar_1",
+        "parameters": [
+          {
+            "name": "carId",
+            "in": "path",
+            "description": "Car ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminCarDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminCarDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Admin Car Management"],
+        "description": "Delete car (soft delete)",
+        "operationId": "deleteCar_1",
+        "parameters": [
+          {
+            "name": "carId",
+            "in": "path",
+            "description": "Car ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/cars/{carId}/status": {
+      "put": {
+        "tags": ["Admin Car Management"],
+        "description": "Update car availability status",
+        "operationId": "updateCarStatus",
+        "parameters": [
+          {
+            "name": "carId",
+            "in": "path",
+            "description": "Car ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CarStatusUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/cars/{carId}/price": {
+      "put": {
+        "tags": ["Admin Car Management"],
+        "description": "Update car price per day",
+        "operationId": "updateCarPrice",
+        "parameters": [
+          {
+            "name": "carId",
+            "in": "path",
+            "description": "Car ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CarPriceUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/bookings/bulk-status": {
+      "put": {
+        "tags": ["Admin Booking Management"],
+        "description": "Bulk update booking statuses",
+        "operationId": "updateBookingStatuses",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminBookingBulkStatusRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminBookingBulkStatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/users/{id}/avatar": {
       "post": {
         "tags": ["User"],
@@ -479,7 +677,35 @@
         }
       }
     },
-    "/api/users/register": {},
+    "/api/users/register": {
+      "post": {
+        "tags": ["User"],
+        "description": "Register a new user",
+        "operationId": "register",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/reviews": {
       "post": {
         "tags": ["Reviews"],
@@ -502,6 +728,36 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/ReviewResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/payments/create-intent": {
+      "post": {
+        "tags": ["Stripe Payments"],
+        "summary": "Create Stripe PaymentIntent",
+        "description": "Generates a PaymentIntent in AED currency and returns a clientSecret for frontend confirmation",
+        "operationId": "createPaymentIntent",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
                 }
               }
             }
@@ -963,6 +1219,15 @@
             }
           },
           {
+            "name": "brandLike",
+            "in": "query",
+            "description": "Partial match for brand",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "model",
             "in": "query",
             "description": "Filter by model",
@@ -975,6 +1240,26 @@
             "name": "year",
             "in": "query",
             "description": "Filter by year",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "yearFrom",
+            "in": "query",
+            "description": "Filter by minimum year",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "yearTo",
+            "in": "query",
+            "description": "Filter by maximum year",
             "required": false,
             "schema": {
               "type": "integer",
@@ -1000,12 +1285,80 @@
             }
           },
           {
-            "name": "available",
+            "name": "status",
             "in": "query",
-            "description": "Filter by availability",
+            "description": "Filter by status",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["PENDING", "APPROVED", "REJECTED", "AVAILABLE", "OCCUPIED", "BLOCKED", "INACTIVE", "DISABLED"]
+            }
+          },
+          {
+            "name": "carType",
+            "in": "query",
+            "description": "Filter by car type",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "featured",
+            "in": "query",
+            "description": "Filter by featured flag",
             "required": false,
             "schema": {
               "type": "boolean"
+            }
+          },
+          {
+            "name": "hasImages",
+            "in": "query",
+            "description": "Filter by presence of images",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number (0-based)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Page size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "Sort property",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "description": "Sort order (asc or desc)",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -1015,10 +1368,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AdminCarDto"
-                  }
+                  "$ref": "#/components/schemas/AdminCarListResponseDto"
                 }
               }
             }
@@ -1145,7 +1495,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["PENDING", "CONFIRMED", "CANCELLED"]
+              "enum": ["PENDING", "CONFIRMED", "COMPLETED", "CANCELLED"]
             }
           }
         ],
@@ -1303,6 +1653,37 @@
                 "schema": {
                   "type": "number",
                   "format": "double"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/payments/status/{intentId}": {
+      "get": {
+        "tags": ["Stripe Payments"],
+        "summary": "Get Payment Status by Intent ID",
+        "description": "Retrieves the current payment status from database using the Stripe PaymentIntent ID",
+        "operationId": "getPaymentStatus",
+        "parameters": [
+          {
+            "name": "intentId",
+            "in": "path",
+            "description": "Stripe PaymentIntent ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
                 }
               }
             }
@@ -2125,6 +2506,135 @@
         }
       }
     },
+    "/api/admin/users/reviews": {
+      "get": {
+        "tags": ["Admin User Management"],
+        "description": "Get all reviews (admin) with optional filters by carId or userId",
+        "operationId": "getAllReviews",
+        "parameters": [
+          {
+            "name": "carId",
+            "in": "query",
+            "description": "Filter by car ID",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "Filter by user ID",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/images/pending": {
+      "get": {
+        "tags": ["Admin Image Management"],
+        "description": "Get all pending images (optional filter by carId)",
+        "operationId": "getPendingImages",
+        "parameters": [
+          {
+            "name": "carId",
+            "in": "query",
+            "description": "Car ID to filter pending images",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImageResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/dashboard/users": {
+      "get": {
+        "tags": ["Admin Dashboard"],
+        "description": "Get user analytics with growth and top user stats",
+        "operationId": "getUserAnalytics",
+        "parameters": [
+          {
+            "name": "period",
+            "in": "query",
+            "description": "Predefined period: day, week, month, year, custom",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "month"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Custom range start date",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "Custom range end date",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserAnalyticsDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/admin/dashboard/stats": {
       "get": {
         "tags": ["Admin Dashboard"],
@@ -2144,27 +2654,37 @@
         }
       }
     },
-    "/api/admin/dashboard/revenue": {
+    "/api/admin/dashboard/reviews": {
       "get": {
         "tags": ["Admin Dashboard"],
-        "description": "Get revenue statistics for date range",
-        "operationId": "getRevenueStats",
+        "description": "Get review analytics including totals and pending count",
+        "operationId": "getReviewAnalytics",
         "parameters": [
           {
-            "name": "startDate",
+            "name": "period",
             "in": "query",
-            "description": "Start date",
-            "required": true,
+            "description": "Predefined period: day, week, month, year, custom",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "month"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Custom range start date",
+            "required": false,
             "schema": {
               "type": "string",
               "format": "date"
             }
           },
           {
-            "name": "endDate",
+            "name": "to",
             "in": "query",
-            "description": "End date",
-            "required": true,
+            "description": "Custom range end date",
+            "required": false,
             "schema": {
               "type": "string",
               "format": "date"
@@ -2177,10 +2697,68 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RevenueStatsDto"
-                  }
+                  "$ref": "#/components/schemas/ReviewAnalyticsDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/dashboard/revenue": {
+      "get": {
+        "tags": ["Admin Dashboard"],
+        "description": "Get revenue statistics with flexible period and grouping",
+        "operationId": "getRevenueReport",
+        "parameters": [
+          {
+            "name": "period",
+            "in": "query",
+            "description": "Predefined period: day, week, month, year, custom",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "month"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Start date for custom period",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "End date for custom period",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "groupBy",
+            "in": "query",
+            "description": "Grouping granularity: day, week, month",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "day"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminRevenueReportDto"
                 }
               }
             }
@@ -2258,6 +2836,57 @@
                 "schema": {
                   "type": "number",
                   "format": "double"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/dashboard/bookings": {
+      "get": {
+        "tags": ["Admin Dashboard"],
+        "description": "Get booking analytics with status distribution and popular cars",
+        "operationId": "getBookingAnalytics",
+        "parameters": [
+          {
+            "name": "period",
+            "in": "query",
+            "description": "Predefined period: day, week, month, year, custom",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "month"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Custom range start date",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "Custom range end date",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookingAnalyticsDto"
                 }
               }
             }
@@ -2408,7 +3037,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["PENDING", "APPROVED", "REJECTED", "AVAILABLE", "BLOCKED", "INACTIVE", "OCCUPIED", "DISABLED"]
+              "enum": ["PENDING", "APPROVED", "REJECTED", "AVAILABLE", "OCCUPIED", "BLOCKED", "INACTIVE", "DISABLED"]
             }
           }
         ],
@@ -2495,6 +3124,117 @@
         }
       }
     },
+    "/api/admin/bookings": {
+      "get": {
+        "tags": ["Admin Booking Management"],
+        "description": "Search bookings with filters and pagination",
+        "operationId": "searchBookings",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "Filter by user ID",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "carId",
+            "in": "query",
+            "description": "Filter by car ID",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter by status",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["PENDING", "CONFIRMED", "COMPLETED", "CANCELLED"]
+            }
+          },
+          {
+            "name": "dateFrom",
+            "in": "query",
+            "description": "Filter bookings from date",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "dateTo",
+            "in": "query",
+            "description": "Filter bookings to date",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "Sort property",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "description": "Sort direction",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number (0-based)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Page size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminBookingListResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/cars/images/{imageId}": {
       "delete": {
         "tags": ["Car Images"],
@@ -2505,6 +3245,30 @@
             "name": "imageId",
             "in": "path",
             "description": "Image ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/users/reviews/{reviewId}": {
+      "delete": {
+        "tags": ["Admin User Management"],
+        "description": "Delete a review by id (admin)",
+        "operationId": "deleteReviewByAdmin",
+        "parameters": [
+          {
+            "name": "reviewId",
+            "in": "path",
+            "description": "Review ID",
             "required": true,
             "schema": {
               "type": "integer",
@@ -2646,9 +3410,6 @@
           "currency": {
             "type": "string"
           },
-          "available": {
-            "type": "boolean"
-          },
           "fuelType": {
             "type": "string"
           },
@@ -2740,7 +3501,7 @@
             "type": "integer",
             "format": "int64"
           },
-          "isFavorite": {
+          "isFavorited": {
             "type": "boolean"
           },
           "reviewCount": {
@@ -2753,7 +3514,7 @@
           },
           "status": {
             "type": "string",
-            "enum": ["PENDING", "APPROVED", "REJECTED", "AVAILABLE", "BLOCKED", "INACTIVE", "OCCUPIED", "DISABLED"]
+            "enum": ["PENDING", "APPROVED", "REJECTED", "AVAILABLE", "OCCUPIED", "BLOCKED", "INACTIVE", "DISABLED"]
           },
           "rejectionReason": {
             "type": "string"
@@ -2792,9 +3553,6 @@
           },
           "currency": {
             "type": "string"
-          },
-          "available": {
-            "type": "boolean"
           },
           "fuelType": {
             "type": "string"
@@ -2903,7 +3661,7 @@
             "type": "integer",
             "format": "int64"
           },
-          "isFavorite": {
+          "isFavorited": {
             "type": "boolean"
           },
           "reviewCount": {
@@ -2916,7 +3674,7 @@
           },
           "status": {
             "type": "string",
-            "enum": ["PENDING", "APPROVED", "REJECTED", "AVAILABLE", "BLOCKED", "INACTIVE", "OCCUPIED", "DISABLED"]
+            "enum": ["PENDING", "APPROVED", "REJECTED", "AVAILABLE", "OCCUPIED", "BLOCKED", "INACTIVE", "DISABLED"]
           },
           "rejectionReason": {
             "type": "string"
@@ -2967,6 +3725,10 @@
           "createdAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "APPROVED", "REJECTED"]
           }
         }
       },
@@ -3003,9 +3765,6 @@
           },
           "currency": {
             "type": "string"
-          },
-          "available": {
-            "type": "boolean"
           },
           "createdAt": {
             "type": "string",
@@ -3110,7 +3869,7 @@
             "type": "integer",
             "format": "int64"
           },
-          "isFavorite": {
+          "isFavorited": {
             "type": "boolean"
           },
           "reviewCount": {
@@ -3123,18 +3882,25 @@
           },
           "status": {
             "type": "string",
-            "enum": ["PENDING", "APPROVED", "REJECTED", "AVAILABLE", "BLOCKED", "INACTIVE", "OCCUPIED", "DISABLED"]
+            "enum": ["PENDING", "APPROVED", "REJECTED", "AVAILABLE", "OCCUPIED", "BLOCKED", "INACTIVE", "DISABLED"]
           },
           "rejectionReason": {
             "type": "string"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageResponseDto"
+            }
           }
         }
       },
       "CarStatusUpdateRequest": {
         "type": "object",
         "properties": {
-          "available": {
-            "type": "boolean"
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "APPROVED", "REJECTED", "AVAILABLE", "OCCUPIED", "BLOCKED", "INACTIVE", "DISABLED"]
           },
           "reason": {
             "type": "string"
@@ -3145,10 +3911,63 @@
         "type": "object",
         "properties": {
           "pricePerDay": {
-            "type": "number"
+            "type": "number",
+            "minimum": 0
+          },
+          "pricePerWeek": {
+            "type": "number",
+            "minimum": 0
+          },
+          "pricePerMonth": {
+            "type": "number",
+            "minimum": 0
+          },
+          "currency": {
+            "type": "string"
+          },
+          "deposit": {
+            "type": "number",
+            "minimum": 0
+          },
+          "discountPercentage": {
+            "type": "number",
+            "format": "double",
+            "maximum": 100,
+            "minimum": 0
+          }
+        },
+        "required": ["currency", "deposit", "discountPercentage", "pricePerDay", "pricePerMonth", "pricePerWeek"]
+      },
+      "AdminBookingBulkStatusRequest": {
+        "type": "object",
+        "properties": {
+          "bookingIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "CONFIRMED", "COMPLETED", "CANCELLED"]
           },
           "reason": {
             "type": "string"
+          }
+        },
+        "required": ["bookingIds", "status"]
+      },
+      "AdminBookingBulkStatusResponse": {
+        "type": "object",
+        "properties": {
+          "updatedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "CONFIRMED", "COMPLETED", "CANCELLED"]
           }
         }
       },
@@ -3192,6 +4011,21 @@
           "createdAt": {
             "type": "string",
             "format": "date-time"
+          }
+        }
+      },
+      "PaymentRequest": {
+        "type": "object",
+        "description": "Payment request body with amount, description, and customer email",
+        "properties": {
+          "amount": {
+            "type": "number"
+          },
+          "description": {
+            "type": "string"
+          },
+          "customerEmail": {
+            "type": "string"
           }
         }
       },
@@ -3308,8 +4142,9 @@
           "currency": {
             "type": "string"
           },
-          "available": {
-            "type": "boolean"
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "APPROVED", "REJECTED", "AVAILABLE", "OCCUPIED", "BLOCKED", "INACTIVE", "DISABLED"]
           },
           "fuelType": {
             "type": "string"
@@ -3507,6 +4342,9 @@
           "userId": {
             "type": "integer",
             "format": "int64"
+          },
+          "role": {
+            "type": "string"
           }
         }
       },
@@ -3661,76 +4499,463 @@
           }
         }
       },
-      "DashboardStatsDto": {
+      "TopUser": {
         "type": "object",
         "properties": {
-          "totalUsers": {
+          "userId": {
             "type": "integer",
             "format": "int64"
           },
-          "totalCars": {
-            "type": "integer",
-            "format": "int64"
+          "fullName": {
+            "type": "string"
           },
           "totalBookings": {
             "type": "integer",
             "format": "int64"
           },
-          "activeBookings": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "availableCars": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "occupiedCars": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "totalRevenue": {
+          "totalSpent": {
             "type": "number"
-          },
-          "monthlyRevenue": {
-            "type": "number"
-          },
-          "dailyRevenue": {
-            "type": "number"
-          },
-          "occupancyRate": {
-            "type": "number",
-            "format": "double"
-          },
-          "pendingBookings": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "confirmedBookings": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "cancelledBookings": {
-            "type": "integer",
-            "format": "int64"
           }
         }
       },
-      "RevenueStatsDto": {
+      "UserAnalyticsDto": {
+        "type": "object",
+        "properties": {
+          "period": {
+            "type": "string"
+          },
+          "newUsers": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "activeUsers": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userGrowth": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserGrowthPoint"
+            }
+          },
+          "topUsers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TopUser"
+            }
+          }
+        }
+      },
+      "UserGrowthPoint": {
         "type": "object",
         "properties": {
           "date": {
             "type": "string",
             "format": "date"
           },
-          "dailyRevenue": {
+          "newUsers": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "activeUsers": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "BookingMetrics": {
+        "type": "object",
+        "properties": {
+          "summary": {
+            "$ref": "#/components/schemas/Metric"
+          },
+          "pending": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "confirmed": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "cancelled": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "CarMetrics": {
+        "type": "object",
+        "properties": {
+          "summary": {
+            "$ref": "#/components/schemas/Metric"
+          },
+          "approved": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pending": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "occupied": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "available": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "DashboardStatsDto": {
+        "type": "object",
+        "properties": {
+          "users": {
+            "$ref": "#/components/schemas/Metric"
+          },
+          "bookings": {
+            "$ref": "#/components/schemas/BookingMetrics"
+          },
+          "revenue": {
+            "$ref": "#/components/schemas/RevenueMetrics"
+          },
+          "cars": {
+            "$ref": "#/components/schemas/CarMetrics"
+          },
+          "images": {
+            "$ref": "#/components/schemas/ImageMetrics"
+          },
+          "reviews": {
+            "$ref": "#/components/schemas/ReviewMetrics"
+          }
+        }
+      },
+      "ImageMetrics": {
+        "type": "object",
+        "properties": {
+          "summary": {
+            "$ref": "#/components/schemas/Metric"
+          },
+          "approved": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pending": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "rejected": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "Metric": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "thisMonth": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "lastMonth": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "growth": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "MonetaryMetric": {
+        "type": "object",
+        "properties": {
+          "total": {
             "type": "number"
           },
-          "cumulativeRevenue": {
+          "thisMonth": {
+            "type": "number"
+          },
+          "lastMonth": {
+            "type": "number"
+          },
+          "growth": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "RevenueMetrics": {
+        "type": "object",
+        "properties": {
+          "summary": {
+            "$ref": "#/components/schemas/MonetaryMetric"
+          },
+          "averagePerBooking": {
+            "type": "number"
+          },
+          "thisMonthAveragePerBooking": {
+            "type": "number"
+          }
+        }
+      },
+      "ReviewMetrics": {
+        "type": "object",
+        "properties": {
+          "summary": {
+            "$ref": "#/components/schemas/Metric"
+          },
+          "averageRating": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "ReviewAnalyticsDto": {
+        "type": "object",
+        "properties": {
+          "period": {
+            "type": "string"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "averageRating": {
+            "type": "number",
+            "format": "double"
+          },
+          "thisPeriod": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pending": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "AdminRevenueReportDto": {
+        "type": "object",
+        "properties": {
+          "period": {
+            "type": "string"
+          },
+          "groupBy": {
+            "type": "string"
+          },
+          "from": {
+            "type": "string",
+            "format": "date"
+          },
+          "to": {
+            "type": "string",
+            "format": "date"
+          },
+          "totalRevenue": {
+            "type": "number"
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RevenueGroup"
+            }
+          }
+        }
+      },
+      "RevenueGroup": {
+        "type": "object",
+        "properties": {
+          "periodStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "totalRevenue": {
             "type": "number"
           },
           "bookingsCount": {
             "type": "integer",
             "format": "int64"
+          },
+          "averageBookingValue": {
+            "type": "number"
+          }
+        }
+      },
+      "BookingAnalyticsDto": {
+        "type": "object",
+        "properties": {
+          "period": {
+            "type": "string"
+          },
+          "totalBookings": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "bookingsByStatus": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "bookingsByCar": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BookingsByCar"
+            }
+          },
+          "popularCars": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BookingsByCar"
+            }
+          },
+          "averageDuration": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "BookingsByCar": {
+        "type": "object",
+        "properties": {
+          "carId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "carName": {
+            "type": "string"
+          },
+          "bookings": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "revenue": {
+            "type": "number"
+          }
+        }
+      },
+      "AdminCarListResponseDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdminCarDto"
+            }
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasNext": {
+            "type": "boolean"
+          },
+          "hasPrevious": {
+            "type": "boolean"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          }
+        }
+      },
+      "AdminBookingDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "CONFIRMED", "COMPLETED", "CANCELLED"]
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "totalPrice": {
+            "type": "number"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userFullName": {
+            "type": "string"
+          },
+          "carId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "carBrand": {
+            "type": "string"
+          },
+          "carModel": {
+            "type": "string"
+          }
+        }
+      },
+      "AdminBookingListResponseDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdminBookingDto"
+            }
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasNext": {
+            "type": "boolean"
+          },
+          "hasPrevious": {
+            "type": "boolean"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
           }
         }
       }

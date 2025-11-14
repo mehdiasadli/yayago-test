@@ -1,4 +1,3 @@
-import { TGetCarByIdResponse } from '@/features/cars/cars.types';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
