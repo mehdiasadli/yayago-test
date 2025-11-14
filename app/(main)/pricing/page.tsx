@@ -1,5 +1,10 @@
+import { Suspense } from 'react';
 import PricingContent from './pricing-content';
 
 export default function PricingPage() {
-  return <PricingContent />;
+  return (
+    <Suspense>
+      <PricingContent />
+    </Suspense>
+  );
 }
